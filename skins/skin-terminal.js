@@ -55,7 +55,7 @@
   var bootEl = document.getElementById('boot');
   var asciiEl = document.getElementById('asciiArt');
   var bootLines = [
-    '> BXR-OS v2.2.0 BOOTING ...',
+    '> BXR-OS v2.2.1 BOOTING ...',
     '> CPU: BRAIN(14y) 4 CORES ... OK',
     '> MEM: DREAMS 100% ... OK',
     '> LOADING PROFILE: BXR ... DONE',
@@ -214,9 +214,9 @@
     } else if (cmd === 'about') {
       termOut('大家好，我是 BXR，一个 14 岁的阳光少年，生活在美丽的冰城哈尔滨，<br>就读于哈尔滨市第四十九中学校九年级（初四），九班，学号 01。<br>擅长 Python、C++，OIer，小提琴十级选手 🎻');
     } else if (cmd === 'links') {
-      termOut('<div class="line">🐙 GitHub — <a href="https://github.com/avrox-163" target="_blank" rel="noopener">https://github.com/avrox-163</a></div>' +
-        '<div class="line">📦 本站源码 — <a href="https://github.com/avrox-163/avrox-163.github.io/" target="_blank" rel="noopener">https://github.com/avrox-163/avrox-163.github.io/</a></div>' +
-        '<div class="line">📮 邮箱 — <a href="mailto:avrox_sxws@outlook.com">avrox_sxws@outlook.com</a></div>' +
+      termOut('<div class="line">🐙 GitHub — <a href="https://github.com/inkrox" target="_blank" rel="noopener">https://github.com/inkrox</a></div>' +
+        '<div class="line">📦 本站源码 — <a href="https://github.com/inkrox/my-website/" target="_blank" rel="noopener">https://github.com/inkrox/my-website/</a></div>' +
+        '<div class="line">📮 邮箱 — <a href="mailto:inkrox@outlook.com">inkrox@outlook.com</a></div>' +
         '<div class="line">💬 知乎 — <a href="https://www.zhihu.com/people/9wbhos" target="_blank" rel="noopener">https://www.zhihu.com/people/9wbhos</a></div>' +
         '<div class="line">🚩 洛谷 — <a href="https://www.luogu.com.cn/user/1766805" target="_blank" rel="noopener">https://www.luogu.com.cn/user/1766805</a></div>');
     } else if (cmd === 'whoami') {

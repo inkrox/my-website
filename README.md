@@ -2,7 +2,7 @@
 
 > 14 岁九年级少年的个人网站 —— **五套风格，一键切换**：极光 / 赛博朋克 / 命令行 / 古风 / 星空。
 
-🌐 访问地址：**[https://cralk.top](https://cralk.top)** · 备用：[https://avrox-163.github.io](https://avrox-163.github.io)
+🌐 访问地址：**[https://cralk.top](https://cralk.top)** · 备用：[https://inkrox.github.io/my-website](https://inkrox.github.io/my-website)
 
 ---
 
@@ -27,7 +27,7 @@
 - **背景音乐**：每套皮肤专属 BGM，播放器支持进度条拖拽、音量调节
 - **14 个小游戏**：代码雨、烟花、流星雨、时钟系列、QA 问答……访问前播放各风格专属加载动画
 - **最近更新窗口**：页面左下角 📜 实时查看每次改版内容
-- **实时数据**：不蒜子访客统计、GitHub 仓库 star 与最近更新
+- **实时数据**：不蒜子访客统计
 - **移动端友好**：响应式布局，手机上同样流畅
 
 ## 🎮 小作品
@@ -51,16 +51,16 @@
 
 ## 🔗 友链
 
-- 🐙 [GitHub](https://github.com/avrox-163)
-- 📦 [本站源码](https://github.com/avrox-163/avrox-163.github.io/)
-- 📮 邮箱：avrox_sxws@outlook.com
+- 🐙 [GitHub](https://github.com/inkrox)
+- 📦 [本站源码](https://github.com/inkrox/my-website/)
+- 📮 邮箱：inkrox@outlook.com
 - 💬 [知乎](https://www.zhihu.com/people/9wbhos)
 - 🚩 [洛谷](https://www.luogu.com.cn/user/1766805)
 
 ## 🛠️ 技术栈
 
 - 纯 **HTML / CSS / JavaScript**，零框架零依赖；五套皮肤的 CSS/JS 按需懒加载（`skins/` 目录），首屏更轻
-- **GitHub Pages** 托管，CNAME 绑定 cralk.top（cralk.top / sxws.pages.dev / avrox-163.github.io 三域名同一站点）
+- **GitHub Pages** 托管，CNAME 绑定 cralk.top（cralk.top / sxws.pages.dev / inkrox.github.io/my-website 三域名同一站点）
 - **不蒜子**（busuanzi.ibruce.info）访客统计
 
 ## 🚀 本地运行
@@ -81,22 +81,22 @@ python -m http.server 8080
 
 1. **git tag**（本地，annotated tag）：
    ```bash
-   git tag -a v2.2.0.260823 -m "v2.2.0.260823 Alpha"
+   git tag -a v2.2.1.260824 -m "v2.2.1.260824"
    ```
 2. **GitHub tag**：推送 tag（或用网页创建 Release 时自动生成同名 tag）：
    ```bash
-   git push origin v2.2.0.260823
+   git push origin v2.2.1.260824
    ```
    > 命令行凭据不可用时，直接在 GitHub 网页 `Releases → Draft a new release`，
-   > 在 tag 输入框填 `v2.2.0.260823` 并勾选自动创建 —— GitHub 会在当前 main 上
+   > 在 tag 输入框填 `v2.2.1.260824` 并勾选自动创建 —— GitHub 会在当前 main 上
    > 自动生成同名 tag，然后本地 `git fetch --tags` 拉回即可，三者完全一致。
 3. **GitHub Release**：网页 Release 说明与 changelog.html 同版本条目内容保持一致。
 
-版本号格式：`v主.次.修订.YYMMDD Alpha/Beta`，与 `changelog.html`、各页脚、UPDATES 数组同步更新。
+版本号格式：`v主.次.修订.YYMMDD`，与 `changelog.html`、各页脚、UPDATES 数组同步更新。
 
 ## 📄 版权
 
-- © BXR · Version v2.2.0.260823 Alpha · [更新日志](changelog.html)
+- © BXR · Version v2.2.1.260824 · [更新日志](changelog.html)
 - 背景音乐：Kevin MacLeod（[incompetech.com](https://incompetech.com)）· CC-BY 4.0
 - [萌ICP备20243331号](https://icp.gov.moe/?keyword=20243331)
 - 🧑‍💻 Made by BXR & [蓝色大肥鱼](https://www.deepseek.com) 🐟
