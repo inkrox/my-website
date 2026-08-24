@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="skin-default">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>更新日志 · BXR 的个人主页</title>
+<link rel="icon" href="me.jpg" type="image/jpeg">
+<meta property="og:title" content="更新日志 · BXR 的个人主页">
+<meta property="og:description" content="BXR 个人主页的版本更新记录。">
+<meta property="og:image" content="https://cralk.top/og-image.png">
+<script>
+  (function () {
+    var SKINS = ['default', 'cyberpunk', 'terminal', 'classical', 'starry'];
+    var skin = 'default';
+    try {
+      var m = location.search.match(/[?&]style=([\w-]+)/);
+      if (m && SKINS.indexOf(m[1]) !== -1) { skin = m[1]; }
+      else if (localStorage.getItem('bxr_style')) { skin = localStorage.getItem('bxr_style'); }
+    } catch (e) {}
+    if (SKINS.indexOf(skin) === -1) { skin = 'default'; }
+    document.documentElement.className = 'skin-' + skin;
+    for (var s = 0; s < SKINS.length; s++) {
+      var pre = document.createElement('link');
+      pre.rel = 'stylesheet';
+      pre.href = 'skins/skin-' + SKINS[s] + '.css';
+      document.head.appendChild(pre);
+    }
+  })();
+</script>
+<style>
+  :root {
+    --accent: #7c6cff;
+    --accent2: #22d3ee;
+    --accent3: #f472b6;
+    --ink: #eef1ff;
+    --ink-dim: #aab3d6;
+    --card: rgba(255, 255, 255, 0.06);
+    --card-border: rgba(255, 255, 255, 0.12);
+    --bg-solid: #0f1023;
+    --mono: "Cascadia Mono", Consolas, "JetBrains Mono", monospace;
+    --kai: "STKaiti", "KaiTi", "楷体", serif;
+  }
+  html.skin-cyberpunk { --accent: #00fff7; --accent2: #ff2bd6; --accent3: #ffe600; --bg-solid: #04050f; --ink: #d8fbff; --ink-dim: #79b8c2; --card: rgba(10, 14, 34, .82); --card-border: rgba(0, 255, 247, .28); }
+  html.skin-terminal { --accent: #33ff66; --accent2: #ffcc33; --accent3: #ffcc33; --bg-solid: #050805; --ink: #33ff66; --ink-dim: #1f9e4a; --card: rgba(5, 10, 5, .92); --card-border: #1f9e4a; }
+  html.skin-classical { --accent: #a63a2b; --accent2: #a8863d; --accent3: #b03a2e; --bg-solid: #f6f1e3; --ink: #33291f; --ink-dim: #6d5f4c; --card: rgba(255, 252, 242, .85); --card-border: rgba(51, 41, 31, .35); }
+  html.skin-starry { --accent: #7aa2ff; --accent2: #b48cff; --accent3: #ffe9a8; --bg-solid: #0a0d24; --ink: #eef2ff; --ink-dim: #a7b0d8; --card: rgba(255, 255, 255, .07); --card-border: rgba(255, 255, 255, .16); }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--kai), "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    color: var(--ink); min-height: 100vh; background: var(--bg-solid);
+    user-select: none; -webkit-user-select: none;
+  }
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--accent), var(--accent2));
+    border-radius: 999px; border: 2px solid transparent;
+  }
+  .skin-view { display: none; }
+  html.skin-default .skin-view[data-skin="default"] { display: block; }
+  html.skin-cyberpunk .skin-view[data-skin="cyberpunk"] { display: block; }
+  html.skin-terminal .skin-view[data-skin="terminal"] { display: block; }
+  html.skin-classical .skin-view[data-skin="classical"] { display: block; }
+  html.skin-starry .skin-view[data-skin="starry"] { display: block; }
+  header {
+    position: sticky; top: 0; z-index: 20;
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    padding: 12px 4vw; flex-wrap: wrap;
+    background: rgba(10, 12, 26, .62); backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--card-border);
+  }
+  .logo { font-weight: 700; letter-spacing: 1px; font-size: 15px; }
+  .logo span { color: var(--accent2); }
+  .chg-nav { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+  .chg-nav button {
+    font-family: inherit; font-size: 12.5px; padding: 6px 12px; border-radius: 999px;
+    border: 1px solid var(--card-border); background: var(--card); color: var(--ink-dim);
+    cursor: pointer; transition: .25s; line-height: 1;
+  }
+  .chg-nav button:hover { color: var(--ink); border-color: var(--accent); }
+  .chg-nav button.cur { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff; border-color: transparent; }
+  .chg-nav a {
+    color: var(--ink-dim); text-decoration: none; padding: 6px 14px;
+    border-radius: 999px; font-size: 13px; transition: .25s;
+  }
+  .chg-nav a:hover { color: var(--ink); background: var(--card); }
+  html.skin-terminal .chg-nav button, html.skin-terminal .chg-nav a { border-radius: 0; font-family: var(--mono); }
+  html.skin-cyberpunk .chg-nav button { border-radius: 0; }
+  html.skin-classical .chg-nav button { font-family: var(--kai); }
+  main { max-width: 800px; margin: 0 auto; padding: 40px 4vw 80px; }
+  h1 { font-size: clamp(26px, 4.5vw, 36px); font-weight: 800; letter-spacing: 2px; }
+  h1 .grad {
+    background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .sub { margin-top: 8px; color: var(--ink-dim); font-size: 14px; }
+  .timeline { margin-top: 34px; position: relative; padding-left: 26px; }
+  .timeline::before {
+    content: ""; position: absolute; left: 6px; top: 6px; bottom: 6px;
+    width: 2px; background: linear-gradient(180deg, var(--accent), var(--accent2), transparent);
+  }
+  .entry {
+    position: relative; margin-bottom: 26px;
+    background: var(--card); border: 1px solid var(--card-border); border-radius: 14px;
+    padding: 18px 22px; backdrop-filter: blur(6px);
+  }
+  .entry::before {
+    content: ""; position: absolute; left: -26px; top: 22px;
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--accent2); box-shadow: 0 0 12px var(--accent2);
+  }
+  .entry.cur::before { background: var(--accent3); box-shadow: 0 0 14px var(--accent3); }
+  .entry.cur { border-color: var(--accent); }
+  .ver { font-size: 17px; font-weight: 700; letter-spacing: 1px; }
+  .ver .tag {
+    display: inline-block; font-size: 11px; padding: 2px 10px; border-radius: 999px;
+    margin-left: 8px; vertical-align: 2px; letter-spacing: 1px;
+  }
+  .tag.alpha { background: rgba(244, 114, 182, .2); color: #f9a8d4; border: 1px solid rgba(244, 114, 182, .5); }
+  .tag.beta { background: rgba(34, 211, 238, .15); color: #67e8f9; border: 1px solid rgba(34, 211, 238, .4); }
+  .tag.plan { background: rgba(255, 255, 255, .08); color: var(--ink-dim); border: 1px solid var(--card-border); }
+  .date { margin-top: 4px; font-size: 12.5px; color: var(--ink-dim); }
+  ul { margin-top: 10px; list-style: none; }
+  ul li {
+    position: relative; padding-left: 18px; margin-top: 6px;
+    font-size: 14px; color: var(--ink); line-height: 1.8; opacity: .92;
+  }
+  ul li::before { content: "▸"; position: absolute; left: 0; color: var(--accent2); }
+  ul li b { color: var(--accent2); }
+  .skin-tag {
+    display: inline-block; font-size: 11px; padding: 1px 9px; border-radius: 999px;
+    margin-right: 6px; color: #fff; vertical-align: 1px;
+  }
+  .skin-tag.t-all { background: rgba(255, 255, 255, .28); }
+  .skin-tag.t-aurora { background: #7c6cff; }
+  .skin-tag.t-cyberpunk { background: #0e7490; }
+  .skin-tag.t-terminal { background: #15803d; }
+  .skin-tag.t-classical { background: #a63a2b; }
+  .skin-tag.t-starry { background: #4c5fd5; }
+  footer {
+    border-top: 1px solid var(--card-border); text-align: center;
+    padding: 20px 4vw 26px; color: var(--ink-dim); font-size: 12.5px; line-height: 2;
+  }
+  footer a { color: var(--accent2); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="skin-view" id="chgView" data-skin="default">
+<header>
+  <div class="logo">📜 更新日志 · <span>BXR</span> 的个人主页</div>
+  <nav class="chg-nav">
+    <button data-skin="default">✨ 极光</button>
+    <button data-skin="cyberpunk">🌃 赛博</button>
+    <button data-skin="terminal">💻 终端</button>
+    <button data-skin="classical">🏮 古风</button>
+    <button data-skin="starry">🌌 星空</button>
+    <a href="index.html">🏠 返回主页</a>
+  </nav>
+</header>
+<main>
+  <h1>版本<span class="grad">更新日志</span></h1>
+  <p class="sub">记录这个网站的每一次成长 · 版本格式 v主.次.修订.YYMMDD Alpha/Beta · 风格与主页同步记忆</p>
+
+  <div class="timeline">
+    <div class="entry cur">
+      <div class="ver">v2.2.0.260823 <span class="tag alpha">ALPHA</span></div>
+      <div class="date">2026-08-23 · 保密下载 + UI 升级</div>
+      <ul>
+        <li><span class="skin-tag t-all">全站</span><b>保密下载系统</b>：download.html 密码解密下载页（AES-256-GCM + PBKDF2 12 万次迭代），密文目录 download/，源码混淆防 F12</li>
+        <li><span class="skin-tag t-all">全站</span>导航滚动高亮（scrollspy）· 顶部滚动进度条 · 切肤 toast 提示 · 首访快捷键提示</li>
+        <li><span class="skin-tag t-all">全站</span>Hero 主按钮（各皮肤风格化 CTA）· 作品卡片技术标签 · 播放器上一首/下一首</li>
+        <li><span class="skin-tag t-terminal">终端</span>交互命令行：输入 help / ls / open / theme / about 等真实命令，上下键翻历史</li>
+        <li><span class="skin-tag t-all">全站</span>404 彩蛋：赛博故障抖动、终端打字、古风失印、星空流星</li>
+        <li><span class="skin-tag t-all">全站</span>移动端底部操作栏（≤640px 三键同排）· 下拉框按皮肤主题化并修复移动端点不开</li>
+        <li><span class="skin-tag t-starry">星空</span>修复射击游戏卡片过淡（缺失玻璃底）</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <div class="ver">v2.1.0.260821 <span class="tag alpha">ALPHA</span></div>
+      <div class="date">2026-08-21 · 五合一集成</div>
+      <ul>
+        <li><span class="skin-tag t-all">全站</span><b>5 套风格主页集成到 1 个页面</b>，切换即时生效、无需跳转；CSS/JS 按皮肤拆分懒加载（skins/）</li>
+        <li><span class="skin-tag t-all">全站</span><b>5 套 UI 全部恢复原版架构</b>（极光粒子光晕 / 赛博剪裁故障 / 终端开机窗口 / 古风竖排印章 / 星空流星玻璃）</li>
+        <li><span class="skin-tag t-classical">古风</span>樱花飘落背景、圆角化、方形印章、竖排题词恢复原版、纸色更新窗口与播放器</li>
+        <li><span class="skin-tag t-aurora">极光</span>北极光幕布（双色反向流动）、导航补「风格」</li>
+        <li><span class="skin-tag t-terminal">终端</span>导航栏、友链可点、命令随滚动敲字、[LOG] 面板</li>
+        <li><span class="skin-tag t-cyberpunk">赛博</span>像素拖尾 / 点击 / 双击特效、裁角面板</li>
+        <li><span class="skin-tag t-starry">星空</span>繁星流星、页脚黑色容器、星点特效</li>
+        <li><span class="skin-tag t-all">全站</span>切换换 BGM、访客城市、键盘 ←→ 切肤、双击特效、删除封面、?style= 记忆、更新日志页同步换肤</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <div class="ver">v2.0.0.260821 <span class="tag alpha">ALPHA</span></div>
+      <div class="date">2026-08-21 · 全面改版</div>
+      <ul>
+        <li>全新 <b>5 套风格主页</b>：极光科技 / 赛博朋克 / 命令行 / 古风 / 星空，一键切换并<b>记忆风格偏好</b></li>
+        <li>新增 <b>5 种风格加载动画</b>，访问小游戏前自动播放，可点击跳过</li>
+        <li>音乐播放器升级：<b>进度条拖拽、音量调节</b>、按风格配乐（Kevin MacLeod CC-BY）</li>
+        <li>恢复鼠标拖尾星光 + 点击绽放特效（各主题配色）</li>
+        <li>接入<b>不蒜子</b>真实访客统计（UV/PV），替代本地假计数</li>
+        <li>新增<b>友情链接</b>区（GitHub / 知乎 / 洛谷 / 邮箱防爬打码）</li>
+        <li>新增 <b>🎯 射击游戏</b>入口（shoot.cralk.top）并置顶 + NEW 徽标</li>
+        <li>15 个作品新增<b>风格化封面缩略图</b></li>
+        <li>新增 <b>404 页面</b>、<b>sitemap.xml</b>、<b>Open Graph 分享卡片</b>、robots 放行搜索引擎</li>
+        <li>页脚显示 <b>GitHub 仓库实时数据</b>（star / 最近更新）</li>
+        <li>学校全称更新为<b>哈尔滨市第四十九中学校</b>，年级改为九年级（初四）</li>
+        <li>删除数学党、恶搞（大便）项目；文件夹统一 kebab-case 英文命名</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <div class="ver">v1.16.4.250128 <span class="tag beta">BETA</span></div>
+      <div class="date">2025-01-28 · 旧版时代</div>
+      <ul>
+        <li>旧版个人介绍页：樱花飘落、鼠标星星拖尾、点击爱心特效</li>
+        <li>小游戏合集：代码雨 / 烟花 / 流星雨 / 时钟系列 / 航天馆 / QA 问答等</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <div class="ver">v2.3.0.xxxxxx <span class="tag plan">计划中</span></div>
+      <div class="date">待定</div>
+      <ul>
+        <li>giscus 评论区（访客用 GitHub 账号留言）</li>
+        <li>小游戏搜索 / 筛选框</li>
+        <li>PWA：添加到手机桌面、离线访问</li>
+        <li>作品详情页 / 截图展示</li>
+      </ul>
+    </div>
+  </div>
+</main>
+<footer>
+  <div>© <span id="year"></span> BXR · Version v2.2.0.260823 Alpha</div>
+  <div><a href="https://icp.gov.moe/?keyword=20243331" target="_blank" rel="noopener">萌ICP备20243331号</a> · 🧑‍💻 Made by BXR &amp; <a href="https://www.deepseek.com" target="_blank" rel="noopener">蓝色大肥鱼</a> 🐟</div>
+</footer>
+</div>
+<script>
+  (function () {
+    var SKIN_LIST = ['default', 'cyberpunk', 'terminal', 'classical', 'starry'];
+    var currentSkin = document.documentElement.className.replace('skin-', '');
+    var container = document.getElementById('chgView');
+    var loadedCss = { default: true, cyberpunk: true, terminal: true, classical: true, starry: true };
+
+    function ensureSkinAssets(skin) {
+      if (loadedCss[skin]) { return; }
+      var link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = 'skins/skin-' + skin + '.css';
+      link.onerror = function () {
+        var l2 = document.createElement('link');
+        l2.rel = 'stylesheet';
+        l2.href = 'skins/skin-' + skin + '.css?retry=1';
+        document.head.appendChild(l2);
+      };
+      document.head.appendChild(link);
+      loadedCss[skin] = true;
+    }
+
+    function applySkin(skin) {
+      if (SKIN_LIST.indexOf(skin) === -1) { return; }
+      currentSkin = skin;
+      document.documentElement.className = 'skin-' + skin;
+      if (container) { container.setAttribute('data-skin', skin); }
+      try { localStorage.setItem('bxr_style', skin); } catch (e) {}
+      ensureSkinAssets(skin);
+      var btns = document.querySelectorAll('.chg-nav button[data-skin]');
+      for (var i = 0; i < btns.length; i++) {
+        btns[i].classList.toggle('cur', btns[i].getAttribute('data-skin') === skin);
+      }
+    }
+
+    var btns = document.querySelectorAll('.chg-nav button[data-skin]');
+    for (var i = 0; i < btns.length; i++) {
+      btns[i].addEventListener('click', function () {
+        applySkin(this.getAttribute('data-skin'));
+      });
+    }
+    applySkin(currentSkin);
+
+    var y = document.getElementById('year');
+    if (y) { y.textContent = new Date().getFullYear(); }
+  })();
+</script>
+</body>
+</html>

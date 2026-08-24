@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# 保密下载页与密文目录：不让搜索引擎收录
+Disallow: /download.html
+Disallow: /download/
+
+Sitemap: https://cralk.top/sitemap.xml

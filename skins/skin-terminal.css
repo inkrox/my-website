@@ -1,0 +1,132 @@
+/* ============ 皮肤 3/5 · 命令行（scoped） ============ */
+html.skin-terminal{
+  --green: #33ff66;
+  --green-dim: #1f9e4a;
+  --amber: #ffcc33;
+  --red: #ff5555;
+  --bg: #050805;
+  --font: "Cascadia Mono", Consolas, "Courier New", "Microsoft YaHei", monospace;
+}html.skin-terminal body{
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--green);
+  font-size: 15px;
+  line-height: 1.75;
+  overflow-x: hidden;
+}html.skin-terminal .skin-view[data-skin="terminal"] ::selection{ background: var(--green); color: #000; }html.skin-terminal .skin-view[data-skin="terminal"] ::-webkit-scrollbar{ width: 10px; background: #000; }html.skin-terminal .skin-view[data-skin="terminal"] ::-webkit-scrollbar-thumb{ background: var(--green-dim); }html.skin-terminal .skin-view[data-skin="terminal"] /* CRT 效果 */
+.crt::before{
+  content: ""; position: fixed; inset: 0; z-index: 4; pointer-events: none;
+  background: repeating-linear-gradient(0deg, rgba(0,0,0,.28) 0 2px, transparent 2px 4px);
+}html.skin-terminal .skin-view[data-skin="terminal"] .crt::after{
+  content: ""; position: fixed; inset: 0; z-index: 4; pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 62%, rgba(0, 30, 5, .55) 100%);
+}html.skin-terminal .skin-view[data-skin="terminal"] .terminal{
+  max-width: 980px; margin: 0 auto; padding: 26px 4vw 60px;
+  min-height: 100vh;
+}html.skin-terminal .skin-view[data-skin="terminal"] /* 标题栏 */
+.term-bar{
+  position: sticky; top: 0; z-index: 10;
+  display: flex; align-items: center; gap: 8px;
+  background: #0a140a; border: 1px solid var(--green-dim);
+  border-radius: 8px 8px 0 0; padding: 8px 14px;
+  font-size: 13px; color: var(--green-dim);
+  margin-top: 10px;
+}html.skin-terminal .skin-view[data-skin="terminal"] .term-bar .dot{ width: 11px; height: 11px; border-radius: 50%; display: inline-block; }html.skin-terminal .skin-view[data-skin="terminal"] .dot.r{ background: #ff5f57; }html.skin-terminal .skin-view[data-skin="terminal"] .dot.y{ background: #febc2e; }html.skin-terminal .skin-view[data-skin="terminal"] .dot.g{ background: #28c840; }html.skin-terminal .skin-view[data-skin="terminal"] .term-bar .title{ margin: 0 auto; letter-spacing: 1px; }html.skin-terminal .skin-view[data-skin="terminal"] .term-body{
+  border: 1px solid var(--green-dim); border-top: none;
+  border-radius: 0 0 8px 8px;
+  background: rgba(5, 10, 5, .92);
+  padding: 20px 22px 26px;
+  box-shadow: 0 0 40px rgba(51, 255, 102, .08), inset 0 0 60px rgba(51, 255, 102, .03);
+}html.skin-terminal .skin-view[data-skin="terminal"] /* 打字机 */
+.line{ white-space: pre-wrap; word-break: break-word; }html.skin-terminal .skin-view[data-skin="terminal"] .cursor{
+  display: inline-block; width: 9px; height: 17px;
+  background: var(--green); vertical-align: -3px;
+  animation: blink-terminal 1s steps(1) infinite;
+}@keyframes blink-terminal{ 50% { opacity: 0; } }html.skin-terminal .skin-view[data-skin="terminal"] .prompt{ color: var(--green); }html.skin-terminal .skin-view[data-skin="terminal"] .prompt .user{ color: var(--amber); }html.skin-terminal .skin-view[data-skin="terminal"] .prompt .path{ color: #6fdc9c; }html.skin-terminal .skin-view[data-skin="terminal"] .cmd{ color: #fff; }html.skin-terminal .skin-view[data-skin="terminal"] /* ASCII 艺术 */
+pre.ascii{
+  color: var(--green); font-size: 12px; line-height: 1.25;
+  text-shadow: 0 0 8px rgba(51, 255, 102, .65);
+  overflow-x: auto; margin: 10px 0 4px;
+}html.skin-terminal .skin-view[data-skin="terminal"] /* 分隔线 */
+.divider{ color: var(--green-dim); text-align: center; letter-spacing: 3px; margin: 8px 0; user-select: none; }html.skin-terminal .skin-view[data-skin="terminal"] /* 信息表 */
+table.info{ width: 100%; border-collapse: collapse; margin: 6px 0; font-size: 14.5px; }html.skin-terminal .skin-view[data-skin="terminal"] table.info td{ padding: 5px 10px; border-bottom: 1px dashed rgba(51, 255, 102, .18); }html.skin-terminal .skin-view[data-skin="terminal"] table.info td:first-child{ color: var(--amber); width: 130px; }html.skin-terminal .skin-view[data-skin="terminal"] table.info td.k{ color: var(--green-dim); }html.skin-terminal .skin-view[data-skin="terminal"] table.info td:first-child::before{ content: "  "; color: var(--green); }html.skin-terminal .skin-view[data-skin="terminal"] /* 作品列表 */
+.works{ margin: 6px 0; }html.skin-terminal .skin-view[data-skin="terminal"] .wline{
+  display: flex; align-items: center; gap: 10px;
+  padding: 6px 10px; text-decoration: none; color: var(--green);
+  font-size: 14.5px; transition: .15s;
+}html.skin-terminal .skin-view[data-skin="terminal"] .wline:hover{
+  background: var(--green); color: #000;
+  box-shadow: 0 0 16px rgba(51, 255, 102, .5);
+}html.skin-terminal .skin-view[data-skin="terminal"] .wline .idx{ color: var(--green-dim); min-width: 52px; }html.skin-terminal .skin-view[data-skin="terminal"] .wline:hover .idx{ color: #064a1e; }html.skin-terminal .skin-view[data-skin="terminal"] .wline .nm{ flex: 1; }html.skin-terminal .skin-view[data-skin="terminal"] .wline .ds{ color: var(--green-dim); font-size: 13px; }html.skin-terminal .skin-view[data-skin="terminal"] .wline:hover .ds{ color: #064a1e; }html.skin-terminal .skin-view[data-skin="terminal"] .wline .tag-new{ color: var(--amber); border: 1px solid var(--amber); font-size: 11px; padding: 0 5px; margin-left: 8px; }html.skin-terminal .skin-view[data-skin="terminal"] /* 主题切换 */
+.themes{ margin-top: 18px; border-top: 1px dashed var(--green-dim); padding-top: 14px; }html.skin-terminal .skin-view[data-skin="terminal"] .themes .label{ color: var(--green-dim); font-size: 13px; }html.skin-terminal .skin-view[data-skin="terminal"] .themes button{
+  display: inline-block; margin: 4px 6px 4px 0; padding: 5px 12px;
+  border: 1px solid var(--green-dim); color: var(--green);
+  background: transparent; font-family: var(--font); font-size: 13.5px;
+  text-decoration: none; cursor: pointer; transition: .15s;
+}html.skin-terminal .skin-view[data-skin="terminal"] .themes button:hover{ background: var(--green); color: #000; }html.skin-terminal .skin-view[data-skin="terminal"] .themes button.cur{ background: var(--green); color: #000; font-weight: 700; }html.skin-terminal .skin-view[data-skin="terminal"] .term-nav{
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px;
+  padding: 8px 2px 12px; margin-bottom: 12px; font-size: 13px;
+  border-bottom: 1px dashed var(--green-dim);
+}
+html.skin-terminal .skin-view[data-skin="terminal"] .term-nav .label { color: var(--green-dim); margin-right: 6px; }
+html.skin-terminal .skin-view[data-skin="terminal"] .term-nav a{ color: var(--green); text-decoration: none; border: 1px solid var(--green-dim); padding: 2px 10px; transition: .15s; }
+html.skin-terminal .skin-view[data-skin="terminal"] .term-nav a:hover{ background: var(--green); color: #000; }
+html.skin-terminal .skin-view[data-skin="terminal"] #term-about, html.skin-terminal .skin-view[data-skin="terminal"] #term-works, html.skin-terminal .skin-view[data-skin="terminal"] #term-links, html.skin-terminal .skin-view[data-skin="terminal"] #term-themes{ scroll-margin-top: 80px; }html.skin-terminal .skin-view[data-skin="terminal"] /* 页脚 */
+footer{ text-align: center; color: var(--green-dim); font-size: 13px; padding: 10px 0 34px; }html.skin-terminal .skin-view[data-skin="terminal"] footer a{ color: var(--green); }html.skin-terminal .skin-view[data-skin="terminal"] footer a:hover{ background: var(--green); color: #000; text-decoration: none; }@media (max-width: 640px){html.skin-terminal .skin-view[data-skin="terminal"] .term-body{ padding: 14px 12px 20px; }html.skin-terminal .skin-view[data-skin="terminal"] pre.ascii{ font-size: 8.5px; }html.skin-terminal .skin-view[data-skin="terminal"] .wline .ds{ display: none; }}
+
+/* ============ 命令先出，输出后现 ============ */
+html.skin-terminal .skin-view[data-skin="terminal"] .cmd-out{
+  opacity: 0; transform: translateY(6px);
+  transition: opacity .4s ease .05s, transform .4s ease .05s;
+}
+html.skin-terminal .skin-view[data-skin="terminal"] .cmd-out.show{
+  opacity: 1; transform: none;
+}
+/* ============ 顶部导航：先敲命令，再显示链接 ============ */
+html.skin-terminal .skin-view[data-skin="terminal"] .term-nav .nav-links{
+  display: flex; gap: 6px; flex-wrap: wrap;
+  opacity: 0; transform: translateY(4px);
+  transition: opacity .4s ease, transform .4s ease;
+}
+html.skin-terminal .skin-view[data-skin="terminal"] .term-nav .nav-links.show{
+  opacity: 1; transform: none;
+}
+/* ============ 块区内分布显示（分隔线/命令行/主题按钮依次上浮） ============ */
+html.skin-terminal .skin-view[data-skin="terminal"] .tblk.reveal.in > .divider,
+html.skin-terminal .skin-view[data-skin="terminal"] .tblk.reveal.in > .line{
+  animation: heroUp .45s ease backwards;
+}
+html.skin-terminal .skin-view[data-skin="terminal"] .tblk.reveal.in > .divider{ animation-delay: .05s; }
+html.skin-terminal .skin-view[data-skin="terminal"] .tblk.reveal.in > .line{ animation-delay: .12s; }
+html.skin-terminal .skin-view[data-skin="terminal"] .tblk.reveal.in .themes button{
+  animation: heroUp .4s ease backwards;
+}
+html.skin-terminal .skin-view[data-skin="terminal"] .tblk.reveal.in .themes button:nth-child(1){ animation-delay: .05s; }
+html.skin-terminal .skin-view[data-skin="terminal"] .tblk.reveal.in .themes button:nth-child(2){ animation-delay: .16s; }
+html.skin-terminal .skin-view[data-skin="terminal"] .tblk.reveal.in .themes button:nth-child(3){ animation-delay: .27s; }
+html.skin-terminal .skin-view[data-skin="terminal"] .tblk.reveal.in .themes button:nth-child(4){ animation-delay: .38s; }
+html.skin-terminal .skin-view[data-skin="terminal"] .tblk.reveal.in .themes button:nth-child(5){ animation-delay: .49s; }
+/* ============ UI 升级：CTA / 输入行 / 标签 / 导航高亮 ============ */
+html.skin-terminal .skin-view[data-skin="terminal"] .cta-line{ margin-top: 12px; }
+html.skin-terminal .skin-view[data-skin="terminal"] .cta-line .cta{
+  display: inline-block; padding: 3px 12px; margin-left: 4px;
+  border: 1px solid var(--green-dim); color: var(--green);
+  text-decoration: none; font-size: 14px; transition: .15s;
+}
+html.skin-terminal .skin-view[data-skin="terminal"] .cta-line .cta:hover{ background: var(--green); color: #000; box-shadow: 0 0 12px rgba(51, 255, 102, .5); }
+html.skin-terminal .skin-view[data-skin="terminal"] .cta-line .cta.ghost{ color: var(--green-dim); }
+html.skin-terminal .skin-view[data-skin="terminal"] .cta-line .cta.ghost:hover{ background: var(--green-dim); color: #000; }
+html.skin-terminal .skin-view[data-skin="terminal"] .term-input{
+  display: flex; align-items: center; gap: 6px;
+  margin-top: 16px; padding-top: 12px;
+  border-top: 1px dashed var(--green-dim);
+}
+html.skin-terminal .skin-view[data-skin="terminal"] .term-input input{
+  flex: 1; min-width: 0; background: transparent; border: none; outline: none;
+  color: var(--green); font-family: var(--font); font-size: 15px; caret-color: var(--green);
+}
+html.skin-terminal .skin-view[data-skin="terminal"] .term-input input::placeholder{ color: var(--green-dim); }
+html.skin-terminal .skin-view[data-skin="terminal"] .wline .ts{ color: var(--green-dim); font-size: 12px; min-width: 86px; }
+html.skin-terminal .skin-view[data-skin="terminal"] .wline:hover .ts{ color: #064a1e; }
+html.skin-terminal .skin-view[data-skin="terminal"] .term-nav a.active{ background: var(--green); color: #000; }
+html.skin-terminal .skin-view[data-skin="terminal"] .term-out{ margin: 2px 0; }

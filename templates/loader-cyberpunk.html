@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="refresh" content="4;url=../index.html?style=cyberpunk">
+<title>LOADING // CYBERPUNK</title>
+<link rel="icon" href="../me.jpg" type="image/jpeg">
+<style>
+  :root {
+    --cy: #00fff7;
+    --mg: #ff2bd6;
+    --yl: #ffe600;
+    --bg: #04050f;
+    --panel: rgba(10, 14, 34, .85);
+    --line: rgba(0, 255, 247, .28);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    min-height: 100vh; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--bg); color: #d8fbff;
+    font-family: "Cascadia Mono", Consolas, "Courier New", "Microsoft YaHei", monospace;
+  }
+  /* 赛博网格 + 扫描线 */
+  .grid {
+    position: fixed; inset: 0; z-index: 0;
+    background:
+      linear-gradient(90deg, rgba(0, 255, 247, .18) 1px, transparent 1px) 0 0 / 56px 56px,
+      linear-gradient(rgba(0, 255, 247, .1) 1px, transparent 1px) 0 0 / 56px 56px;
+    -webkit-mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%);
+            mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%);
+    animation: gridMove 5s linear infinite;
+  }
+  @keyframes gridMove { to { background-position: 56px 56px, 0 56px; } }
+  .scanlines {
+    position: fixed; inset: 0; z-index: 5; pointer-events: none;
+    background: repeating-linear-gradient(0deg, rgba(0, 0, 0, .25) 0 1px, transparent 1px 3px);
+  }
+  .glow {
+    position: fixed; width: 380px; height: 380px; border-radius: 50%;
+    filter: blur(90px); opacity: .35; z-index: 0; pointer-events: none;
+  }
+  .glow-a { background: var(--mg); top: -100px; right: -80px; }
+  .glow-b { background: var(--cy); bottom: -110px; left: -90px; }
+
+  .loader { position: relative; z-index: 2; width: min(460px, 88vw); text-align: center; }
+  .loader .avatar {
+    width: 88px; height: 88px; border-radius: 8px; object-fit: cover; object-position: center 30%;
+    border: 2px solid var(--cy);
+    box-shadow: 0 0 22px rgba(0, 255, 247, .6);
+    filter: saturate(1.15) contrast(1.1);
+  }
+  .glitch {
+    margin-top: 20px; font-size: 34px; letter-spacing: 8px; color: #fff;
+    text-shadow: 2px 0 var(--mg), -2px 0 var(--cy);
+    animation: glitchShake 2.2s steps(2, jump-none) infinite;
+  }
+  @keyframes glitchShake {
+    0%, 88%, 100% { transform: none; }
+    90% { transform: translate(-3px, 1px); }
+    94% { transform: translate(3px, -1px); }
+    98% { transform: translate(-2px, 0); }
+  }
+  .loader .sub { margin-top: 10px; color: var(--cy); letter-spacing: 3px; font-size: 13.5px; text-shadow: 0 0 10px rgba(0, 255, 247, .7); }
+  .loader .sub .blink { color: var(--yl); animation: blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .track {
+    margin-top: 26px; height: 14px; border: 1px solid var(--cy);
+    background: rgba(0, 255, 247, .06);
+    clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+  }
+  .bar {
+    height: 100%; width: 0;
+    background: repeating-linear-gradient(90deg, var(--cy) 0 10px, #00bfb8 10px 20px);
+    box-shadow: 0 0 14px var(--cy);
+    transition: width .1s linear;
+  }
+  .status {
+    margin-top: 12px; display: flex; justify-content: space-between;
+    font-size: 12.5px; letter-spacing: 2px; color: #79b8c2;
+  }
+  .status b { color: var(--cy); }
+  .skip {
+    margin-top: 22px; padding: 10px 34px; cursor: pointer;
+    font-family: inherit; font-size: 13.5px; letter-spacing: 2px;
+    color: var(--cy); background: transparent;
+    border: 1px solid var(--cy);
+    clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+    transition: .25s;
+  }
+  .skip:hover { background: var(--cy); color: #000; box-shadow: 0 0 22px var(--cy); }
+</style>
+</head>
+<body>
+<div class="grid"></div>
+<div class="glow glow-a"></div>
+<div class="glow glow-b"></div>
+<div class="scanlines"></div>
+
+<div class="loader">
+  <img class="avatar" src="../me.jpg" alt="BXR">
+  <div class="glitch">LOADING</div>
+  <div class="sub">BXR_MAIN.EXE // 正在启动<span class="blink">_</span></div>
+  <div class="track"><div class="bar" id="bar"></div></div>
+  <div class="status"><span>SYSTEM BOOT…</span><span><b id="percent">0%</b></span></div>
+  <button class="skip" id="skip">[ SKIP ] 立即进入</button>
+</div>
+<script>
+(function () {
+  'use strict';
+  var TARGET = '../index.html?style=cyberpunk';
+  var DURATION = 1200;
+  /* 支持 ?to= 参数：访问小游戏前播放加载动画后跳转 */
+  var toMatch = location.search.match(/[?&]to=([^&]+)/);
+  if (toMatch) {
+    var toTarget = decodeURIComponent(toMatch[1]);
+    if (!/^(javascript|data):/i.test(toTarget)) {
+      TARGET = toTarget;
+    }
+  }
+  var bar = document.getElementById('bar');
+  var percent = document.getElementById('percent');
+  var startedAt = Date.now();
+  var done = false;
+
+  function tick() {
+    var progress = Math.min((Date.now() - startedAt) / DURATION, 1);
+    var value = Math.round(progress * 100);
+    bar.style.width = value + '%';
+    percent.textContent = value + '%';
+    if (progress < 1) {
+      requestAnimationFrame(tick);
+    } else if (!done) {
+      done = true;
+      setTimeout(function () { window.location.replace(TARGET); }, 200);
+    }
+  }
+  requestAnimationFrame(tick);
+
+  document.getElementById('skip').addEventListener('click', function () {
+    window.location.replace(TARGET);
+  });
+})();
+</script>
+</body>
+</html>

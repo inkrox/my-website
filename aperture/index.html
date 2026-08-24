@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>光圈</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: #000;
+        }
+        canvas {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<canvas id="aperture-canvas"></canvas>
+<script>
+(function () {
+    'use strict';
+
+    /* 彩虹内旋轮线（hypotrochoid）光圈特效 */
+
+    var canvas = document.getElementById('aperture-canvas');
+    var ctx = canvas.getContext('2d');
+
+    var width = 0;
+    var height = 0;
+    var cos = Math.cos;
+    var sin = Math.sin;
+
+    var hue = 0;            // 色相
+    var theta = 0;          // 角度
+    var size = 9;           // 当前半径
+    var shrinking = false;  // 半径是否在收缩
+    var mouseX = 0, mouseY = 0;   // 鼠标当前位置
+    var originX = 0, originY = 0; // 曲线起始原点
+    var prevX = 0, prevY = 0;     // 上一段线段的坐标
+    var radiusOuter = 1;    // 外圆半径 R（由鼠标 X 位置决定）
+    var radiusInner = 1;    // 内圆半径 r（由鼠标 Y 位置决定）
+    var fullCircle = 2 * Math.PI;
+
+    function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+        // 初始化画布为黑色
+        ctx.fillStyle = '#000000';
+        ctx.fillRect(0, 0, width, height);
+        ctx.globalCompositeOperation = 'lighter';
+        ctx.lineWidth = 0.2;
+        ctx.lineCap = 'round';
+    }
+
+    var drawTimer = null;
+
+    function startDrawing() {
+        if (drawTimer) { clearInterval(drawTimer); }
+        drawTimer = setInterval(renderFrame, 16);
+    }
+
+    function renderFrame() {
+        ctx.save();
+        ctx.globalCompositeOperation = 'source-over';
+        // 半透明黑覆盖，产生拖尾渐隐效果
+        ctx.fillStyle = 'rgba(0,0,0,0.02)';
+        ctx.fillRect(0, 0, width, height);
+        ctx.restore();
+
+        var steps = 25;
+        while (steps--) {
+            ctx.beginPath();
+            if (size > 450 || shrinking) { // 半径达到上限后开始收缩
+                if (!shrinking) { shrinking = true; }
+                if (size < 0.1) { shrinking = false; } // 收缩到下限后重新扩张
+                theta -= fullCircle;
+                size -= 0.1;
+            }
+            if (!shrinking) {
+                theta += fullCircle;
+                size += 0.1;
+            }
+
+            var angle = (radiusOuter / radiusInner - 1) * theta;
+            var x = (radiusOuter - radiusInner) * cos(theta) + size * cos(angle) +
+                    (originX + (mouseX - originX) * (steps / 25)) + (radiusInner - radiusOuter);
+            var y = (radiusOuter - radiusInner) * sin(theta) - size * sin(angle) +
+                    (originY + (mouseY - originY) * (steps / 25));
+
+            if (prevX !== 0 || prevY !== 0) {
+                ctx.moveTo(prevX, prevY);
+                ctx.lineTo(x, y);
+            }
+            ctx.strokeStyle = 'hsla(' + (hue % 360) + ',100%,50%,0.75)';
+            ctx.stroke();
+            prevX = x;
+            prevY = y;
+        }
+        hue -= 0.5;
+        originX = mouseX;
+        originY = mouseY;
+    }
+
+    function onMouseMove(event) {
+        var pageX = event.pageX || event.clientX;
+        var pageY = event.pageY || event.clientY;
+        mouseX = pageX;
+        mouseY = pageY;
+        prevX = 0;
+        prevY = 0;
+        originX = pageX;
+        originY = pageY;
+        radiusOuter = Math.floor(pageX / width * 999) / 999;
+        radiusInner = Math.floor(pageY / height * 999) / 999;
+        hue = Math.floor(pageX / height * 360);
+        size = 9;
+        startDrawing();
+    }
+
+    function onKeyDown() {
+        prevX = 0;
+        prevY = 0;
+        radiusOuter += 0.05;
+    }
+
+    window.addEventListener('resize', resize);
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('keydown', onKeyDown);
+
+    resize();
+    // 页面载入后自动开始绘制
+    onMouseMove({ pageX: 300, pageY: 290 });
+})();
+</script>
+</body>
+</html>

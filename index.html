@@ -1,0 +1,1506 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="skin-default">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BXR · 个人主页</title>
+<link rel="icon" href="me.jpg" type="image/jpeg">
+<meta name="description" content="BXR 的个人主页 —— 14 岁九年级少年，来自哈尔滨，热爱编程与小提琴。五套风格一键切换。">
+<meta property="og:title" content="BXR · 个人主页">
+<meta property="og:description" content="14 岁九年级少年 · 哈尔滨 · Python / C++ / OIer · 小游戏合集">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://cralk.top/index.html">
+<meta property="og:image" content="https://cralk.top/og-image.png">
+<meta name="twitter:card" content="summary">
+<script>
+/* 风格记忆：?style= 参数优先，其次 localStorage；尽早应用避免闪烁 */
+(function () {
+  var SKINS = ['default', 'cyberpunk', 'terminal', 'classical', 'starry'];
+  var skin = null;
+  var m = location.search.match(/[?&]style=([a-z]+)/);
+  if (m && SKINS.indexOf(m[1]) !== -1) { skin = m[1]; }
+  if (!skin) { try { skin = localStorage.getItem('bxr_style'); } catch (e) {} }
+  if (SKINS.indexOf(skin) === -1) { skin = 'default'; }
+  document.documentElement.className = 'skin-' + skin;
+  /* 预加载全部 5 套皮肤的 CSS（切换即时换肤，不再等网络） */
+  for (var s = 0; s < SKINS.length; s++) {
+    var preCss = document.createElement('link');
+    preCss.rel = 'stylesheet';
+    preCss.href = 'skins/skin-' + SKINS[s] + '.css';
+    document.head.appendChild(preCss);
+  }
+})();
+</script>
+<style>
+/* ============ 全局变量（默认=极光） ============ */
+:root {
+  --font: "Segoe UI", "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", sans-serif;
+  --mono: "Cascadia Mono", Consolas, "Courier New", "Microsoft YaHei", monospace;
+  --kai: "STKaiti", "KaiTi", "楷体", "SimSun", serif;
+  --accent: #7c6cff; --accent2: #22d3ee; --accent3: #f472b6;
+  --bg-solid: #0f1023; --ink: #eef1ff; --ink-dim: #aab3d6;
+}
+html.skin-cyberpunk { --accent: #00fff7; --accent2: #ff2bd6; --accent3: #ffe600; --bg-solid: #04050f; --ink: #d8fbff; --ink-dim: #79b8c2; --card: rgba(10, 14, 34, .82); --card-border: rgba(0, 255, 247, .28); }
+html.skin-terminal { --accent: #33ff66; --accent2: #ffcc33; --accent3: #ffcc33; --bg-solid: #050805; --ink: #33ff66; --ink-dim: #1f9e4a; --card: rgba(5, 10, 5, .92); --card-border: #1f9e4a; }
+html.skin-classical { --accent: #a63a2b; --accent2: #a8863d; --accent3: #b03a2e; --bg-solid: #f6f1e3; --ink: #33291f; --ink-dim: #6d5f4c; --card: rgba(255, 252, 242, .85); --card-border: rgba(51, 41, 31, .35); }
+html.skin-starry { --accent: #7aa2ff; --accent2: #b48cff; --accent3: #ffe9a8; --bg-solid: #0a0d24; --ink: #eef2ff; --ink-dim: #a7b0d8; --card: rgba(255, 255, 255, .07); --card-border: rgba(255, 255, 255, .16); }
+/* ============ 全局基础 ============ */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { min-height: 100vh; overflow-x: hidden; transition: background .5s, color .5s; user-select: none; -webkit-user-select: none; background: #0f1023; color: #eef1ff; font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", sans-serif; }
+::selection { background: var(--accent); color: var(--bg-solid); }
+html { scrollbar-width: thin; scrollbar-color: var(--accent) rgba(255, 255, 255, .06); }
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: rgba(255, 255, 255, .05); border-radius: 999px; margin: 6px 0; }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--accent), var(--accent2) 55%, var(--accent3));
+  border-radius: 999px; border: 2px solid transparent; background-clip: padding-box;
+  transition: filter .2s, box-shadow .2s;
+}
+::-webkit-scrollbar-thumb:hover {
+  filter: brightness(1.25);
+  box-shadow: 0 0 10px var(--accent);
+}
+html { scrollbar-width: thin; scrollbar-color: var(--accent) rgba(255, 255, 255, .06); }
+/* 赛博：霓虹双色 + 裁角 */
+html.skin-cyberpunk ::-webkit-scrollbar { width: 10px; }
+html.skin-cyberpunk ::-webkit-scrollbar-track { border-radius: 0; background: repeating-linear-gradient(180deg, rgba(0, 255, 247, .07) 0 1px, transparent 1px 4px); }
+html.skin-cyberpunk ::-webkit-scrollbar-thumb { border-radius: 3px; background: linear-gradient(180deg, #00fff7, #ff2bd6); border: 2px solid rgba(4, 5, 15, .85); }
+html.skin-cyberpunk ::-webkit-scrollbar-thumb:hover { box-shadow: 0 0 12px rgba(0, 255, 247, .9); }
+html.skin-cyberpunk { scrollbar-color: #00fff7 rgba(4, 5, 15, .5); }
+/* 终端：方块荧光绿 */
+html.skin-terminal ::-webkit-scrollbar { width: 10px; }
+html.skin-terminal ::-webkit-scrollbar-track { border-radius: 0; background: rgba(51, 255, 102, .07); }
+html.skin-terminal ::-webkit-scrollbar-thumb { border-radius: 2px; background: #33ff66; border: 2px solid #050805; }
+html.skin-terminal ::-webkit-scrollbar-thumb:hover { background: #ffcc33; box-shadow: 0 0 10px rgba(51, 255, 102, .8); }
+html.skin-terminal { scrollbar-color: #33ff66 rgba(5, 8, 5, .5); }
+/* 古风：朱砂→鎏金 */
+html.skin-classical ::-webkit-scrollbar { width: 10px; }
+html.skin-classical ::-webkit-scrollbar-track { background: rgba(166, 58, 43, .07); }
+html.skin-classical ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #a63a2b, #a8863d); border: 2px solid rgba(246, 241, 227, .9); }
+html.skin-classical ::-webkit-scrollbar-thumb:hover { box-shadow: 0 0 12px rgba(166, 58, 43, .7); }
+html.skin-classical { scrollbar-color: #a63a2b rgba(246, 241, 227, .5); }
+/* 星空：星蓝→星紫 + 内发光 */
+html.skin-starry ::-webkit-scrollbar { width: 10px; }
+html.skin-starry ::-webkit-scrollbar-track { background: rgba(122, 162, 255, .07); }
+html.skin-starry ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #7aa2ff, #b48cff); border: 2px solid rgba(10, 13, 36, .8); box-shadow: inset 0 0 6px rgba(255, 255, 255, .25); }
+html.skin-starry ::-webkit-scrollbar-thumb:hover { box-shadow: 0 0 12px rgba(122, 162, 255, .9); }
+html.skin-starry { scrollbar-color: #7aa2ff rgba(10, 13, 36, .5); }
+/* ============ 皮肤容器显示切换 ============ */
+.skin-view { display: none; }
+html.skin-default .skin-view[data-skin="default"] { display: block; }
+html.skin-cyberpunk .skin-view[data-skin="cyberpunk"] { display: block; }
+html.skin-terminal .skin-view[data-skin="terminal"] { display: block; }
+html.skin-classical .skin-view[data-skin="classical"] { display: block; }
+html.skin-starry .skin-view[data-skin="starry"] { display: block; }
+/* ============ 入场动画（极光/星空） ============ */
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity .45s, transform .45s; }
+.reveal.in { opacity: 1; transform: none; }
+.skin-view .hero.reveal.in > * { animation: heroUp .55s ease backwards; }
+.skin-view .hero.reveal.in > *:nth-child(1) { animation-delay: .08s; }
+.skin-view .hero.reveal.in > *:nth-child(2) { animation-delay: .22s; }
+.skin-view .hero.reveal.in > *:nth-child(3) { animation-delay: .36s; }
+.skin-view .hero.reveal.in > *:nth-child(4) { animation-delay: .5s; }
+.skin-view .hero.reveal.in > *:nth-child(5) { animation-delay: .64s; }
+@keyframes heroUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+.skin-view footer.reveal.in > * { animation: heroUp .55s ease backwards; }
+.skin-view footer.reveal.in > *:nth-child(1) { animation-delay: .05s; }
+.skin-view footer.reveal.in > *:nth-child(2) { animation-delay: .2s; }
+.skin-view footer.reveal.in > *:nth-child(3) { animation-delay: .35s; }
+.skin-view .hero.reveal.in > *:nth-child(6) { animation-delay: .78s; }
+/* ============ Hero CTA 按钮 ============ */
+.skin-view .hero .cta-row { margin-top: 26px; display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+.skin-view .hero .cta {
+  display: inline-block; padding: 12px 30px; border-radius: 999px;
+  text-decoration: none; font-size: 15px; font-weight: 700; letter-spacing: 1px;
+  color: #fff; background: linear-gradient(135deg, var(--accent), var(--accent2));
+  border: 1.5px solid transparent; transition: transform .3s, box-shadow .3s;
+}
+.skin-view .hero .cta:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0, 0, 0, .35), 0 0 18px var(--accent); }
+.skin-view .hero .cta.ghost { background: rgba(255, 255, 255, .07); border-color: var(--card-border); color: var(--ink); font-weight: 600; }
+.skin-view .hero .cta.ghost:hover { border-color: var(--accent2); color: var(--accent2); }
+/* ============ 顶部滚动进度条 ============ */
+#scrollbar {
+  position: fixed; top: 0; left: 0; height: 3px; width: 0; z-index: 1000;
+  background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3));
+  box-shadow: 0 0 8px var(--accent);
+  pointer-events: none;
+}
+html.skin-terminal #scrollbar { background: var(--accent); }
+html.skin-classical #scrollbar { background: linear-gradient(90deg, var(--accent), var(--gold)); }
+/* ============ 全局 toast 提示 ============ */
+#toast {
+  position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-18px);
+  z-index: 9998; padding: 10px 24px; border-radius: 999px;
+  background: rgba(10, 12, 30, .88); border: 1px solid rgba(255, 255, 255, .2);
+  color: #fff; font-size: 14px; letter-spacing: .5px; white-space: nowrap;
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  opacity: 0; pointer-events: none;
+  transition: opacity .3s, transform .3s;
+}
+#toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+html.skin-cyberpunk #toast { border-radius: 4px; border-color: var(--accent); background: rgba(4, 5, 15, .94); color: var(--accent); font-family: var(--mono); }
+html.skin-terminal #toast { border-radius: 0; border-color: var(--accent); background: #000; color: var(--accent); font-family: var(--mono); }
+html.skin-classical #toast { border-radius: 10px; border-color: rgba(166, 58, 43, .55); background: rgba(253, 250, 240, .97); color: #33291f; font-family: var(--kai); letter-spacing: 2px; }
+html.skin-starry #toast { border-color: rgba(255, 255, 255, .28); background: rgba(10, 14, 36, .9); }
+/* ============ 播放器切歌按钮 ============ */
+.player-ctrl { display: flex; gap: 8px; margin-top: 10px; }
+.player-ctrl button {
+  flex: 1; padding: 5px 0; border-radius: 8px; cursor: pointer; font-size: 13px;
+  background: rgba(255, 255, 255, .08); border: 1px solid rgba(255, 255, 255, .15);
+  color: var(--accent); font-family: inherit; transition: .2s;
+}
+.player-ctrl button:hover { background: var(--accent); color: var(--bg-solid); }
+html.skin-cyberpunk .player-ctrl button { border-radius: 0; border-color: var(--accent); background: rgba(10, 14, 34, .85); color: var(--accent); }
+html.skin-terminal .player-ctrl button { border-radius: 0; border-color: var(--accent); background: #000; color: var(--accent); font-family: var(--mono); }
+html.skin-classical .player-ctrl button { border-radius: 8px; border-color: rgba(166, 58, 43, .5); background: #fdfaf0; color: var(--accent); font-family: var(--kai); }
+html.skin-starry .player-ctrl button { border-radius: 999px; }
+/* ============ 移动端底部操作栏 ============ */
+@media (max-width: 640px) {
+  #updates { left: 16px; bottom: 16px; }
+  #updatesPanel { width: calc(100vw - 32px); max-width: none; }
+  #musicBtn { right: auto; left: 50%; margin-left: -26px; bottom: 16px; }
+  #musicTip { right: auto; left: 50%; margin-left: 0; transform: translateX(-50%); bottom: 78px; }
+  #player { right: auto; left: 50%; transform: translateX(-50%) translateY(10px); bottom: 82px; width: min(280px, calc(100vw - 32px)); }
+  #player.show { transform: translateX(-50%); }
+  #topBtn { right: 16px; bottom: 16px; width: 52px; height: 52px; }
+  html.skin-terminal #updatesBtn, html.skin-terminal #musicBtn { width: 52px; height: 52px; padding: 0; display: flex; align-items: center; justify-content: center; }
+}
+/* ============ 全局音乐按钮 / 播放器 ============ */
+#musicBtn {
+  position: fixed; right: 22px; bottom: 22px; z-index: 90;
+  width: 52px; height: 52px; border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, .25);
+  background: rgba(255, 255, 255, .1);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  color: var(--accent); font-size: 22px; cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .35);
+  transition: .3s;
+}
+html.skin-cyberpunk #musicBtn { border-radius: 6px; border-color: var(--accent); color: var(--accent); background: rgba(10, 14, 34, .85); box-shadow: 0 0 16px rgba(0, 255, 247, .35); }
+html.skin-terminal #musicBtn { border-radius: 0; width: auto; height: auto; padding: 10px 16px; font-size: 14px; font-family: var(--mono); background: #000; border-color: var(--accent); color: var(--accent); box-shadow: 0 0 12px rgba(51, 255, 102, .35); }
+html.skin-classical #musicBtn { border-radius: 50%; background: #fdfaf0; border: 1.5px solid var(--accent); color: var(--accent); box-shadow: 0 6px 18px rgba(80, 60, 30, .3); }
+html.skin-starry #musicBtn { background: rgba(255, 255, 255, .08); border-color: rgba(255, 255, 255, .2); box-shadow: 0 8px 24px rgba(0, 0, 0, .4); }
+#musicBtn:hover { transform: scale(1.1); border-color: var(--accent2); }
+#musicBtn.playing { animation: btnSpin 5s linear infinite; border-color: var(--accent2); }
+@keyframes btnSpin { to { transform: rotate(360deg); } }
+#musicTip {
+  position: fixed; right: 84px; bottom: 32px; z-index: 90;
+  font-size: 12.5px; color: #fff; padding: 6px 12px; border-radius: 8px;
+  background: rgba(0, 0, 0, .65); opacity: 0; pointer-events: none;
+  transition: .3s;
+}
+#musicTip.show { opacity: 1; }
+.player {
+  position: fixed; right: 22px; bottom: 88px; z-index: 90;
+  width: 272px; padding: 12px 14px 12px; border-radius: 14px;
+  background: rgba(8, 10, 24, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45);
+  opacity: 0; transform: translateY(10px); pointer-events: none;
+  transition: opacity .3s, transform .3s;
+}
+.player.show { opacity: 1; transform: none; pointer-events: auto; }
+.player-song { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: 12.5px; color: #dfe4ff; min-height: 18px; }
+.player-song span:first-child { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.player-song #playerTime { color: rgba(255, 255, 255, 0.55); font-size: 11px; white-space: nowrap; }
+.player-track { position: relative; margin-top: 10px; height: 8px; border-radius: 999px; background: rgba(255, 255, 255, 0.15); cursor: pointer; }
+.player-bar { height: 100%; width: 0; border-radius: 999px; background: var(--accent); box-shadow: 0 0 10px var(--accent); }
+.player-knob { position: absolute; top: 50%; left: 0; width: 14px; height: 14px; transform: translate(-50%, -50%); border-radius: 50%; background: #fff; border: 2px solid var(--accent); pointer-events: none; }
+.player-vol { display: flex; align-items: center; gap: 8px; margin-top: 10px; padding-top: 9px; font-size: 13px; color: #dfe4ff; border-top: 1px solid rgba(255, 255, 255, .08); }
+.player-vol .vol-val { font-size: 11px; color: rgba(255, 255, 255, .55); width: 36px; text-align: right; font-family: var(--mono); white-space: nowrap; }
+.player-vol input[type="range"] { flex: 1; height: 18px; -webkit-appearance: none; appearance: none; background: transparent; outline: none; cursor: pointer; touch-action: none; }
+.player-vol input[type="range"]::-webkit-slider-runnable-track { height: 5px; border-radius: 999px; background: rgba(255, 255, 255, .18); }
+.player-vol input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: var(--accent); border: 2px solid #fff; margin-top: -4.5px; cursor: pointer; box-shadow: 0 0 8px var(--accent); }
+.player-vol input[type="range"]::-moz-range-track { height: 5px; border-radius: 999px; background: rgba(255, 255, 255, .18); }
+.player-vol input[type="range"]::-moz-range-thumb { width: 14px; height: 14px; border-radius: 50%; background: var(--accent); border: 2px solid #fff; cursor: pointer; }
+#topBtn {
+  position: fixed; right: 18px; bottom: 96px; z-index: 998;
+  width: 46px; height: 46px; border-radius: 50%;
+  border: 1px solid var(--card-border); background: var(--card);
+  color: var(--accent); font-size: 20px; cursor: pointer; line-height: 1;
+  backdrop-filter: blur(10px);
+  opacity: 0; pointer-events: none; transform: translateY(10px);
+  transition: opacity .3s, transform .3s, box-shadow .3s;
+}
+#topBtn.show { opacity: 1; pointer-events: auto; transform: none; }
+#topBtn:hover { box-shadow: 0 0 14px var(--accent); }
+html.skin-cyberpunk #topBtn { border-radius: 6px; border-color: var(--accent); background: rgba(10, 14, 34, .85); color: var(--accent); }
+html.skin-terminal #topBtn { border-radius: 0; font-family: var(--mono); background: #000; border-color: var(--accent); color: var(--accent); }
+html.skin-classical #topBtn { border-radius: 10px; background: #fdfaf0; border: 1.5px solid var(--accent); color: var(--accent); font-family: var(--kai); }
+html.skin-starry #topBtn { border-radius: 18px; background: rgba(255, 255, 255, .08); }
+html.skin-classical .player { background: rgba(253, 250, 240, .97); border: 1px solid rgba(166, 58, 43, .45); }
+html.skin-classical .player-song, html.skin-classical .player-vol { color: #33291f; }
+html.skin-classical .player-song #playerTime, html.skin-classical .player-vol .vol-val { color: rgba(51, 41, 31, .55); }
+html.skin-classical .player-track { background: rgba(51, 41, 31, .15); }
+html.skin-classical .player-vol { border-top-color: rgba(51, 41, 31, .15); }
+html.skin-terminal .player { border-radius: 0; background: rgba(5, 10, 5, .96); border: 1px solid var(--accent); font-family: var(--mono); }
+html.skin-terminal .player-song, html.skin-terminal .player-vol { color: var(--accent); }
+html.skin-terminal .player-track { background: rgba(51, 255, 102, .2); }
+html.skin-cyberpunk .player { border-radius: 0; border-color: var(--accent); clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px); }
+html.skin-cyberpunk .player-track { background: rgba(0, 255, 247, .2); }
+html.skin-starry .player { border-radius: 18px; }
+
+/* ============ 最近更新窗口 ============ */
+#updates { position: fixed; left: 22px; bottom: 22px; z-index: 90; }
+#updatesBtn {
+  width: 52px; height: 52px; border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, .25);
+  background: rgba(255, 255, 255, .1);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  color: var(--accent); font-size: 21px; cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .35);
+  transition: .3s;
+}
+html.skin-cyberpunk #updatesBtn { border-radius: 6px; border-color: var(--accent); color: var(--accent); background: rgba(10, 14, 34, .85); box-shadow: 0 0 16px rgba(0, 255, 247, .3); }
+html.skin-terminal #updatesBtn { border-radius: 0; width: auto; height: auto; padding: 10px 16px; font-size: 14px; font-family: var(--mono); background: #000; border-color: var(--accent); color: var(--accent); }
+html.skin-classical #updatesBtn { border-radius: 10px; background: #fdfaf0; border: 1.5px solid var(--accent); color: var(--accent); font-family: var(--kai); font-size: 19px; box-shadow: 0 6px 18px rgba(80, 60, 30, .3); }
+html.skin-starry #updatesBtn { background: rgba(255, 255, 255, .08); border-color: rgba(255, 255, 255, .2); }
+#updatesBtn:hover { transform: scale(1.1); border-color: var(--accent2); }
+#updatesPanel {
+  position: absolute; left: 0; bottom: 64px; width: 310px; max-height: 330px; overflow-y: auto;
+  border-radius: 14px;
+  background: rgba(8, 10, 24, .92);
+  border: 1px solid rgba(255, 255, 255, .14);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, .45);
+  opacity: 0; transform: translateY(10px); pointer-events: none;
+  transition: opacity .3s, transform .3s;
+}
+#updatesPanel.show { opacity: 1; transform: none; pointer-events: auto; }
+.updates-head {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 14px; font-size: 13px; font-weight: 700; color: #dfe4ff;
+  border-bottom: 1px solid rgba(255, 255, 255, .1);
+}
+.updates-head a { color: var(--accent2); text-decoration: none; font-weight: 400; font-size: 12px; }
+#updatesList { list-style: none; padding: 8px 14px 12px; }
+#updatesList li { font-size: 12px; color: #c6cbe8; line-height: 1.7; padding: 6px 0; border-bottom: 1px dashed rgba(255, 255, 255, .08); }
+#updatesList li:last-child { border-bottom: none; }
+#updatesList .d { color: var(--accent); margin-right: 6px; font-size: 11px; }
+#updatesList .f { display: block; color: rgba(255, 255, 255, .45); font-size: 11px; font-family: var(--mono); }
+.updates-filter { display: flex; gap: 4px; padding: 8px 14px 0; flex-wrap: wrap; }
+.updates-filter button {
+  font-size: 12px; padding: 3px 10px; border-radius: 999px; cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, .2); background: rgba(255, 255, 255, .06);
+  color: #dfe4ff; font-family: inherit; transition: .2s;
+}
+.updates-filter button:hover { background: rgba(255, 255, 255, .16); }
+.updates-filter button.cur { background: var(--accent); color: #fff; border-color: transparent; }
+#updatesList li .skin-tag {
+  display: inline-block; font-size: 10px; padding: 1px 7px; border-radius: 999px;
+  margin-right: 6px; color: #fff; vertical-align: 1px;
+}
+.skin-tag.s-all { background: rgba(255, 255, 255, .28); }
+.skin-tag.s-aurora { background: #7c6cff; }
+.skin-tag.s-cyberpunk { background: #0e7490; }
+.skin-tag.s-terminal { background: #15803d; }
+.skin-tag.s-classical { background: #a63a2b; }
+.skin-tag.s-starry { background: #4c5fd5; }
+html.skin-cyberpunk #updatesPanel { border-radius: 0; border-color: var(--accent); clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px); box-shadow: 0 0 24px rgba(0, 255, 247, .15); }
+html.skin-terminal #updatesPanel { border-radius: 0; border-color: var(--accent); background: rgba(5, 10, 5, .96); font-family: var(--mono); box-shadow: 0 0 30px rgba(51, 255, 102, .12); }
+html.skin-terminal .updates-head { color: var(--accent); }
+html.skin-terminal #updatesList li { color: var(--accent); border-bottom-color: rgba(51, 255, 102, .15); }
+html.skin-terminal #updatesList li .skin-tag.s-all { background: rgba(51, 255, 102, .3); }
+html.skin-terminal .updates-filter button { color: var(--accent); border-color: var(--accent); background: transparent; }
+html.skin-terminal .updates-filter button.cur { background: var(--accent); color: #000; }
+html.skin-classical #updatesPanel { font-family: var(--kai); background: rgba(253, 250, 240, .97); border: 1px solid rgba(166, 58, 43, .4); border-radius: 12px; box-shadow: 0 10px 30px rgba(80, 60, 30, .25); }
+html.skin-classical .updates-head { color: #33291f; border-bottom-color: rgba(51, 41, 31, .2); }
+html.skin-classical .updates-head a { color: var(--accent); }
+html.skin-classical #updatesList li { color: #4d4030; border-bottom-color: rgba(51, 41, 31, .12); }
+html.skin-classical #updatesList .d { color: var(--accent); }
+html.skin-classical #updatesList .f { color: rgba(51, 41, 31, .5); }
+html.skin-classical #updatesList li .skin-tag.s-all { background: rgba(51, 41, 31, .35); }
+html.skin-classical .updates-filter button { border-color: rgba(51, 41, 31, .3); color: #4d4030; background: rgba(255, 255, 255, .5); }
+html.skin-classical .updates-filter button.cur { background: var(--accent); color: #fdfaf0; }
+html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张浮现 */
+.skin-view .grid .card { opacity: 0; }
+.skin-view .grid .card.in { animation: cardIn .4s ease both; }
+@keyframes cardIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }</style>
+</head>
+<body>
+<!-- ============ 皮肤容器 1/5 极光 ============ -->
+<div class="skin-view" data-skin="default">
+<canvas id="bgCanvas"></canvas>
+<div class="aurora"></div>
+<header>
+  <div class="logo"><span class="dot"></span>BXR · 个人主页</div>
+  <nav>
+    <a href="#about-default">关于我</a>
+    <a href="#works-default">小作品</a>
+    <a href="#links-default">友链</a>
+    <a href="#themes-default">风格</a>
+  </nav>
+</header>
+<main>
+  <div class="hero reveal in">
+    <div class="avatar-wrap"><span class="avatar-ring"><img src="me.jpg" alt="BXR 头像"></span></div>
+    <h1>BXR</h1>
+    <p class="tagline">14 岁 · 九年级（初四）· 冰城哈尔滨 · 用代码改变世界的少年</p>
+    <div class="chips">
+      <span class="chip">🧑‍💻 擅长 <b>Python</b></span>
+      <span class="chip">⚙️ <b>C++</b></span>
+      <span class="chip">🏅 <b>OIer</b></span>
+      <span class="chip">🎻 小提琴</span>
+      <span class="chip">🏫 哈尔滨市第四十九中学校</span>
+      <span class="chip">💪 九班</span>
+    </div>
+    <div class="cta-row">
+      <a class="cta" href="loader.html?to=https://shoot.cralk.top/">🎮 玩射击游戏</a>
+      <a class="cta ghost" href="changelog.html">📜 更新日志</a>
+    </div>
+  </div>
+  <section id="about-default" class="reveal">
+    <h2 class="sec-title"><span class="ico">👋</span>关于我</h2>
+    <div class="about-card">
+      <p>大家好，我是 <b>BXR</b>，一个 14 岁的阳光少年，生活在美丽的冰城哈尔滨，目前就读于哈尔滨市第四十九中学校九年级（初四）。</p>
+      <p>我热爱编程和小提琴，尤其擅长 Python 和 C++，是一名 OIer（信息学竞赛选手）。我希望未来能够在编程领域深入发展，成为一名优秀的程序员，用代码改变世界。</p>
+      <p>在学习上，我勤奋努力，勇于挑战自我，不断提升自己的能力。生活中，我乐观开朗，喜欢与人交流，结交新朋友。</p>
+      <p>我相信，只要坚持自己的梦想，并为之努力奋斗，就一定能够实现自己的目标。未来的日子里，我希望能够和大家一起成长，共同进步，创造美好的明天！💪✨🌈</p>
+      <div class="info-grid">
+        <div class="info-item"><span class="k">📍 城市</span><span class="v">哈尔滨市</span></div>
+        <div class="info-item"><span class="k">🏫 学校</span><span class="v">哈尔滨市第四十九中学校</span></div>
+        <div class="info-item"><span class="k">📖 年级</span><span class="v">九年级</span></div>
+        <div class="info-item"><span class="k">🎓 班级</span><span class="v">九班</span></div>
+        <div class="info-item"><span class="k">🔢 学号</span><span class="v">01</span></div>
+        <div class="info-item"><span class="k">🎂 年龄</span><span class="v">14 岁</span></div>
+      </div>
+    </div>
+  </section>
+  <section id="works-default" class="reveal">
+    <h2 class="sec-title"><span class="ico">🛠️</span>我的小作品</h2>
+    <div class="grid">
+      <a class="card" href="loader.html?to=https://shoot.cralk.top/"><span class="go">↗</span><div class="emoji">🎯</div><div class="name">射击游戏<span class="badge-new">NEW</span></div><div class="desc">shoot.cralk.top 在线小游戏</div></a>
+      <a class="card" href="loader.html?to=code-rain/index.html"><span class="go">↗</span><div class="emoji">🌧️</div><div class="name">代码雨</div><div class="desc">黑客帝国经典字符雨特效</div></a>
+      <a class="card" href="loader.html?to=compass-clock/index.html"><span class="go">↗</span><div class="emoji">🧭</div><div class="name">罗盘时钟</div><div class="desc">古风罗盘造型的时钟</div></a>
+      <a class="card" href="loader.html?to=aperture/index.html"><span class="go">↗</span><div class="emoji">⭕</div><div class="name">光圈</div><div class="desc">光圈收缩动画特效</div></a>
+      <a class="card" href="loader.html?to=meteor-shower/index.html"><span class="go">↗</span><div class="emoji">☄️</div><div class="name">流星雨</div><div class="desc">流星划过夜空的浪漫</div></a>
+      <a class="card" href="loader.html?to=firework/index.html"><span class="go">↗</span><div class="emoji">🎆</div><div class="name">烟花</div><div class="desc">2D 粒子烟花绽放</div></a>
+      <a class="card" href="loader.html?to=3d-firework/index.html"><span class="go">↗</span><div class="emoji">🧨</div><div class="name">3D 烟花</div><div class="desc">立体烟花秀</div></a>
+      <a class="card" href="loader.html?to=click-firework/index.html"><span class="go">↗</span><div class="emoji">🖱️</div><div class="name">可点击烟花</div><div class="desc">点击任意位置绽放烟花</div></a>
+      <a class="card" href="loader.html?to=canvas-pixel-clock/index.html"><span class="go">↗</span><div class="emoji">⏱️</div><div class="name">粒子时钟</div><div class="desc">粒子拼出实时时间</div></a>
+      <a class="card" href="loader.html?to=circle-clock/index.html"><span class="go">↗</span><div class="emoji">🕐</div><div class="name">科技圆表</div><div class="desc">赛博风格的圆环表盘</div></a>
+      <a class="card" href="loader.html?to=timer/index.html"><span class="go">↗</span><div class="emoji">⏲️</div><div class="name">计时器</div><div class="desc">简洁实用的倒计时</div></a>
+      <a class="card" href="loader.html?to=space-museum/index.html"><span class="go">↗</span><div class="emoji">🚀</div><div class="name">航天馆</div><div class="desc">中国航天科普展馆</div></a>
+      <a class="card" href="loader.html?to=father-day/index.html"><span class="go">↗</span><div class="emoji">👨‍👧</div><div class="name">父亲节</div><div class="desc">送给爸爸的节日贺卡</div></a>
+      <a class="card" href="loader.html?to=qa/index.html"><span class="go">↗</span><div class="emoji">❓</div><div class="name">QA 问答</div><div class="desc">趣味知识问答小游戏</div></a>
+    </div>
+  </section>
+  <section id="links-default" class="reveal">
+    <h2 class="sec-title"><span class="ico">🔗</span>友情链接</h2>
+    <div class="grid">
+      <a class="card" href="https://github.com/avrox-163" target="_blank" rel="noopener"><span class="go">↗</span><div class="emoji">🐙</div><div class="name">GitHub</div><div class="desc">我的代码仓库主页</div></a>
+      <a class="card" href="https://github.com/avrox-163/avrox-163.github.io/" target="_blank" rel="noopener"><span class="go">↗</span><div class="emoji">📦</div><div class="name">本站源码</div><div class="desc">本网站的 GitHub 仓库</div></a>
+      <a class="card" href="#" data-mail="avrox_sxws,outlook.com" onclick="this.href='mailto:'+this.dataset.mail.split(',').join('@')"><span class="go">✉</span><div class="emoji">📮</div><div class="name">邮箱</div><div class="desc">avrox_sxws@outlook.com</div></a>
+      <a class="card" href="https://www.zhihu.com/people/9wbhos" target="_blank" rel="noopener"><span class="go">↗</span><div class="emoji">💬</div><div class="name">知乎</div><div class="desc">我的知乎主页</div></a>
+      <a class="card" href="https://www.luogu.com.cn/user/1766805" target="_blank" rel="noopener"><span class="go">↗</span><div class="emoji">🚩</div><div class="name">洛谷</div><div class="desc">OI 刷题主页</div></a>
+    </div>
+  </section>
+  <section id="themes-default" class="reveal">
+    <h2 class="sec-title"><span class="ico">🎨</span>风格切换</h2>
+    <div class="theme-bar">
+      <span class="t">当前皮肤：</span>
+      <button data-skin="default" class="active">✨ 极光（默认）</button>
+      <button data-skin="cyberpunk">🌃 赛博朋克</button>
+      <button data-skin="terminal">💻 命令行</button>
+      <button data-skin="classical">🏮 古风</button>
+      <button data-skin="starry">🌌 星空</button>
+    </div>
+  </section>
+</main>
+<footer class="reveal">
+  <div>© <span class="year"></span> BXR · Version v2.2.0.260823 Alpha</div>
+  <div><a href="https://icp.gov.moe/?keyword=20243331" target="_blank" rel="noopener">萌ICP备20243331号</a> · 访客 <span class="bz-uv">…</span> 人 · 总访问 <span class="bz-pv">…</span> 次 · <span class="visitor-city"></span></div>
+  <div><a href="changelog.html">📜 更新日志</a> · <span class="ghStat"></span></div>
+  <div style="font-size:11px;opacity:.6;">BGM: Kevin MacLeod (incompetech.com) · CC-BY 4.0</div>
+  <div style="margin-top:4px;letter-spacing:1px;">🧑‍💻 Made by <b>BXR</b> &amp; <a href="https://www.deepseek.com" target="_blank" rel="noopener">蓝色大肥鱼</a> 🐟</div>
+</footer>
+</div>
+<!-- ============ 皮肤容器 2/5 赛博朋克 ============ -->
+<div class="skin-view" data-skin="cyberpunk">
+<div class="glow-a"></div>
+<div class="glow-b"></div>
+<div class="skyline"></div>
+<div class="scanlines"></div>
+
+<header>
+  <div class="logo">BXR_MAIN.EXE</div>
+  <nav>
+    <a href="#about-cyberpunk">ABOUT</a>
+    <a href="#works-cyberpunk">WORKS</a>
+    <a href="#links-cyberpunk">LINKS</a>
+    <a href="#themes-cyberpunk">THEMES</a>
+  </nav>
+</header>
+
+<main>
+  <div class="hero reveal in">
+    <div class="avatar-wrap"><img src="me.jpg" alt="BXR 头像" loading="lazy"></div>
+    <h1 class="glitch" data-text="BXR">BXR</h1>
+    <p class="tagline">AGE 14 // GRADE 9 // HARBIN<span class="blink">_</span></p>
+    <div class="chips">
+      <span class="chip"><b>PYTHON</b></span>
+      <span class="chip"><b>C++</b></span>
+      <span class="chip"><b>OIER</b></span>
+      <span class="chip">VIOLIN</span>
+      <span class="chip">HARBIN NO.49</span>
+      <span class="chip">CLASS 09</span>
+    </div>
+    <div class="cta-row">
+      <a class="cta" href="templates/loader-cyberpunk.html?to=https://shoot.cralk.top/">▶ RUN SHOOT.EXE</a>
+      <a class="cta ghost" href="changelog.html">VIEW LOG</a>
+    </div>
+  </div>
+
+  <section id="about-cyberpunk" class="reveal">
+    <h2 class="sec-title">关于我</h2>
+    <div class="about-card">
+      <p>系统日志：<b>BXR</b>，14 岁少年，坐标 <b>哈尔滨</b>，就读于 <b>哈尔滨市第四十九中学校九年级（初四）</b>。</p>
+      <p>技能树：<b>Python</b>（主修） · <b>C++</b>（竞赛） · <b>OIer</b>（信息学） · 小提琴（辅修） · 全栈网页特效（自研）。</p>
+      <p>目标：成为一名优秀的程序员，<b>用代码改变世界</b>。坚信坚持梦想、努力奋斗，就一定能实现目标。💪✨🌈</p>
+      <div class="info-grid">
+        <div class="info-item"><span class="k">LOCATION</span><span class="v">哈尔滨市</span></div>
+        <div class="info-item"><span class="k">SCHOOL</span><span class="v">哈尔滨市第四十九中学校</span></div>
+        <div class="info-item"><span class="k">GRADE</span><span class="v">九年级</span></div>
+        <div class="info-item"><span class="k">CLASS</span><span class="v">九班</span></div>
+        <div class="info-item"><span class="k">ID</span><span class="v">01</span></div>
+        <div class="info-item"><span class="k">AGE</span><span class="v">14</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="works-cyberpunk" class="reveal">
+    <h2 class="sec-title">小作品集</h2>
+    <div class="grid">
+      <a class="card" href="templates/loader-cyberpunk.html?to=https://shoot.cralk.top/"><span class="id">[01]</span><div class="emoji">🎯</div><div class="name">射击游戏<span class="badge-new">NEW</span></div><div class="desc">shoot.cralk.top 在线小游戏</div></a>
+      <a class="card" href="templates/loader-cyberpunk.html?to=../code-rain/index.html"><span class="id">[02]</span><div class="emoji">🌧️</div><div class="name">代码雨</div><div class="desc">黑客帝国字符雨</div></a>
+      <a class="card" href="templates/loader-cyberpunk.html?to=../compass-clock/index.html"><span class="id">[03]</span><div class="emoji">🧭</div><div class="name">罗盘时钟</div><div class="desc">古风罗盘时钟</div></a>
+      <a class="card" href="templates/loader-cyberpunk.html?to=../aperture/index.html"><span class="id">[04]</span><div class="emoji">⭕</div><div class="name">光圈</div><div class="desc">光圈收缩动画</div></a>
+      <a class="card" href="templates/loader-cyberpunk.html?to=../meteor-shower/index.html"><span class="id">[05]</span><div class="emoji">☄️</div><div class="name">流星雨</div><div class="desc">流星划过夜空</div></a>
+      <a class="card" href="templates/loader-cyberpunk.html?to=../firework/index.html"><span class="id">[06]</span><div class="emoji">🎆</div><div class="name">烟花</div><div class="desc">2D 粒子烟花</div></a>
+      <a class="card" href="templates/loader-cyberpunk.html?to=../3d-firework/index.html"><span class="id">[07]</span><div class="emoji">🧨</div><div class="name">3D 烟花</div><div class="desc">立体烟花秀</div></a>
+      <a class="card" href="templates/loader-cyberpunk.html?to=../click-firework/index.html"><span class="id">[08]</span><div class="emoji">🖱️</div><div class="name">可点击烟花</div><div class="desc">点击绽放烟花</div></a>
+      <a class="card" href="templates/loader-cyberpunk.html?to=../canvas-pixel-clock/index.html"><span class="id">[09]</span><div class="emoji">⏱️</div><div class="name">粒子时钟</div><div class="desc">粒子拼出时间</div></a>
+      <a class="card" href="templates/loader-cyberpunk.html?to=../circle-clock/index.html"><span class="id">[10]</span><div class="emoji">🕐</div><div class="name">科技圆表</div><div class="desc">赛博圆环表盘</div></a>
+      <a class="card" href="templates/loader-cyberpunk.html?to=../timer/index.html"><span class="id">[11]</span><div class="emoji">⏲️</div><div class="name">计时器</div><div class="desc">简洁倒计时</div></a>
+      <a class="card" href="templates/loader-cyberpunk.html?to=../space-museum/index.html"><span class="id">[12]</span><div class="emoji">🚀</div><div class="name">航天馆</div><div class="desc">航天科普展</div></a>
+      <a class="card" href="templates/loader-cyberpunk.html?to=../father-day/index.html"><span class="id">[13]</span><div class="emoji">👨‍👧</div><div class="name">父亲节</div><div class="desc">节日贺卡</div></a>
+      <a class="card" href="templates/loader-cyberpunk.html?to=../qa/index.html"><span class="id">[14]</span><div class="emoji">❓</div><div class="name">QA 问答</div><div class="desc">趣味问答游戏</div></a>
+    </div>
+  </section>
+
+  <section id="links-cyberpunk" class="reveal">
+    <h2 class="sec-title">友情链接</h2>
+    <div class="grid">
+      <a class="card" href="https://github.com/avrox-163" target="_blank" rel="noopener"><span class="id">[GH]</span><div class="emoji">🐙</div><div class="name">GitHub</div><div class="desc">代码仓库主页</div></a>
+      <a class="card" href="https://github.com/avrox-163/avrox-163.github.io/" target="_blank" rel="noopener"><span class="id">[SRC]</span><div class="emoji">📦</div><div class="name">本站源码</div><div class="desc">本网站仓库</div></a>
+      <a class="card" href="#" data-mail="avrox_sxws,outlook.com" onclick="this.href='mailto:'+this.dataset.mail.split(',').join('@')"><span class="id">[MAIL]</span><div class="emoji">📮</div><div class="name">邮箱</div><div class="desc">avrox_sxws@outlook.com</div></a>
+      <a class="card" href="https://www.zhihu.com/people/9wbhos" target="_blank" rel="noopener"><span class="id">[ZH]</span><div class="emoji">💬</div><div class="name">知乎</div><div class="desc">知乎主页</div></a>
+      <a class="card" href="https://www.luogu.com.cn/user/1766805" target="_blank" rel="noopener"><span class="id">[LG]</span><div class="emoji">🚩</div><div class="name">洛谷</div><div class="desc">OI 刷题主页</div></a>
+    </div>
+  </section>
+
+  <section id="themes-cyberpunk" class="reveal">
+    <h2 class="sec-title">风格切换</h2>
+    <div class="theme-bar">
+      <span class="t">SELECT STYLE:</span>
+      <button data-skin="default">✨ 极光（默认）</button>
+      <button data-skin="cyberpunk" class="cur">🌃 赛博朋克</button>
+      <button data-skin="terminal">💻 命令行</button>
+      <button data-skin="classical">🏮 古风</button>
+      <button data-skin="starry">🌌 星空</button>
+    </div>
+  </section>
+</main>
+
+<footer class="reveal">
+  <div>© <span class="year"></span> BXR_MAIN.EXE · VERSION v2.2.0.260823 ALPHA</div>
+  <div><a href="https://icp.gov.moe/?keyword=20243331" target="_blank" rel="noopener">萌ICP备20243331号</a> · 访客 <span class="bz-uv">…</span> 人 · 总访问 <span class="bz-pv">…</span> 次 · <span class="visitor-city"></span></div>
+  <div><a href="changelog.html">📜 更新日志</a> · <span class="ghStat"></span></div>
+  <div style="font-size:11px;opacity:.6;">BGM: Kevin MacLeod (incompetech.com) · CC-BY 4.0</div>
+  <div style="margin-top:4px;letter-spacing:1px;">🧑‍💻 Made by <b>BXR</b> &amp; <a href="https://www.deepseek.com" target="_blank" rel="noopener">蓝色大肥鱼</a> 🐟</div>
+</footer>
+</div>
+<!-- ============ 皮肤容器 3/5 命令行 ============ -->
+<div class="skin-view" data-skin="terminal">
+<div class="crt">
+<div class="terminal">
+
+  <div class="term-bar">
+    <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+    <span class="title">BXR@home: ~/profile</span>
+  </div>
+
+  <div class="term-body" id="termBody">
+    <div class="tblk nav-blk reveal"><div class="term-nav"><span class="label" id="navCmd"></span><span class="nav-links" id="navLinks"><a href="#term-about">about</a> <a href="#term-works">works</a> <a href="#term-links">links</a> <a href="#term-themes">themes</a></span></div></div>
+
+    <div class="tblk boot-blk reveal">
+    <!-- 开机自检（打字机效果） -->
+    <div class="line" id="boot"></div>
+
+    <!-- ASCII 头像文字 -->
+    <pre class="ascii" id="asciiArt">  ____   __  __   ____
+ | __ )   \ \/ /  |  _ \
+ |  _ \    \  /   | |_) |
+ | |_) |   /  \   |  _ <
+ |____/   /_/\_\  |_| \_\   v2.2.0</pre>
+
+    <div class="line cta-line"><span class="prompt"><span class="user">bxr</span>@<span class="user">home</span>:<span class="path">~</span>$</span> <a class="cta" href="templates/loader-terminal.html?to=https://shoot.cralk.top/">./shoot.sh</a> <a class="cta ghost" href="changelog.html">cat changelog.md</a></div>
+    </div>
+
+    <div class="tblk reveal"><div class="divider" id="term-about">───── 用户信息 ─────</div>
+
+    <div class="line"><span class="prompt"><span class="user">bxr</span>@<span class="user">home</span>:<span class="path">~</span>$</span> <span class="cmd">cat about.txt</span></div>
+    <div class="cmd-out">
+    <div class="line">大家好，我是 BXR，一个 14 岁的阳光少年，生活在美丽的冰城哈尔滨，</div>
+    <div class="line">目前就读于哈尔滨市第四十九中学校九年级（初四）。我热爱编程和小提琴，</div>
+    <div class="line">尤其擅长 Python 和 C++，是一名 OIer（信息学竞赛选手）💪✨🌈</div>
+
+    <table class="info">
+      <tr><td>name</td><td>BXR</td></tr>
+      <tr><td>age</td><td>14</td></tr>
+      <tr><td>city</td><td>哈尔滨市</td></tr>
+      <tr><td>school</td><td>哈尔滨市第四十九中学校</td></tr>
+      <tr><td>grade</td><td>九年级（初四）</td></tr>
+      <tr><td>class</td><td>九班</td></tr>
+      <tr><td>student_id</td><td>01</td></tr>
+      <tr><td>skills</td><td>python3, c++, oi, violin, html/css/js</td></tr>
+    </table>
+    </div></div>
+
+    <div class="tblk reveal"><div class="divider" id="term-works">───── 作品目录 ─────</div>
+
+    <div class="line"><span class="prompt"><span class="user">bxr</span>@<span class="user">home</span>:<span class="path">~</span>$</span> <span class="cmd">ls -la ./works/</span></div>
+
+    <div class="cmd-out"><div class="works">
+      <a class="wline" href="templates/loader-terminal.html?to=https://shoot.cralk.top/"><span class="idx">01</span><span class="nm">shoot.cralk.top<span class="tag-new">NEW</span></span><span class="ds">射击游戏</span></a>
+      <a class="wline" href="templates/loader-terminal.html?to=../code-rain/index.html"><span class="idx">02</span><span class="nm">code-rain/</span><span class="ds">代码雨</span></a>
+      <a class="wline" href="templates/loader-terminal.html?to=../compass-clock/index.html"><span class="idx">03</span><span class="nm">compass-clock/</span><span class="ds">罗盘时钟</span></a>
+      <a class="wline" href="templates/loader-terminal.html?to=../aperture/index.html"><span class="idx">04</span><span class="nm">aperture/</span><span class="ds">光圈</span></a>
+      <a class="wline" href="templates/loader-terminal.html?to=../meteor-shower/index.html"><span class="idx">05</span><span class="nm">meteor-shower/</span><span class="ds">流星雨</span></a>
+      <a class="wline" href="templates/loader-terminal.html?to=../firework/index.html"><span class="idx">06</span><span class="nm">firework/</span><span class="ds">烟花</span></a>
+      <a class="wline" href="templates/loader-terminal.html?to=../3d-firework/index.html"><span class="idx">07</span><span class="nm">3d-firework/</span><span class="ds">3D 烟花</span></a>
+      <a class="wline" href="templates/loader-terminal.html?to=../click-firework/index.html"><span class="idx">08</span><span class="nm">click-firework/</span><span class="ds">可点击烟花</span></a>
+      <a class="wline" href="templates/loader-terminal.html?to=../canvas-pixel-clock/index.html"><span class="idx">09</span><span class="nm">canvas-pixel-clock/</span><span class="ds">粒子时钟</span></a>
+      <a class="wline" href="templates/loader-terminal.html?to=../circle-clock/index.html"><span class="idx">10</span><span class="nm">circle-clock/</span><span class="ds">科技圆表</span></a>
+      <a class="wline" href="templates/loader-terminal.html?to=../timer/index.html"><span class="idx">11</span><span class="nm">timer/</span><span class="ds">计时器</span></a>
+      <a class="wline" href="templates/loader-terminal.html?to=../space-museum/index.html"><span class="idx">12</span><span class="nm">space-museum/</span><span class="ds">航天馆</span></a>
+      <a class="wline" href="templates/loader-terminal.html?to=../father-day/index.html"><span class="idx">13</span><span class="nm">father-day/</span><span class="ds">父亲节</span></a>
+      <a class="wline" href="templates/loader-terminal.html?to=../qa/index.html"><span class="idx">14</span><span class="nm">qa/</span><span class="ds">QA 问答</span></a>
+    </div></div></div>
+
+        <div class="tblk reveal"><div class="divider" id="term-links">───── 友链 ─────</div>
+    <div class="line"><span class="prompt"><span class="user">bxr</span>@<span class="user">home</span>:<span class="path">~</span>$</span> <span class="cmd">cat links.txt</span></div>
+    <div class="cmd-out">
+    <div class="line">🐙 GitHub — <a href="https://github.com/avrox-163" target="_blank" rel="noopener">https://github.com/avrox-163</a></div>
+    <div class="line">📦 本站源码 — <a href="https://github.com/avrox-163/avrox-163.github.io/" target="_blank" rel="noopener">https://github.com/avrox-163/avrox-163.github.io/</a></div>
+    <div class="line">📮 邮箱 — <a href="mailto:avrox_sxws@outlook.com">avrox_sxws@outlook.com</a></div>
+    <div class="line">💬 知乎 — <a href="https://www.zhihu.com/people/9wbhos" target="_blank" rel="noopener">https://www.zhihu.com/people/9wbhos</a></div>
+    <div class="line">🚩 洛谷 — <a href="https://www.luogu.com.cn/user/1766805" target="_blank" rel="noopener">https://www.luogu.com.cn/user/1766805</a></div>
+    </div></div>
+<div class="tblk reveal"><div class="divider" id="term-themes">───── 主题切换 ─────</div>
+<div class="themes">
+      <span class="label">$ switch_theme --list:</span><br>
+      <button data-skin="default">✨ 极光（默认）</button>
+      <button data-skin="cyberpunk">🌃 赛博朋克</button>
+      <button data-skin="terminal" class="cur">💻 命令行</button>
+      <button data-skin="classical">🏮 古风</button>
+      <button data-skin="starry">🌌 星空</button>
+    </div></div>
+
+    <div class="tblk reveal"><div class="line" style="margin-top:14px"><span class="prompt"><span class="user">bxr</span>@<span class="user">home</span>:<span class="path">~</span>$</span> <span class="cmd">echo $visitors</span></div>
+    <div class="cmd-out"><div class="line">您是第 <span class="bz-uv">…</span> 位访客 · 总访问 <span class="bz-pv">…</span> 次 · <span class="visitor-city"></span></div></div></div>
+    <div class="term-input"><span class="prompt"><span class="user">bxr</span>@<span class="user">home</span>:<span class="path">~</span>$</span> <input id="termCmd" type="text" autocomplete="off" spellcheck="false" placeholder="输入 help 查看命令"></div>
+  </div>
+
+  <footer class="reveal">
+    <div>© <span class="year"></span> BXR · VERSION v2.2.0.260823 ALPHA · <a href="https://icp.gov.moe/?keyword=20243331" target="_blank" rel="noopener">萌ICP备20243331号</a> · <a href="changelog.html">📜 更新日志</a> · <span class="ghStat"></span></div>
+    <div style="font-size:11px;opacity:.6;">BGM: Kevin MacLeod (incompetech.com) · CC-BY 4.0</div>
+    <div style="margin-top:4px;letter-spacing:1px;">🧑‍💻 Made by <b>BXR</b> &amp; <a href="https://www.deepseek.com" target="_blank" rel="noopener">蓝色大肥鱼</a> 🐟</div>
+  </footer>
+</div>
+</div>
+</div>
+<!-- ============ 皮肤容器 4/5 古风 ============ -->
+<div class="skin-view" data-skin="classical">
+<div class="wash wash-1"></div>
+<div class="wash wash-2"></div>
+<div class="mist"></div>
+<div class="mountains">
+  <svg viewBox="0 0 1440 320" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path fill="#d9d2bd" d="M0,200 L180,90 L320,190 L480,70 L640,200 L800,110 L980,205 L1160,120 L1320,195 L1440,150 L1440,320 L0,320 Z" opacity="0.55"/>
+    <path fill="#c9c0a6" d="M0,250 L200,150 L360,240 L560,140 L760,250 L960,160 L1160,245 L1340,170 L1440,230 L1440,320 L0,320 Z" opacity="0.7"/>
+    <path fill="#b3a88c" d="M0,290 L240,220 L460,280 L700,210 L940,285 L1180,225 L1440,280 L1440,320 L0,320 Z" opacity="0.85"/>
+  </svg>
+</div>
+<canvas id="sakura"></canvas>
+
+<header>
+  <div class="logo">BXR<span>·</span>少年行</div>
+  <nav>
+    <a href="#about-classical">自叙</a>
+    <a href="#works-classical">小作</a>
+    <a href="#links-classical">友链</a>
+    <a href="#themes-classical">风格</a>
+  </nav>
+</header>
+
+<main>
+  <div class="hero reveal in">
+    <div class="vtext"><span>少年<b>负壮气</b></span><span>奋烈自有时</span></div>
+    <div class="avatar-wrap"><img src="me.jpg" alt="BXR 头像" loading="lazy"></div>
+    <h1>BXR <span class="seal">印</span></h1>
+    <p class="sub">十四岁 · 九年级（初四）· 哈尔滨 · 哈尔滨市第四十九中学校</p>
+    <p class="poem">「 键盘为笔，代码为墨，少年心事写春秋 」</p>
+    <div class="cta-row">
+      <a class="cta" href="templates/loader-classical.html?to=https://shoot.cralk.top/">🎯 试玩射击 · 百步穿杨</a>
+      <a class="cta ghost" href="changelog.html">📜 更新日志</a>
+    </div>
+  </div>
+
+  <section id="about-classical" class="reveal">
+    <h2 class="sec-title">自叙</h2>
+    <div class="about-card">
+      <p>吾乃 <b>BXR</b>，年方 <b>十四</b>，冰城哈尔滨人也。今就读于 <b>哈尔滨市第四十九中学校九年级（初四）</b>，九班，学号零一。</p>
+      <p>性嗜编程，尤擅 <b>Python</b> 与 <b>C++</b>，乃 <b>OIer</b>（信息学竞赛选手）；亦好小提琴，琴声相伴，乐在其中。志在代码之道，愿以技术改天换地，成一良程序员。</p>
+      <p>为学勤勉，敢于挑战；为人开朗，喜交良友。深信坚持梦想、砥砺前行，终能如愿。愿与诸君共成长、同进步，共创美好明天！💪✨🌈</p>
+      <p class="sig">—— BXR 谨记</p>
+      <div class="info-grid">
+        <div class="info-item"><span class="k">籍贯</span><span class="v">哈尔滨市</span></div>
+        <div class="info-item"><span class="k">学堂</span><span class="v">哈尔滨市第四十九中学校</span></div>
+        <div class="info-item"><span class="k">年级</span><span class="v">九年级</span></div>
+        <div class="info-item"><span class="k">班级</span><span class="v">九班</span></div>
+        <div class="info-item"><span class="k">学号</span><span class="v">01</span></div>
+        <div class="info-item"><span class="k">年岁</span><span class="v">十四</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="works-classical" class="reveal">
+    <h2 class="sec-title">小作陈列<span class="orn">· 凡十四品</span></h2>
+    <div class="grid">
+      <a class="card" href="templates/loader-classical.html?to=https://shoot.cralk.top/"><span class="seal-tag">新作</span><div class="emoji">🎯</div><div class="name">射击游戏<span class="badge-new">NEW</span></div><div class="desc">shoot.cralk.top · 百步穿杨</div></a>
+      <a class="card" href="templates/loader-classical.html?to=../code-rain/index.html"><div class="emoji">🌧️</div><div class="name">代码雨</div><div class="desc">字符如雨，落满屏</div></a>
+      <a class="card" href="templates/loader-classical.html?to=../compass-clock/index.html"><div class="emoji">🧭</div><div class="name">罗盘时钟</div><div class="desc">古法罗盘，以时计之</div></a>
+      <a class="card" href="templates/loader-classical.html?to=../aperture/index.html"><div class="emoji">⭕</div><div class="name">光圈</div><div class="desc">光圈开阖，明暗相生</div></a>
+      <a class="card" href="templates/loader-classical.html?to=../meteor-shower/index.html"><div class="emoji">☄️</div><div class="name">流星雨</div><div class="desc">流星坠夜，愿许三千</div></a>
+      <a class="card" href="templates/loader-classical.html?to=../firework/index.html"><div class="emoji">🎆</div><div class="name">烟花</div><div class="desc">火树银花，一夜绽放</div></a>
+      <a class="card" href="templates/loader-classical.html?to=../3d-firework/index.html"><div class="emoji">🧨</div><div class="name">3D 烟花</div><div class="desc">立体烟花，满目星河</div></a>
+      <a class="card" href="templates/loader-classical.html?to=../click-firework/index.html"><div class="emoji">🖱️</div><div class="name">可点击烟花</div><div class="desc">指点之间，烟花四起</div></a>
+      <a class="card" href="templates/loader-classical.html?to=../canvas-pixel-clock/index.html"><div class="emoji">⏱️</div><div class="name">粒子时钟</div><div class="desc">万点微粒，聚而成时</div></a>
+      <a class="card" href="templates/loader-classical.html?to=../circle-clock/index.html"><div class="emoji">🕐</div><div class="name">科技圆表</div><div class="desc">圆环流转，玄机暗藏</div></a>
+      <a class="card" href="templates/loader-classical.html?to=../timer/index.html"><div class="emoji">⏲️</div><div class="name">计时器</div><div class="desc">光阴寸寸，勿虚度也</div></a>
+      <a class="card" href="templates/loader-classical.html?to=../space-museum/index.html"><div class="emoji">🚀</div><div class="name">航天馆</div><div class="desc">神舟问天，航天科普</div></a>
+      <a class="card" href="templates/loader-classical.html?to=../father-day/index.html"><div class="emoji">👨‍👧</div><div class="name">父亲节</div><div class="desc">敬献严亲，以表孝心</div></a>
+      <a class="card" href="templates/loader-classical.html?to=../qa/index.html"><div class="emoji">❓</div><div class="name">QA 问答</div><div class="desc">问答相趣，寓教于乐</div></a>
+    </div>
+  </section>
+
+  <section id="links-classical" class="reveal">
+    <h2 class="sec-title">友链</h2>
+    <div class="grid">
+      <a class="card" href="https://github.com/avrox-163" target="_blank" rel="noopener"><div class="emoji">🐙</div><div class="name">GitHub</div><div class="desc">代码仓库</div></a>
+      <a class="card" href="https://github.com/avrox-163/avrox-163.github.io/" target="_blank" rel="noopener"><div class="emoji">📦</div><div class="name">本站源码</div><div class="desc">本站仓库</div></a>
+      <a class="card" href="#" data-mail="avrox_sxws,outlook.com" onclick="this.href='mailto:'+this.dataset.mail.split(',').join('@')"><div class="emoji">📮</div><div class="name">邮箱</div><div class="desc">avrox_sxws@outlook.com</div></a>
+      <a class="card" href="https://www.zhihu.com/people/9wbhos" target="_blank" rel="noopener"><div class="emoji">💬</div><div class="name">知乎</div><div class="desc">知乎主页</div></a>
+      <a class="card" href="https://www.luogu.com.cn/user/1766805" target="_blank" rel="noopener"><div class="emoji">🚩</div><div class="name">洛谷</div><div class="desc">OI 刷题</div></a>
+    </div>
+    <p class="links-note">—— 五湖四海皆兄弟，相逢何必曾相识 ——</p>
+  </section>
+
+  <section id="themes-classical" class="reveal">
+    <h2 class="sec-title">风格切换</h2>
+    <div class="theme-bar">
+      <span class="t">选一风格：</span>
+      <button data-skin="default">✨ 极光（默认）</button>
+      <button data-skin="cyberpunk">🌃 赛博朋克</button>
+      <button data-skin="terminal">💻 命令行</button>
+      <button data-skin="classical" class="cur">🏮 古风</button>
+      <button data-skin="starry">🌌 星空</button>
+    </div>
+  </section>
+</main>
+
+<footer class="reveal">
+  <div>© <span class="year"></span> BXR · Version v2.2.0.260823 Alpha · 访客 <span class="bz-uv">…</span> 人 · 总访问 <span class="bz-pv">…</span> 次 · <span class="visitor-city"></span></div>
+  <div><a href="https://icp.gov.moe/?keyword=20243331" target="_blank" rel="noopener">萌ICP备20243331号</a> · <a href="changelog.html">📜 更新日志</a> · <span class="ghStat"></span></div>
+  <div style="font-size:11px;opacity:.7;">BGM: Kevin MacLeod (incompetech.com) · CC-BY 4.0</div>
+  <div style="margin-top:4px;letter-spacing:2px;">🧑‍💻 Made by <b>BXR</b> &amp; <a href="https://www.deepseek.com" target="_blank" rel="noopener">蓝色大肥鱼</a> 🐟</div>
+</footer>
+</div>
+<!-- ============ 皮肤容器 5/5 星空 ============ -->
+<div class="skin-view" data-skin="starry">
+<canvas id="sky"></canvas>
+<div class="nebula neb-1"></div>
+<div class="nebula neb-2"></div>
+
+<header>
+  <div class="logo"><span class="moon"></span>BXR · 星野</div>
+  <nav>
+    <a href="#about-starry">关于我</a>
+    <a href="#works-starry">作品集</a>
+    <a href="#links-starry">友链</a>
+    <a href="#themes-starry">风格</a>
+  </nav>
+</header>
+
+<main>
+  <div class="hero reveal in">
+    <div class="avatar-wrap"><img src="me.jpg" alt="BXR 头像" loading="lazy"></div>
+    <h1>BXR</h1>
+    <p class="sub"><b>14</b> 岁 · <b>九年级</b>（初四）· 哈尔滨 · 哈尔滨市第四十九中学校</p>
+    <div class="chips">
+      <span class="chip">🧑‍💻 <b>Python</b></span>
+      <span class="chip">⚙️ <b>C++</b></span>
+      <span class="chip">🏅 <b>OIer</b></span>
+      <span class="chip">🎻 小提琴</span>
+      <span class="chip">💪 九班</span>
+    </div>
+    <div class="cta-row">
+      <a class="cta" href="templates/loader-starry.html?to=https://shoot.cralk.top/">🎯 进入射击游戏</a>
+      <a class="cta ghost" href="changelog.html">📜 更新日志</a>
+    </div>
+  </div>
+
+  <section id="about-starry" class="reveal">
+    <h2 class="sec-title">🌠 关于我</h2>
+    <div class="about-card glass">
+      <p>大家好，我是 <b>BXR</b>，一个 14 岁的阳光少年，生活在美丽的冰城哈尔滨，目前就读于<b>哈尔滨市第四十九中学校</b>九年级（初四）。</p>
+      <p>我热爱编程和小提琴，尤其擅长 <b>Python</b> 和 <b>C++</b>，是一名 OIer（信息学竞赛选手）。我希望未来能够在编程领域深入发展，成为一名优秀的程序员，用代码改变世界。</p>
+      <p>我相信，只要坚持自己的梦想，并为之努力奋斗，就一定能够实现自己的目标。💪✨🌈</p>
+      <p class="quote">—— 星光不问赶路人，代码不负有心人 ——</p>
+      <div class="info-grid">
+        <div class="info-item"><span class="k">📍 城市</span><span class="v">哈尔滨市</span></div>
+        <div class="info-item"><span class="k">🏫 学校</span><span class="v">哈尔滨市第四十九中学校</span></div>
+        <div class="info-item"><span class="k">📖 年级</span><span class="v">九年级</span></div>
+        <div class="info-item"><span class="k">🎓 班级</span><span class="v">九班</span></div>
+        <div class="info-item"><span class="k">🔢 学号</span><span class="v">01</span></div>
+        <div class="info-item"><span class="k">🎂 年龄</span><span class="v">14 岁</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="works-starry" class="reveal">
+    <h2 class="sec-title">✨ 我的小作品</h2>
+    <div class="grid">
+      <a class="card glass" href="templates/loader-starry.html?to=https://shoot.cralk.top/"><span class="go">↗</span><div class="emoji">🎯</div><div class="name">射击游戏<span class="badge-new">NEW</span></div><div class="desc">shoot.cralk.top 在线小游戏</div></a>
+      <a class="card glass" href="templates/loader-starry.html?to=../code-rain/index.html"><span class="go">↗</span><div class="emoji">🌧️</div><div class="name">代码雨</div><div class="desc">黑客帝国字符雨</div></a>
+      <a class="card glass" href="templates/loader-starry.html?to=../compass-clock/index.html"><span class="go">↗</span><div class="emoji">🧭</div><div class="name">罗盘时钟</div><div class="desc">古风罗盘造型时钟</div></a>
+      <a class="card glass" href="templates/loader-starry.html?to=../aperture/index.html"><span class="go">↗</span><div class="emoji">⭕</div><div class="name">光圈</div><div class="desc">光圈收缩动画</div></a>
+      <a class="card glass" href="templates/loader-starry.html?to=../meteor-shower/index.html"><span class="go">↗</span><div class="emoji">☄️</div><div class="name">流星雨</div><div class="desc">流星划过夜空</div></a>
+      <a class="card glass" href="templates/loader-starry.html?to=../firework/index.html"><span class="go">↗</span><div class="emoji">🎆</div><div class="name">烟花</div><div class="desc">2D 粒子烟花</div></a>
+      <a class="card glass" href="templates/loader-starry.html?to=../3d-firework/index.html"><span class="go">↗</span><div class="emoji">🧨</div><div class="name">3D 烟花</div><div class="desc">立体烟花秀</div></a>
+      <a class="card glass" href="templates/loader-starry.html?to=../click-firework/index.html"><span class="go">↗</span><div class="emoji">🖱️</div><div class="name">可点击烟花</div><div class="desc">点击绽放烟花</div></a>
+      <a class="card glass" href="templates/loader-starry.html?to=../canvas-pixel-clock/index.html"><span class="go">↗</span><div class="emoji">⏱️</div><div class="name">粒子时钟</div><div class="desc">粒子拼出时间</div></a>
+      <a class="card glass" href="templates/loader-starry.html?to=../circle-clock/index.html"><span class="go">↗</span><div class="emoji">🕐</div><div class="name">科技圆表</div><div class="desc">赛博圆环表盘</div></a>
+      <a class="card glass" href="templates/loader-starry.html?to=../timer/index.html"><span class="go">↗</span><div class="emoji">⏲️</div><div class="name">计时器</div><div class="desc">简洁倒计时</div></a>
+      <a class="card glass" href="templates/loader-starry.html?to=../space-museum/index.html"><span class="go">↗</span><div class="emoji">🚀</div><div class="name">航天馆</div><div class="desc">航天科普展</div></a>
+      <a class="card glass" href="templates/loader-starry.html?to=../father-day/index.html"><span class="go">↗</span><div class="emoji">👨‍👧</div><div class="name">父亲节</div><div class="desc">节日贺卡</div></a>
+      <a class="card glass" href="templates/loader-starry.html?to=../qa/index.html"><span class="go">↗</span><div class="emoji">❓</div><div class="name">QA 问答</div><div class="desc">趣味问答游戏</div></a>
+    </div>
+  </section>
+
+  <section id="links-starry" class="reveal">
+    <h2 class="sec-title">🔗 友情链接</h2>
+    <div class="grid">
+      <a class="card glass" href="https://github.com/avrox-163" target="_blank" rel="noopener"><span class="go">↗</span><div class="emoji">🐙</div><div class="name">GitHub</div><div class="desc">代码仓库主页</div></a>
+      <a class="card glass" href="https://github.com/avrox-163/avrox-163.github.io/" target="_blank" rel="noopener"><span class="go">↗</span><div class="emoji">📦</div><div class="name">本站源码</div><div class="desc">本网站仓库</div></a>
+      <a class="card glass" href="#" data-mail="avrox_sxws,outlook.com" onclick="this.href='mailto:'+this.dataset.mail.split(',').join('@')"><span class="go">✉</span><div class="emoji">📮</div><div class="name">邮箱</div><div class="desc">avrox_sxws@outlook.com</div></a>
+      <a class="card glass" href="https://www.zhihu.com/people/9wbhos" target="_blank" rel="noopener"><span class="go">↗</span><div class="emoji">💬</div><div class="name">知乎</div><div class="desc">知乎主页</div></a>
+      <a class="card glass" href="https://www.luogu.com.cn/user/1766805" target="_blank" rel="noopener"><span class="go">↗</span><div class="emoji">🚩</div><div class="name">洛谷</div><div class="desc">OI 刷题主页</div></a>
+    </div>
+  </section>
+
+  <section id="themes-starry" class="reveal">
+    <h2 class="sec-title">🎨 风格切换</h2>
+    <div class="theme-bar glass">
+      <span class="t">切换风格：</span>
+      <button data-skin="default">✨ 极光（默认）</button>
+      <button data-skin="cyberpunk">🌃 赛博朋克</button>
+      <button data-skin="terminal">💻 命令行</button>
+      <button data-skin="classical">🏮 古风</button>
+      <button data-skin="starry" class="cur">🌌 星空</button>
+    </div>
+  </section>
+</main>
+
+<footer class="reveal">
+  <div>© <span class="year"></span> BXR · Version v2.2.0.260823 Alpha</div>
+  <div><a href="https://icp.gov.moe/?keyword=20243331" target="_blank" rel="noopener">萌ICP备20243331号</a> · 访客 <span class="bz-uv">…</span> 人 · 总访问 <span class="bz-pv">…</span> 次 · <span class="visitor-city"></span></div>
+  <div><a href="changelog.html">📜 更新日志</a> · <span class="ghStat"></span></div>
+  <div style="font-size:11px;opacity:.6;">BGM: Kevin MacLeod (incompetech.com) · CC-BY 4.0</div>
+  <div style="margin-top:4px;letter-spacing:1px;">🧑‍💻 Made by <b>BXR</b> &amp; <a href="https://www.deepseek.com" target="_blank" rel="noopener">蓝色大肥鱼</a> 🐟</div>
+</footer>
+</div>
+<!-- ============ 全局组件 ============ -->
+<!-- ============ 最近更新窗口 ============ -->
+<div id="updates">
+  <button id="updatesBtn" title="最近更新">📜</button>
+  <div id="updatesPanel">
+    <div class="updates-head"><span>📜 最近更新</span><a href="changelog.html">全部记录 →</a></div>
+    <div class="updates-filter">
+      <button data-f="all" class="cur">全部</button>
+      <button data-f="aurora" title="极光">✨</button>
+      <button data-f="cyberpunk" title="赛博朋克">🌃</button>
+      <button data-f="terminal" title="命令行">💻</button>
+      <button data-f="classical" title="古风">🏮</button>
+      <button data-f="starry" title="星空">🌌</button>
+    </div>
+    <ul id="updatesList"></ul>
+  </div>
+</div>
+<button id="musicBtn" title="播放/暂停背景音乐">🎵</button>
+<div id="musicTip">背景音乐</div>
+<div class="player" id="player">
+  <div class="player-song"><span id="playerSong">♪ 未播放</span><span id="playerTime">0:00 / 0:00</span></div>
+  <div class="player-ctrl"><button id="playerPrev" title="上一首">⏮</button><button id="playerNext" title="下一首">⏭</button></div>
+  <div class="player-track" id="playerTrack"><div class="player-bar" id="playerBar"></div><div class="player-knob" id="playerKnob"></div></div>
+  <div class="player-vol"><span>🔊</span><input type="range" id="playerVolume" min="0" max="100" value="70"><span class="vol-val" id="playerVolVal">70%</span></div>
+</div>
+<button id="topBtn" title="回到顶部">↑</button>
+<div id="scrollbar"></div>
+<div id="toast"></div>
+<audio id="bgm" src="bgm.mp3" loop preload="metadata"></audio>
+<span id="busuanzi_value_site_uv" style="display:none"></span>
+<span id="busuanzi_value_site_pv" style="display:none"></span>
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  /* ============ 皮肤切换 ============ */
+  var SKIN_LIST = ['default', 'cyberpunk', 'terminal', 'classical', 'starry'];
+  var BGM_BY_SKIN = {
+    default: 'bgm.mp3',
+    cyberpunk: 'templates/bgm-cyberpunk.mp3',
+    terminal: 'templates/bgm-terminal.mp3',
+    classical: 'templates/bgm-classical.mp3',
+    starry: 'templates/bgm-starry.mp3'
+  };
+  var TITLE_BY_SKIN = {
+    default: 'BXR · 个人主页',
+    cyberpunk: 'BXR // CYBERPUNK',
+    terminal: 'bxr@home: ~/profile',
+    classical: 'BXR · 少年行',
+    starry: 'BXR · 星野'
+  };
+  var SONG_BY_SKIN = {
+    default: 'Carefree',
+    cyberpunk: 'Crypto',
+    terminal: '8bit Dungeon Boss',
+    classical: 'Eastern Thought',
+    starry: 'Heart of Nowhere'
+  };
+  var SKIN_NAME = {
+    default: '✨ 已切换：极光',
+    cyberpunk: '🌃 已切换：赛博朋克',
+    terminal: '💻 已切换：命令行',
+    classical: '🏮 已切换：古风',
+    starry: '🌌 已切换：星空'
+  };
+  var FX_BY_SKIN = {
+    default: ['#7c6cff', '#22d3ee', '#f472b6', '#ffd166'],
+    cyberpunk: ['#00fff7', '#ff2bd6', '#ffe600', '#ffffff'],
+    terminal: ['#33ff66', '#ffcc33', '#6fdc9c', '#ffffff'],
+    classical: ['#a63a2b', '#a8863d', '#6d5f4c', '#b03a2e'],
+    starry: ['#7aa2ff', '#b48cff', '#ffe9a8', '#ffffff']
+  };
+  var currentSkin = document.documentElement.className.replace('skin-', '');
+  var bgm = document.getElementById('bgm');
+  var btn = document.getElementById('musicBtn');
+  var tip = document.getElementById('musicTip');
+  var player = document.getElementById('player');
+  var playerBar = document.getElementById('playerBar');
+  var playerKnob = document.getElementById('playerKnob');
+  var playerTime = document.getElementById('playerTime');
+  var playerTrack = document.getElementById('playerTrack');
+  var playerVolume = document.getElementById('playerVolume');
+  var playerSong = document.getElementById('playerSong');
+  var playing = false;
+
+  function syncActiveButtons(skin) {
+    var btns = document.querySelectorAll('button[data-skin]');
+    for (var i = 0; i < btns.length; i++) {
+      var on = btns[i].getAttribute('data-skin') === skin;
+      btns[i].classList.toggle('active', on);
+      btns[i].classList.toggle('cur', on);
+    }
+  }
+
+  /* ============ 皮肤资源懒加载（skins/skin-X.css + .js） ============ */
+  var loadedSkinCss = { default: true, cyberpunk: true, terminal: true, classical: true, starry: true }, loadedSkinJs = {};
+  /* 皮肤切换后分段依次浮现（像刷新时的入场动画，不依赖 IntersectionObserver） */
+  function forceRevealActive() {
+    var views = document.querySelectorAll('.skin-view');
+    var active = null;
+    for (var i = 0; i < views.length; i++) {
+      if (views[i].getAttribute('data-skin') !== currentSkin) { continue; }
+      active = views[i];
+    }
+    if (!active) { return; }
+    var els = active.querySelectorAll('.reveal');
+    var d = 60;
+    for (var j = 0; j < els.length; j++) {
+      (function (el, delay) {
+        setTimeout(function () {
+          el.classList.add('in');
+          revealCards(el);
+        }, delay);
+      })(els[j], d);
+      d += 150;
+    }
+  }
+  function ensureSkinAssets(skin) {
+    if (!loadedSkinCss[skin]) {
+      var link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = 'skins/skin-' + skin + '.css';
+      var tries = 0;
+      link.onerror = function () {
+        tries++;
+        if (tries <= 1) {
+          setTimeout(function () {
+            var l2 = document.createElement('link');
+            l2.rel = 'stylesheet';
+            l2.href = 'skins/skin-' + skin + '.css?retry=1';
+            document.head.appendChild(l2);
+          }, 400);
+        } else {
+          console.warn('[BXR] 皮肤样式加载失败: skins/skin-' + skin + '.css（确认 skins/ 目录已上传）');
+        }
+      };
+      document.head.appendChild(link);
+      loadedSkinCss[skin] = true;
+    }
+    if (!loadedSkinJs[skin]) {
+      var sc = document.createElement('script');
+      sc.src = 'skins/skin-' + skin + '.js';
+      document.head.appendChild(sc);
+      loadedSkinJs[skin] = true;
+    }
+  }
+  var firstApply = true;
+  var toast = document.getElementById('toast');
+  var toastTimer = null;
+  function showToast(msg, dur) {
+    if (!toast) { return; }
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { toast.classList.remove('show'); }, dur || 2200);
+  }
+  function applySkin(skin) {
+    if (SKIN_LIST.indexOf(skin) === -1) { return; }
+    currentSkin = skin;
+    document.documentElement.className = 'skin-' + skin;
+    try { localStorage.setItem('bxr_style', skin); } catch (e) {}
+    syncActiveButtons(skin);
+    ensureSkinAssets(skin);
+    var ubLabel = document.getElementById('updatesBtn');
+    if (ubLabel) { ubLabel.textContent = skin === 'terminal' ? '[LOG]' : '📜'; }
+    if (!firstApply) {
+      forceRevealActive();
+      if (skin === 'terminal' && window.bxrTerminalReplay) { window.bxrTerminalReplay(); }
+      showToast(SKIN_NAME[skin]);
+    }
+    firstApply = false;
+    document.title = TITLE_BY_SKIN[skin];
+    bgm.src = BGM_BY_SKIN[skin];
+    playerSong.textContent = '♪ ' + SONG_BY_SKIN[skin];
+    if (playing) {
+      bgm.load();
+      var p = bgm.play();
+      if (p && p.catch) { p.catch(function () {}); }
+      tip.textContent = '♪ 正在播放：' + SONG_BY_SKIN[skin];
+      tip.classList.add('show');
+      clearTimeout(btn._t);
+    }
+  }
+  window.bxrSwitchSkin = applySkin;
+  var skinBtns = document.querySelectorAll('button[data-skin]');
+  for (var i = 0; i < skinBtns.length; i++) {
+    skinBtns[i].addEventListener('click', function () {
+      applySkin(this.getAttribute('data-skin'));
+    });
+  }
+  document.addEventListener('keydown', function (e) {
+    var t = e.target;
+    if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA')) { return; }
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+      var ci = SKIN_LIST.indexOf(currentSkin);
+      var ni = (e.key === 'ArrowRight' ? ci + 1 : ci - 1 + SKIN_LIST.length) % SKIN_LIST.length;
+      applySkin(SKIN_LIST[ni]);
+    } else if (e.key === 'Escape') {
+      if (updatesPanel) { updatesPanel.classList.remove('show'); }
+      if (player) { player.classList.remove('show'); }
+    } else if (e.key === ' ' || e.code === 'Space') {
+      e.preventDefault();
+      btn.click();
+    }
+  });
+  applySkin(currentSkin);
+  /* 播放器切歌：皮肤与 BGM 绑定，上一首/下一首 = 循环切换皮肤 */
+  var prevBtn = document.getElementById('playerPrev');
+  var nextBtn = document.getElementById('playerNext');
+  function cycleSkin(delta) {
+    var ci = SKIN_LIST.indexOf(currentSkin);
+    applySkin(SKIN_LIST[(ci + delta + SKIN_LIST.length) % SKIN_LIST.length]);
+  }
+  if (prevBtn) { prevBtn.addEventListener('click', function () { cycleSkin(-1); }); }
+  if (nextBtn) { nextBtn.addEventListener('click', function () { cycleSkin(1); }); }
+  /* 启动时预载全部皮肤 JS（DOM 已就绪，特效正常初始化；切换时零等待） */
+  for (var si = 0; si < SKIN_LIST.length; si++) { ensureSkinAssets(SKIN_LIST[si]); }
+
+
+
+
+  /* ============ 滚动入场（极光） ============ */
+  var reveals = document.querySelectorAll('.reveal');
+  function revealCards(root) {
+    var cards = root.querySelectorAll('.grid .card');
+    for (var i = 0; i < cards.length; i++) {
+      cards[i].style.animationDelay = (i * 45) + 'ms';
+      cards[i].classList.add('in');
+      if (cards[i].getAttribute('data-rb') !== '1') {
+        cards[i].setAttribute('data-rb', '1');
+        cards[i].addEventListener('animationend', function () {
+          this.style.animation = 'none';
+          this.style.opacity = '1';
+          this.style.transform = 'none';
+          this.style.animationDelay = '';
+        });
+      }
+    }
+  }
+  function unrevealCards(root) {
+    var cards = root.querySelectorAll('.grid .card');
+    for (var i = 0; i < cards.length; i++) {
+      cards[i].classList.remove('in');
+      cards[i].style.animation = '';
+      cards[i].style.opacity = '';
+      cards[i].style.transform = '';
+      cards[i].style.animationDelay = '';
+    }
+  }
+  if ('IntersectionObserver' in window && reveals.length) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          e.target.classList.add('in');
+          revealCards(e.target);
+        } else {
+          e.target.classList.remove('in');
+          unrevealCards(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach(function (el) { io.observe(el); });
+  } else {
+    reveals.forEach(function (el) {
+      el.classList.add('in');
+      revealCards(el);
+    });
+  }
+
+  /* ============ 导航滚动高亮（scrollspy） ============ */
+  (function () {
+    var sections = document.querySelectorAll('section[id], .divider[id]');
+    var map = {};
+    for (var i = 0; i < sections.length; i++) {
+      var sec = sections[i];
+      var id = sec.id;
+      if (!/^(about|works|links|themes)-/.test(id) && !/^term-(about|works|links|themes)$/.test(id)) { continue; }
+      var view = sec.closest('.skin-view');
+      if (!view) { continue; }
+      var link = view.querySelector('nav a[href="#' + id + '"], .term-nav a[href="#' + id + '"]');
+      if (!link) { continue; }
+      sec._spyLink = link;
+      sec._spyView = view;
+      map[id] = sec;
+    }
+    function spyClear(view) {
+      var links = view.querySelectorAll('nav a.active, .term-nav a.active');
+      for (var j = 0; j < links.length; j++) { links[j].classList.remove('active'); }
+    }
+    if ('IntersectionObserver' in window) {
+      var spyIO = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          var s = e.target;
+          if (s._spyLink && e.isIntersecting) {
+            spyClear(s._spyView);
+            s._spyLink.classList.add('active');
+          }
+        });
+      }, { rootMargin: '-35% 0px -55% 0px', threshold: 0 });
+      for (var k in map) { spyIO.observe(map[k]); }
+      window.addEventListener('scroll', function () {
+        if (window.scrollY < 120) {
+          for (var k2 in map) { map[k2]._spyLink.classList.remove('active'); }
+        }
+      }, { passive: true });
+    }
+  })();
+
+  /* ============ 作品卡片技术标签 ============ */
+  var WORK_TAGS = [
+    ['js', 'canvas'], ['canvas'], ['js'], ['css'], ['canvas'], ['canvas'], ['3d'],
+    ['canvas'], ['canvas'], ['canvas'], ['js'], ['js'], ['css'], ['js']
+  ];
+  function addWorkTags() {
+    var grids = document.querySelectorAll('section[id^="works-"] .grid');
+    for (var g = 0; g < grids.length; g++) {
+      var cards = grids[g].children;
+      for (var i = 0; i < cards.length; i++) {
+        var tags = WORK_TAGS[i];
+        if (!tags) { continue; }
+        var sp = document.createElement('span');
+        sp.className = 'tags';
+        for (var t = 0; t < tags.length; t++) {
+          var tg = document.createElement('span');
+          tg.className = 'tag';
+          tg.textContent = tags[t];
+          sp.appendChild(tg);
+        }
+        cards[i].appendChild(sp);
+      }
+    }
+    var wls = document.querySelectorAll('.term-body .works .wline');
+    for (var w = 0; w < wls.length; w++) {
+      var wTags = WORK_TAGS[w];
+      if (!wTags) { continue; }
+      var ts = document.createElement('span');
+      ts.className = 'ts';
+      ts.textContent = '[' + wTags.join(' ') + ']';
+      var ds = wls[w].querySelector('.ds');
+      if (ds) { wls[w].insertBefore(ts, ds); }
+    }
+  }
+  addWorkTags();
+
+  /* ============ 音乐播放器 ============ */
+  bgm.addEventListener('error', function () {
+    tip.textContent = '⚠ BGM 文件缺失，请放入音乐文件';
+    tip.classList.add('show');
+  });
+  btn.addEventListener('click', function () {
+    if (playing) {
+      bgm.pause();
+      btn.classList.remove('playing');
+      btn.textContent = '🎵';
+      tip.textContent = '⏸ 音乐已暂停';
+      player.classList.remove('show');
+    } else {
+      var p = bgm.play();
+      if (p && p.catch) { p.catch(function () {}); }
+      btn.classList.add('playing');
+      btn.textContent = '🎶';
+      tip.textContent = '♪ 正在播放：' + SONG_BY_SKIN[currentSkin];
+      player.classList.add('show');
+    }
+    playing = !playing;
+    tip.classList.add('show');
+    clearTimeout(btn._t);
+    if (!playing) { btn._t = setTimeout(function () { tip.classList.remove('show'); }, 1600); }
+  });
+  function formatTime(sec) {
+    if (!isFinite(sec)) { return '0:00'; }
+    var m = Math.floor(sec / 60);
+    var s = Math.floor(sec % 60);
+    return m + ':' + (s < 10 ? '0' : '') + s;
+  }
+  bgm.addEventListener('loadedmetadata', function () {
+    playerTime.textContent = '0:00 / ' + formatTime(bgm.duration);
+  });
+  bgm.addEventListener('timeupdate', function () {
+    if (bgm.duration) {
+      var pct = bgm.currentTime / bgm.duration * 100;
+      playerBar.style.width = pct + '%';
+      playerKnob.style.left = pct + '%';
+      playerTime.textContent = formatTime(bgm.currentTime) + ' / ' + formatTime(bgm.duration);
+    }
+  });
+  var seeking = false;
+  function seekTo(clientX) {
+    var rect = playerTrack.getBoundingClientRect();
+    var pct = Math.min(Math.max((clientX - rect.left) / rect.width, 0), 1);
+    if (bgm.duration) { bgm.currentTime = pct * bgm.duration; }
+  }
+  playerTrack.addEventListener('mousedown', function (e) { seeking = true; seekTo(e.clientX); });
+  window.addEventListener('mousemove', function (e) { if (seeking) { seekTo(e.clientX); } });
+  window.addEventListener('mouseup', function () { seeking = false; });
+  bgm.volume = 0.7;
+    try {
+    var savedVol = localStorage.getItem('bxr_vol');
+    if (savedVol !== null && savedVol >= 0 && savedVol <= 100) {
+      playerVolume.value = savedVol;
+      bgm.volume = savedVol / 100;
+      document.getElementById('playerVolVal').textContent = savedVol + '%';
+    }
+  } catch (e) {}
+  playerVolume.addEventListener('input', function () {
+    bgm.volume = this.value / 100;
+    var vv = document.getElementById('playerVolVal');
+    if (vv) { vv.textContent = this.value + '%'; }
+    try { localStorage.setItem('bxr_vol', this.value); } catch (e2) {}
+  });
+  playerSong.textContent = '♪ ' + SONG_BY_SKIN[currentSkin];
+  var topBtn = document.getElementById('topBtn');
+  var scrollbar = document.getElementById('scrollbar');
+  if (topBtn) {
+    window.addEventListener('scroll', function () {
+      topBtn.classList.toggle('show', window.scrollY > 320);
+      var doc = document.documentElement;
+      var max = doc.scrollHeight - doc.clientHeight;
+      if (scrollbar && max > 0) { scrollbar.style.width = (window.scrollY / max * 100) + '%'; }
+    }, { passive: true });
+    topBtn.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+    /* ============ 鼠标拖尾 + 点击特效（按皮肤风格） ============ */
+  var layer = document.createElement('div');
+  layer.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:9999;overflow:hidden;';
+  document.body.appendChild(layer);
+  var lastTrailTime = 0;
+  var CODE_CHARS = ['>', '_', '$', '#', '%', '&'];
+  function fxColors() { return FX_BY_SKIN[currentSkin] || FX_BY_SKIN.default; }
+  function fxType() {
+    var m = { default: 'spark', cyberpunk: 'pixel', terminal: 'code', classical: 'petal', starry: 'star' };
+    return m[currentSkin] || 'spark';
+  }
+  function makeParticle(type, x, y, opts) {
+    var el = document.createElement('span');
+    var size = opts.size || 12;
+    if (type === 'petal') {
+      el.style.cssText = 'position:absolute;left:0;top:0;width:' + size + 'px;height:' + size + 'px;' +
+        'background:linear-gradient(135deg,#ffd6e0,#ff9eb5);border-radius:100% 0 100% 0;opacity:1;' +
+        'transform:translate(' + x + 'px,' + y + 'px) rotate(' + (Math.random() * 360) + 'deg);' +
+        'transition:transform 1.3s ease-out,opacity 1.3s ease-out;';
+    } else if (type === 'pixel') {
+      el.style.cssText = 'position:absolute;left:0;top:0;width:' + (size - 4) + 'px;height:' + (size - 4) + 'px;' +
+        'background:' + opts.color + ';opacity:1;' +
+        'transform:translate(' + x + 'px,' + y + 'px);' +
+        'transition:transform .7s ease-out,opacity .7s ease-out;';
+    } else if (type === 'code') {
+      el.textContent = CODE_CHARS[Math.floor(Math.random() * CODE_CHARS.length)];
+      el.style.cssText = 'position:absolute;left:0;top:0;font-family:Consolas,monospace;font-size:' + size + 'px;color:' + opts.color + ';opacity:1;' +
+        'transform:translate(' + x + 'px,' + y + 'px);' +
+        'transition:transform .8s ease-out,opacity .8s ease-out;';
+    } else {
+      el.textContent = type === 'star' ? '·' : '✦';
+      el.style.cssText = 'position:absolute;left:0;top:0;font-size:' + size + 'px;color:' + opts.color + ';opacity:1;' +
+        'transform:translate(' + x + 'px,' + y + 'px);' +
+        'transition:transform .9s ease-out,opacity .9s ease-out;';
+    }
+    return el;
+  }
+  function spawnTrail(x, y, color) {
+    var type = fxType();
+    var el = makeParticle(type, x, y, { color: color });
+    layer.appendChild(el);
+    var dx, dy, dur;
+    if (type === 'petal') { dx = (Math.random() * 60 - 30); dy = 40 + Math.random() * 50; dur = 1400; }
+    else if (type === 'pixel') { dx = (Math.random() * 40 - 20); dy = -30 - Math.random() * 30; dur = 700; }
+    else if (type === 'code') { dx = (Math.random() * 40 - 20); dy = -40 - Math.random() * 30; dur = 800; }
+    else { dx = (Math.random() * 44 - 22); dy = -26 - Math.random() * 40; dur = 900; }
+    requestAnimationFrame(function () {
+      el.style.transform = 'translate(' + (x + dx) + 'px,' + (y + dy) + 'px) rotate(' + (Math.random() * 360) + 'deg)';
+      el.style.opacity = '0';
+    });
+    setTimeout(function () { el.remove(); }, dur + 250);
+  }
+  document.addEventListener('mousemove', function (e) {
+    var now = Date.now();
+    if (now - lastTrailTime > 35) {
+      lastTrailTime = now;
+      var cols = fxColors();
+      spawnTrail(e.clientX, e.clientY, cols[Math.floor(Math.random() * cols.length)]);
+      spawnTrail(e.clientX, e.clientY, cols[Math.floor(Math.random() * cols.length)]);
+    }
+  });
+  function burst(x, y) {
+    var cols = fxColors();
+    var type = fxType();
+    var n = type === 'petal' ? 14 : 10;
+    for (var i = 0; i < n; i++) {
+      (function (angle, dist) {
+        var color = cols[Math.floor(Math.random() * cols.length)];
+        var el = makeParticle(type, x, y, { color: color, size: type === 'pixel' ? 10 : 13 });
+        layer.appendChild(el);
+        var dx = Math.cos(angle) * dist;
+        var dy = Math.sin(angle) * dist + (type === 'petal' ? 30 : 0);
+        var dur = type === 'petal' ? 1100 : 500;
+        requestAnimationFrame(function () {
+          el.style.transition = 'transform ' + dur + 'ms ease-out,opacity ' + dur + 'ms ease-out';
+          el.style.transform = 'translate(' + (x + dx) + 'px,' + (y + dy) + 'px) rotate(' + (Math.random() * 540 - 270) + 'deg)';
+          el.style.opacity = '0';
+        });
+        setTimeout(function () { el.remove(); }, dur + 200);
+      })(Math.random() * Math.PI * 2, 24 + Math.random() * 42);
+    }
+  }
+  document.addEventListener('mousedown', function (e) { burst(e.clientX, e.clientY); });
+  function ringBurst(x, y) {
+    var cols = fxColors();
+    var type = fxType();
+    var color = cols[Math.floor(Math.random() * cols.length)];
+    var ring = document.createElement('span');
+    ring.style.cssText = 'position:absolute;left:0;top:0;width:150px;height:150px;' +
+      'border:2px solid ' + color + ';border-radius:50%;opacity:.9;pointer-events:none;' +
+      'transform:translate(' + (x - 75) + 'px,' + (y - 75) + 'px) scale(.15);' +
+      'transition:transform .75s ease-out,opacity .75s ease-out;';
+    layer.appendChild(ring);
+    requestAnimationFrame(function () {
+      ring.style.transform = 'translate(' + (x - 75) + 'px,' + (y - 75) + 'px) scale(1)';
+      ring.style.opacity = '0';
+    });
+    setTimeout(function () { ring.remove(); }, 850);
+    var n = type === 'petal' ? 18 : 12;
+    for (var i = 0; i < n; i++) {
+      (function (angle) {
+        var c2 = cols[Math.floor(Math.random() * cols.length)];
+        var el = makeParticle(type, x, y, { color: c2, size: type === 'pixel' ? 10 : 13 });
+        layer.appendChild(el);
+        var dx = Math.cos(angle) * 95;
+        var dy = Math.sin(angle) * 95 + (type === 'petal' ? 18 : 0);
+        var dur = type === 'petal' ? 1200 : 650;
+        requestAnimationFrame(function () {
+          el.style.transition = 'transform ' + dur + 'ms ease-out,opacity ' + dur + 'ms ease-out';
+          el.style.transform = 'translate(' + (x + dx) + 'px,' + (y + dy) + 'px) rotate(' + (Math.random() * 540 - 270) + 'deg)';
+          el.style.opacity = '0';
+        });
+        setTimeout(function () { el.remove(); }, dur + 200);
+      })((i / n) * Math.PI * 2);
+    }
+  }
+  document.addEventListener('dblclick', function (e) { ringBurst(e.clientX, e.clientY); });
+
+
+  /* ============ 访客统计：busuanzi 写入所有皮肤页脚 ============ */
+  var bzReady = false;
+  var bzTimer = setInterval(function () {
+    var uv = document.getElementById('busuanzi_value_site_uv');
+    var pv = document.getElementById('busuanzi_value_site_pv');
+    if (uv && uv.textContent && uv.textContent !== '…' && uv.textContent !== '') { bzReady = true; }
+    if (bzReady) {
+      var uvs = document.querySelectorAll('.bz-uv');
+      for (var i = 0; i < uvs.length; i++) { uvs[i].textContent = uv.textContent; }
+      var pvs = document.querySelectorAll('.bz-pv');
+      for (var j = 0; j < pvs.length; j++) { pvs[j].textContent = pv.textContent; }
+      clearInterval(bzTimer);
+    }
+  }, 800);
+  /* 本地兜底：不蒜子 9 秒无响应时用本地计数，保证页脚有数字 */
+  setTimeout(function () {
+    if (bzReady) { return; }
+    var n = parseInt(localStorage.getItem('bxr_visits') || '0', 10) + 1;
+    localStorage.setItem('bxr_visits', String(n));
+    var uvs = document.querySelectorAll('.bz-uv');
+    for (var i = 0; i < uvs.length; i++) { uvs[i].textContent = n; }
+    var pvs = document.querySelectorAll('.bz-pv');
+    for (var j = 0; j < pvs.length; j++) { pvs[j].textContent = n; }
+  }, 9000);
+
+
+  /* ============ 访客城市（ipwho.is） ============ */
+  var locEls = document.querySelectorAll('.visitor-city');
+  if (locEls.length) {
+    fetch('https://ipwho.is/')
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        if (!d || !d.city) { return; }
+        var txt = '📍 ' + (d.flag && d.flag.emoji ? d.flag.emoji + ' ' : '') + d.city + (d.country && d.city !== d.country ? ' · ' + d.country : '');
+        for (var i = 0; i < locEls.length; i++) { locEls[i].textContent = txt; }
+      })
+      .catch(function () {});
+  }
+  /* ============ GitHub 活数据 ============ */
+  fetch('https://api.github.com/repos/avrox-163/avrox-163.github.io')
+    .then(function (r) { return r.json(); })
+    .then(function (d) {
+      if (!d || !d.full_name) { return; }
+      var text = '🐙 GitHub ⭐ ' + (d.stargazers_count || 0) + ' · 最近更新 ' + (d.pushed_at || '').slice(0, 10);
+      var els = document.querySelectorAll('.ghStat');
+      for (var i = 0; i < els.length; i++) { els[i].textContent = text; }
+    })
+    .catch(function () {});
+
+  /* ============ 年份 ============ */
+  var y = String(new Date().getFullYear());
+  var yels = document.querySelectorAll('.year');
+  for (var i = 0; i < yels.length; i++) { yels[i].textContent = y; }
+
+
+
+
+  /* ============ 最近更新窗口 ============ */
+  var UPDATES = [
+    { d: '08-23', t: '版本升级 v2.2.0.260823 · 保密下载系统 download.html（AES-256 加密防 F12）', f: 'index.html · download.html · 404.html', s: 'all' },
+    { d: '08-23', t: '终端交互命令 · 导航高亮 · 进度条 · toast · Hero 按钮 · 作品标签 · 播放器切歌 · 404 彩蛋 · 移动端底栏', f: 'index.html · skins/', s: 'all' },
+    { d: '08-21', t: 'UI 升级：导航高亮 · 滚动进度条 · 切肤提示 · Hero 按钮 · 作品标签 · 播放器切歌 · 快捷键提示 · 终端命令 · 404 彩蛋 · 移动端底栏', f: 'index.html · skins/ · 404.html', s: 'all' },
+    { d: '08-21', t: '访客城市 · 键盘←→切肤 · 双击特效 · CSS/JS 按皮肤拆分', f: 'index.html · skins/', s: 'all' },
+    { d: '08-21', t: '樱花飘落背景 + 花瓣拖尾/双击绽放', f: 'index.html · skins/', s: 'classical' },
+    { d: '08-21', t: '北极光幕布升级（双色反向流动）', f: 'skins/skin-default.css', s: 'aurora' },
+    { d: '08-21', t: '终端导航栏 + 友链可点 + 命令敲字', f: 'index.html · skins/', s: 'terminal' },
+    { d: '08-21', t: '像素拖尾（赛博）· 星点/流星（星空）', f: 'skins/', s: 'cyberpunk' },
+    { d: '08-21', t: '五套 UI 恢复原版架构，合成一个 index', f: 'index.html', s: 'all' },
+    { d: '08-21', t: '古风圆角化 + 方形印章 + 竖排题词原版', f: 'skins/skin-classical.css', s: 'classical' },
+    { d: '08-21', t: '修复皮肤切换按钮（themes 未绑定）', f: 'index.html', s: 'all' },
+    { d: '08-21', t: '按风格接入 loader', f: 'index.html · templates/loader-*.html', s: 'all' },
+    { d: '08-21', t: '不蒜子 https + 本地兜底', f: 'index.html', s: 'all' },
+    { d: '08-21', t: '音乐播放器：进度条拖拽 + 音量调节', f: 'index.html', s: 'all' },
+    { d: '08-21', t: '版本升级 v2.1.0.260821 Alpha', f: 'index.html · 404.html', s: 'all' }
+  ];
+  var updatesList = document.getElementById('updatesList');
+  var TAG_NAME = { all: '全站', aurora: '极光', cyberpunk: '赛博', terminal: '终端', classical: '古风', starry: '星空' };
+  var updatesFilter = 'all';
+  function renderUpdates() {
+    updatesList.innerHTML = '';
+    for (var i = 0; i < UPDATES.length; i++) {
+      var u = UPDATES[i];
+      if (updatesFilter !== 'all' && u.s !== updatesFilter) { continue; }
+      var li = document.createElement('li');
+      li.innerHTML = '<span class="skin-tag s-' + (u.s || 'all') + '">' + (TAG_NAME[u.s || 'all']) + '</span>' +
+        '<span class="d">' + u.d + '</span>' + u.t +
+        '<span class="f">📄 ' + u.f + '</span>';
+      updatesList.appendChild(li);
+    }
+  }
+  if (updatesList) {
+    renderUpdates();
+    var filterBtns = document.querySelectorAll('.updates-filter button');
+    for (var i = 0; i < filterBtns.length; i++) {
+      filterBtns[i].addEventListener('click', function () {
+        updatesFilter = this.getAttribute('data-f');
+        for (var j = 0; j < filterBtns.length; j++) { filterBtns[j].classList.toggle('cur', filterBtns[j] === this); }
+        renderUpdates();
+      });
+    }
+    var updatesBtn = document.getElementById('updatesBtn');
+    var updatesPanel = document.getElementById('updatesPanel');
+    updatesBtn.addEventListener('click', function () {
+      updatesPanel.classList.toggle('show');
+    });
+  }
+  document.addEventListener('click', function (e) {
+    var upWrap = document.getElementById('updates');
+    var upPanel = document.getElementById('updatesPanel');
+    if (upPanel && upWrap && !upWrap.contains(e.target)) {
+      upPanel.classList.remove('show');
+    }
+  });
+
+  /* ============ 首次访问：快捷键提示 ============ */
+  try {
+    if (!localStorage.getItem('bxr_hint')) {
+      localStorage.setItem('bxr_hint', '1');
+      setTimeout(function () { showToast('🎹 ← → 换皮肤 · Space 音乐 · ESC 关闭', 3800); }, 2200);
+    }
+  } catch (e) {}
+
+})();
+</script>
+</body>
+</html>

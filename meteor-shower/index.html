@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>流星雨</title>
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #000;
+        }
+        canvas {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<canvas id="sky"></canvas>
+<script>
+(function () {
+    'use strict';
+
+    var canvas = document.getElementById('sky');
+    var ctx = canvas.getContext('2d');
+    var width = 0;
+    var height = 0;
+
+    var STAR_COUNT = 220;   // 星星数量（用像素点绘制，数量适中）
+    var METEOR_COUNT = 14;  // 流星数量
+    var stars = [];
+    var meteors = [];
+
+    /* ---------- 星星 ---------- */
+    function createStar() {
+        return {
+            x: Math.random() * 100,
+            y: Math.random() * 100,
+            size: Math.random() * 1.4 + 0.4,
+            twinkle: Math.random() * Math.PI * 2,
+            speed: Math.random() * 0.08 + 0.03
+        };
+    }
+
+    function drawStars() {
+        for (var i = 0; i < stars.length; i++) {
+            var star = stars[i];
+            star.twinkle += star.speed;
+            // 星星明暗闪烁（用百分比坐标，缩放窗口后自动适配）
+            var px = star.x / 100 * width;
+            var py = star.y / 100 * height;
+            var alpha = 0.35 + 0.6 * (0.5 + 0.5 * Math.sin(star.twinkle));
+            ctx.globalAlpha = alpha;
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(px, py, star.size, star.size);
+        }
+        ctx.globalAlpha = 1;
+    }
+
+    /* ---------- 流星 ---------- */
+    function createMeteor() {
+        var angleRad = 30 * Math.PI / 180; // 倾斜角
+        var length = Math.random() * 80 + 120;
+        return {
+            x: Math.random() * width,
+            y: Math.random() * height * 0.6,
+            length: length,
+            offsetX: Math.cos(angleRad) * 6,
+            offsetY: Math.sin(angleRad) * 6,
+            width: length * Math.cos(angleRad),
+            height: length * Math.sin(angleRad),
+            alpha: 1
+        };
+    }
+
+    function updateAndDrawMeteors() {
+        for (var i = 0; i < meteors.length; i++) {
+            var meteor = meteors[i];
+            meteor.x -= meteor.offsetX;
+            meteor.y += meteor.offsetY;
+            meteor.alpha -= 0.006;
+
+            if (meteor.alpha <= 0 || meteor.y > height + 100 || meteor.x < -200) {
+                meteors[i] = createMeteor();
+                continue;
+            }
+
+            var gradient = ctx.createLinearGradient(
+                meteor.x, meteor.y,
+                meteor.x + meteor.width, meteor.y - meteor.height
+            );
+            gradient.addColorStop(0, 'rgba(255,255,255,' + meteor.alpha + ')');
+            gradient.addColorStop(0.4, 'rgba(220,225,255,' + meteor.alpha * 0.6 + ')');
+            gradient.addColorStop(1, 'rgba(255,255,255,0)');
+
+            ctx.strokeStyle = gradient;
+            ctx.lineWidth = 1.6;
+            ctx.beginPath();
+            ctx.moveTo(meteor.x, meteor.y);
+            ctx.lineTo(meteor.x + meteor.width, meteor.y - meteor.height);
+            ctx.stroke();
+        }
+    }
+
+    /* ---------- 月亮（右上角，canvas 绘制） ---------- */
+    function drawMoon() {
+        var radius = 46;
+        var x = width - radius - 40;
+        var y = radius + 40;
+
+        // 月晕
+        var glow = ctx.createRadialGradient(x, y, radius * 0.3, x, y, radius * 2.4);
+        glow.addColorStop(0, 'rgba(255, 250, 220, 0.30)');
+        glow.addColorStop(1, 'rgba(255, 250, 220, 0)');
+        ctx.fillStyle = glow;
+        ctx.beginPath();
+        ctx.arc(x, y, radius * 2.4, 0, Math.PI * 2);
+        ctx.fill();
+
+        // 月面
+        var moon = ctx.createRadialGradient(x - radius * 0.35, y - radius * 0.35, radius * 0.15, x, y, radius);
+        moon.addColorStop(0, '#fffbe6');
+        moon.addColorStop(1, '#e2d5a8');
+        ctx.fillStyle = moon;
+        ctx.beginPath();
+        ctx.arc(x, y, radius, 0, Math.PI * 2);
+        ctx.fill();
+
+        // 环形山
+        ctx.fillStyle = 'rgba(190, 175, 130, 0.55)';
+        ctx.beginPath();
+        ctx.arc(x - 12, y - 6, 6, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(x + 14, y + 12, 4, 0, Math.PI * 2);
+        ctx.fill();
+    }
+
+    /* ---------- 主循环 ---------- */
+    function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+    }
+
+    function frame() {
+        // 半透明黑覆盖形成拖尾渐隐，不会擦掉月亮
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.18)';
+        ctx.fillRect(0, 0, width, height);
+
+        drawStars();
+        updateAndDrawMeteors();
+        drawMoon();
+        requestAnimationFrame(frame);
+    }
+
+    function init() {
+        resize();
+        for (var i = 0; i < STAR_COUNT; i++) { stars.push(createStar()); }
+        for (var j = 0; j < METEOR_COUNT; j++) { meteors.push(createMeteor()); }
+        ctx.fillStyle = '#000000';
+        ctx.fillRect(0, 0, width, height);
+        requestAnimationFrame(frame);
+    }
+
+    window.addEventListener('resize', resize);
+    window.addEventListener('load', init);
+})();
+</script>
+</body>
+</html>

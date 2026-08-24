@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="refresh" content="4;url=../index.html?style=starry">
+<title>加载中 · BXR 星野</title>
+<link rel="icon" href="../me.jpg" type="image/jpeg">
+<style>
+  :root {
+    --glass: rgba(255, 255, 255, 0.07);
+    --glass-border: rgba(255, 255, 255, 0.16);
+    --txt: #eef2ff;
+    --dim: #a7b0d8;
+    --star: #ffe9a8;
+    --blue: #7aa2ff;
+    --purple: #b48cff;
+    --font: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    min-height: 100vh; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font); color: var(--txt);
+    background:
+      radial-gradient(900px 600px at 80% -10%, rgba(90, 110, 255, .22), transparent 60%),
+      radial-gradient(800px 600px at 0% 100%, rgba(150, 90, 255, .18), transparent 60%),
+      linear-gradient(160deg, #060a1f 0%, #0b1233 45%, #0a0d24 100%);
+  }
+  #sky { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+  .nebula {
+    position: fixed; border-radius: 50%; filter: blur(80px); opacity: .2; z-index: 0; pointer-events: none;
+  }
+  .neb-1 { width: 420px; height: 420px; top: -120px; left: -110px; background: #3d5afe; }
+  .neb-2 { width: 380px; height: 380px; bottom: -110px; right: -90px; background: #7c4dff; }
+
+  .loader {
+    position: relative; z-index: 1; width: min(420px, 86vw); text-align: center;
+    padding: 40px 36px 36px;
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 22px;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    box-shadow: 0 18px 50px rgba(0, 0, 0, .45);
+  }
+  .loader .avatar {
+    width: 88px; height: 88px; border-radius: 50%; object-fit: cover; object-position: center 30%;
+    border: 2px solid rgba(255, 255, 255, .35);
+    box-shadow: 0 0 34px rgba(122, 162, 255, .5);
+    animation: float 3s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  .loader .title {
+    margin-top: 18px; font-size: 28px; font-weight: 800; letter-spacing: 2px;
+    background: linear-gradient(90deg, #ffffff, var(--blue), var(--purple));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .loader .sub { margin-top: 8px; font-size: 14px; color: var(--dim); letter-spacing: 1px; }
+  .loader .sub b { color: var(--star); font-weight: 600; }
+
+  .track {
+    margin-top: 26px; height: 10px; border-radius: 999px; overflow: hidden;
+    background: rgba(255, 255, 255, .1);
+    border: 1px solid var(--glass-border);
+  }
+  .bar {
+    height: 100%; width: 0; border-radius: 999px;
+    background: linear-gradient(90deg, var(--blue), var(--purple));
+    box-shadow: 0 0 18px rgba(122, 162, 255, .8);
+    transition: width .1s linear;
+  }
+  .status {
+    margin-top: 12px; display: flex; justify-content: space-between;
+    font-size: 13px; color: var(--dim); letter-spacing: 1px;
+  }
+  .status b { color: var(--blue); font-weight: 600; }
+  .skip {
+    margin-top: 22px; padding: 10px 34px; cursor: pointer;
+    font-size: 14px; letter-spacing: 2px; color: #fff;
+    background: rgba(255, 255, 255, .08);
+    border: 1px solid var(--glass-border); border-radius: 999px;
+    transition: .3s;
+  }
+  .skip:hover { background: rgba(122, 162, 255, .3); border-color: var(--blue); box-shadow: 0 0 20px rgba(122, 162, 255, .4); }
+</style>
+</head>
+<body>
+<canvas id="sky"></canvas>
+<div class="nebula neb-1"></div>
+<div class="nebula neb-2"></div>
+
+<div class="loader">
+  <img class="avatar" src="../me.jpg" alt="BXR">
+  <div class="title">BXR · 星野</div>
+  <div class="sub">正在穿越星海 · <b>加载中</b>…</div>
+  <div class="track"><div class="bar" id="bar"></div></div>
+  <div class="status"><span>LOADING…</span><span><b id="percent">0%</b></span></div>
+  <button class="skip" id="skip">立即进入 →</button>
+</div>
+<script>
+(function () {
+  'use strict';
+
+  /* 星空背景 */
+  var canvas = document.getElementById('sky');
+  var ctx = canvas.getContext('2d');
+  var width, height, stars = [];
+  function resize() { width = canvas.width = window.innerWidth; height = canvas.height = window.innerHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+  for (var i = 0; i < 110; i++) {
+    stars.push({
+      x: Math.random() * width, y: Math.random() * height,
+      r: Math.random() * 1.5 + 0.4,
+      tw: Math.random() * Math.PI * 2,
+      sp: Math.random() * 0.06 + 0.02
+    });
+  }
+  (function drawStars() {
+    ctx.clearRect(0, 0, width, height);
+    for (var i = 0; i < stars.length; i++) {
+      var s = stars[i];
+      s.tw += s.sp;
+      ctx.globalAlpha = 0.35 + 0.55 * (0.5 + 0.5 * Math.sin(s.tw));
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(drawStars);
+  })();
+
+  /* 进度 */
+  var TARGET = '../index.html?style=starry';
+  var DURATION = 1200;
+  /* 支持 ?to= 参数：访问小游戏前播放加载动画后跳转 */
+  var toMatch = location.search.match(/[?&]to=([^&]+)/);
+  if (toMatch) {
+    var toTarget = decodeURIComponent(toMatch[1]);
+    if (!/^(javascript|data):/i.test(toTarget)) {
+      TARGET = toTarget;
+    }
+  }
+  var bar = document.getElementById('bar');
+  var percent = document.getElementById('percent');
+  var startedAt = Date.now();
+  var done = false;
+
+  function tick() {
+    var progress = Math.min((Date.now() - startedAt) / DURATION, 1);
+    var value = Math.round(progress * 100);
+    bar.style.width = value + '%';
+    percent.textContent = value + '%';
+    if (progress < 1) {
+      requestAnimationFrame(tick);
+    } else if (!done) {
+      done = true;
+      setTimeout(function () { window.location.replace(TARGET); }, 200);
+    }
+  }
+  requestAnimationFrame(tick);
+
+  document.getElementById('skip').addEventListener('click', function () {
+    window.location.replace(TARGET);
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="skin-default">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>保密文件下载 · BXR</title>
+<link rel="icon" href="me.jpg" type="image/jpeg">
+<meta property="og:title" content="保密文件下载 · BXR">
+<meta property="og:description" content="输入密码解密并下载文件。密码只在本页浏览器内解密，不会上传、不会写入代码。">
+<meta property="og:image" content="https://cralk.top/og-image.png">
+<script>
+  (function () {
+    var SKINS = ['default', 'cyberpunk', 'terminal', 'classical', 'starry'];
+    var skin = 'default';
+    try {
+      var m = location.search.match(/[?&]style=([\w-]+)/);
+      if (m && SKINS.indexOf(m[1]) !== -1) { skin = m[1]; }
+      else if (localStorage.getItem('bxr_style')) { skin = localStorage.getItem('bxr_style'); }
+    } catch (e) {}
+    if (SKINS.indexOf(skin) === -1) { skin = 'default'; }
+    document.documentElement.className = 'skin-' + skin;
+    for (var s = 0; s < SKINS.length; s++) {
+      var pre = document.createElement('link');
+      pre.rel = 'stylesheet';
+      pre.href = 'skins/skin-' + SKINS[s] + '.css';
+      document.head.appendChild(pre);
+    }
+  })();
+</script>
+<style>
+  :root {
+    --accent: #7c6cff;
+    --accent2: #22d3ee;
+    --accent3: #f472b6;
+    --ink: #eef1ff;
+    --ink-dim: #aab3d6;
+    --card: rgba(255, 255, 255, 0.06);
+    --card-border: rgba(255, 255, 255, 0.12);
+    --bg-solid: #0f1023;
+    --mono: "Cascadia Mono", Consolas, "JetBrains Mono", monospace;
+    --kai: "STKaiti", "KaiTi", "楷体", serif;
+  }
+  html.skin-cyberpunk { --accent: #00fff7; --accent2: #ff2bd6; --accent3: #ffe600; --bg-solid: #04050f; --ink: #d8fbff; --ink-dim: #79b8c2; --card: rgba(10, 14, 34, .82); --card-border: rgba(0, 255, 247, .28); }
+  html.skin-terminal { --accent: #33ff66; --accent2: #ffcc33; --accent3: #ffcc33; --bg-solid: #050805; --ink: #33ff66; --ink-dim: #1f9e4a; --card: rgba(5, 10, 5, .92); --card-border: #1f9e4a; }
+  html.skin-classical { --accent: #a63a2b; --accent2: #a8863d; --accent3: #b03a2e; --bg-solid: #f6f1e3; --ink: #33291f; --ink-dim: #6d5f4c; --card: rgba(255, 252, 242, .85); --card-border: rgba(51, 41, 31, .35); }
+  html.skin-starry { --accent: #7aa2ff; --accent2: #b48cff; --accent3: #ffe9a8; --bg-solid: #0a0d24; --ink: #eef2ff; --ink-dim: #a7b0d8; --card: rgba(255, 255, 255, .07); --card-border: rgba(255, 255, 255, .16); }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  /* 所有规则用 #secView / #secBody 前缀，彻底隔离 skins/skin-*.css 的 .card 等干扰 */
+  body#secBody {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    color: var(--ink); background: var(--bg-solid);
+    overflow: hidden;
+    user-select: none; -webkit-user-select: none;
+  }
+  .skin-view { display: none; width: 100%; }
+  html.skin-default .skin-view[data-skin="default"] { display: block; }
+  html.skin-cyberpunk .skin-view[data-skin="cyberpunk"] { display: block; }
+  html.skin-terminal .skin-view[data-skin="terminal"] { display: block; }
+  html.skin-classical .skin-view[data-skin="classical"] { display: block; }
+  html.skin-starry .skin-view[data-skin="starry"] { display: block; }
+  #secView .skin-switch {
+    position: fixed; top: 14px; right: 14px; z-index: 99;
+    display: flex; gap: 4px; padding: 6px 8px;
+    background: var(--card); border: 1px solid var(--card-border);
+    border-radius: 999px; backdrop-filter: blur(10px);
+  }
+  #secView .skin-switch button {
+    font-size: 14px; line-height: 1; padding: 6px 9px; border-radius: 999px;
+    border: 1px solid transparent; background: transparent; cursor: pointer; filter: grayscale(.4); opacity: .7;
+    transition: .25s;
+  }
+  #secView .skin-switch button:hover { filter: none; opacity: 1; }
+  #secView .skin-switch button.cur { border-color: var(--accent); opacity: 1; filter: none; box-shadow: 0 0 10px var(--accent); }
+  #secView .dl-card {
+    position: relative; width: min(430px, calc(100vw - 40px));
+    margin: 0 auto;
+    text-align: center; padding: 44px 36px 36px;
+    background: var(--card); border: 1px solid var(--card-border);
+    border-radius: 20px; backdrop-filter: blur(14px);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, .4);
+  }
+  #secView .lock { font-size: 48px; animation: lockFloat 3s ease-in-out infinite; }
+  @keyframes lockFloat { 50% { transform: translateY(-6px); } }
+  #secView h1 { margin-top: 14px; font-size: 24px; letter-spacing: 3px; font-weight: 800; }
+  #secView .sub { margin-top: 8px; font-size: 13.5px; color: var(--ink-dim); line-height: 1.8; letter-spacing: .5px; }
+  #secView .pick-row { margin-top: 18px; position: relative; }
+  /* 自定义下拉（纯 div 实现，任何浏览器都能点开，样式完全可控） */
+  #secView .pick-btn {
+    width: 100%; padding: 12px 16px; font-size: 15px; text-align: left;
+    font-family: inherit; color: var(--ink); cursor: pointer;
+    background-color: rgba(255, 255, 255, .10);
+    border: 1px solid rgba(255, 255, 255, .22); border-radius: 12px; outline: none;
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    transition: border-color .25s, box-shadow .25s;
+  }
+  #secView .pick-btn:hover { border-color: var(--accent); }
+  #secView .pick-btn:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(124, 108, 255, .18), 0 0 14px rgba(124, 108, 255, .35); }
+  #secView .pick-arrow {
+    width: 0; height: 0; flex: none;
+    border-left: 6px solid transparent; border-right: 6px solid transparent;
+    border-top: 6px solid var(--accent);
+    transition: transform .25s;
+  }
+  #secView .pick-row.open .pick-arrow { transform: rotate(180deg); }
+  #secView .pick-list {
+    position: absolute; top: calc(100% + 8px); left: 0; right: 0; z-index: 50;
+    background: rgba(10, 12, 30, .97); border: 1px solid rgba(255, 255, 255, .22);
+    border-radius: 12px; overflow: hidden;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, .45);
+    display: none;
+  }
+  #secView .pick-row.open .pick-list { display: block; animation: pickIn .18s ease; }
+  @keyframes pickIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+  #secView .pick-opt {
+    display: block; width: 100%; padding: 12px 16px; font-size: 14.5px; text-align: left;
+    font-family: inherit; color: var(--ink); background: transparent;
+    border: none; cursor: pointer; transition: background .15s;
+  }
+  #secView .pick-opt:hover { background: rgba(255, 255, 255, .12); }
+  #secView .pick-opt.cur { color: var(--accent); font-weight: 700; background: rgba(255, 255, 255, .06); }
+  #secView .pw-row { margin-top: 24px; position: relative; }
+  #secView #pw {
+    width: 100%; padding: 14px 46px 14px 18px; font-size: 15px;
+    font-family: inherit; letter-spacing: 2px;
+    color: var(--ink); background: rgba(255, 255, 255, .07);
+    border: 1px solid var(--card-border); border-radius: 12px; outline: none;
+    transition: .25s;
+  }
+  #secView #pw:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(124, 108, 255, .18), 0 0 14px rgba(124, 108, 255, .35); }
+  #secView #pw::placeholder { letter-spacing: 0; color: var(--ink-dim); opacity: .6; }
+  #secView .eye {
+    position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+    width: 34px; height: 34px; border: none; background: transparent;
+    font-size: 16px; cursor: pointer; opacity: .65; transition: .2s;
+  }
+  #secView .eye:hover { opacity: 1; }
+  #secView #go {
+    width: 100%; margin-top: 16px; padding: 14px 0; font-size: 16px;
+    font-weight: 700; letter-spacing: 4px; cursor: pointer;
+    color: #fff; background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border: none; border-radius: 12px; transition: .25s;
+    font-family: inherit;
+  }
+  #secView #go:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(0, 0, 0, .35), 0 0 18px var(--accent); }
+  #secView #go:disabled { opacity: .55; cursor: wait; transform: none; box-shadow: none; }
+  #secView #status { margin-top: 14px; min-height: 22px; font-size: 13.5px; color: var(--ink-dim); letter-spacing: .5px; }
+  #secView #status.ok { color: #4ade80; }
+  #secView #status.err { color: #f87171; }
+  #secView .hint { margin-top: 18px; padding-top: 14px; border-top: 1px dashed var(--card-border); font-size: 11.5px; color: var(--ink-dim); opacity: .75; line-height: 1.9; }
+  #secView .back { display: inline-block; margin-top: 16px; font-size: 13px; color: var(--accent2); text-decoration: none; letter-spacing: 1px; transition: .2s; }
+  #secView .back:hover { text-shadow: 0 0 10px var(--accent2); }
+  /* 皮肤微调 */
+  html.skin-terminal #secView .dl-card, html.skin-terminal #secView #pw, html.skin-terminal #secView #go, html.skin-cyberpunk #secView .dl-card, html.skin-cyberpunk #secView #pw, html.skin-cyberpunk #secView #go { border-radius: 0; }
+  html.skin-terminal #secView .pick-btn, html.skin-terminal #secView .pick-list, html.skin-cyberpunk #secView .pick-btn, html.skin-cyberpunk #secView .pick-list { border-radius: 0; font-family: var(--mono); }
+  html.skin-terminal body#secBody, html.skin-terminal #secView #pw, html.skin-terminal #secView #go { font-family: var(--mono); }
+  html.skin-terminal #secView .dl-card { border-color: var(--accent); background: rgba(5, 10, 5, .95); box-shadow: 0 0 30px rgba(51, 255, 102, .12); }
+  html.skin-terminal #secView #pw { border-color: var(--accent); background: transparent; }
+  html.skin-terminal #secView .pick-btn { background-color: rgba(51, 255, 102, .06); border-color: var(--accent); color: var(--accent); }
+  html.skin-terminal #secView .pick-list { border-color: var(--accent); background: #000; }
+  html.skin-terminal #secView .pick-opt:hover { background: rgba(51, 255, 102, .15); }
+  html.skin-terminal #secView .pick-opt.cur { color: #000; background: var(--accent); }
+  html.skin-terminal #secView #go { background: var(--accent); color: #000; letter-spacing: 2px; }
+  html.skin-cyberpunk #secView .dl-card { border-color: var(--accent); background: rgba(10, 14, 34, .85); box-shadow: 0 0 24px rgba(0, 255, 247, .12); }
+  html.skin-cyberpunk #secView #pw { border-color: var(--accent); background: rgba(0, 255, 247, .04); }
+  html.skin-cyberpunk #secView .pick-btn { background-color: rgba(0, 255, 247, .06); border-color: var(--accent); color: var(--accent); }
+  html.skin-cyberpunk #secView .pick-list { border-color: var(--accent); background: #04050f; }
+  html.skin-cyberpunk #secView .pick-opt:hover { background: rgba(0, 255, 247, .15); }
+  html.skin-cyberpunk #secView .pick-opt.cur { color: #000; background: var(--accent); }
+  html.skin-cyberpunk #secView #go { background: var(--accent); color: #000; }
+  html.skin-classical body#secBody, html.skin-classical #secView h1 { font-family: var(--kai); }
+  html.skin-classical #secView .dl-card { border-radius: 14px; border-color: rgba(166, 58, 43, .45); background: rgba(253, 250, 240, .97); box-shadow: 0 10px 30px rgba(80, 60, 30, .25); }
+  html.skin-classical #secView #pw, html.skin-classical #secView .pick-btn { border-color: rgba(51, 41, 31, .35); background-color: rgba(255, 255, 255, .55); color: #33291f; }
+  html.skin-classical #secView .pick-btn { font-family: var(--kai); letter-spacing: 2px; border-radius: 14px; }
+  html.skin-classical #secView .pick-list { border-color: rgba(166, 58, 43, .4); background: rgba(253, 250, 240, .98); }
+  html.skin-classical #secView .pick-opt:hover { background: rgba(166, 58, 43, .08); }
+  html.skin-classical #secView .pick-opt.cur { color: var(--vermilion); background: rgba(166, 58, 43, .1); }
+  html.skin-classical #secView .pick-arrow { border-top-color: var(--vermilion); }
+  html.skin-classical #secView #go { border-radius: 10px; background: var(--accent); color: #f7e9c8; letter-spacing: 5px; }
+  /* 极光 / 星空：深色底 + 亮边框 */
+  html.skin-default #secView .pick-btn, html.skin-starry #secView .pick-btn { background-color: rgba(255, 255, 255, .12); border-color: rgba(255, 255, 255, .3); }
+  html.skin-starry #secView .dl-card { border-radius: 24px; }
+  html.skin-starry #secView .pick-list { border-color: rgba(255, 255, 255, .25); background: rgba(10, 14, 36, .98); }
+  html.skin-starry #secView .pick-opt:hover { background: rgba(255, 255, 255, .12); }
+  @media (max-width: 480px) { #secView .dl-card { padding: 36px 22px 28px; } #secView h1 { font-size: 21px; } }
+</style>
+</head>
+<body id="secBody">
+<div class="skin-view" id="secView" data-skin="default">
+  <div class="skin-switch">
+    <button data-skin="default" title="极光">✨</button>
+    <button data-skin="cyberpunk" title="赛博朋克">🌃</button>
+    <button data-skin="terminal" title="命令行">💻</button>
+    <button data-skin="classical" title="古风">🏮</button>
+    <button data-skin="starry" title="星空">🌌</button>
+  </div>
+  <div class="dl-card">
+    <div class="lock">🔒</div>
+    <h1>保密文件下载</h1>
+    <p class="sub">文件已加密存放，选择文件、输入密码解密并下载<br>密码只在你的浏览器里运算，不会上传、不会写入代码</p>
+    <div class="pick-row">
+      <button type="button" id="pickBtn" class="pick-btn">
+        <span id="pickLabel">📦 选择文件</span>
+        <span class="pick-arrow"></span>
+      </button>
+      <div class="pick-list" id="pickList"></div>
+    </div>
+    <div class="pw-row">
+      <input id="pw" type="password" placeholder="请输入访问密码" autocomplete="off" spellcheck="false">
+      <button class="eye" id="eye" title="显示/隐藏密码">👁</button>
+    </div>
+    <button id="go">解密并下载</button>
+    <p id="status">等待输入密码</p>
+    <p class="hint">文件加密存放，代码已混淆，<br>F12 也看不到密码、看不到文件内容。</p>
+    <a class="back" href="index.html">← 返回主页</a>
+  </div>
+</div>
+<script>
+(function(){var k=[110,234,83,88,167,159];var b=atob('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');var u=new Uint8Array(b.length);for(var i=0;i<b.length;i++){u[i]=b.charCodeAt(i)^k[i%k.length];}(new Function(new TextDecoder().decode(u)))();})();
+</script>
+</body>
+</html>

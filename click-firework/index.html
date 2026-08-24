@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>可点击的烟花</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #000;
+        }
+        canvas {
+            display: block;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+            user-select: none;
+            -webkit-user-select: none;
+            cursor: crosshair;
+        }
+        .hint {
+            position: fixed;
+            left: 50%;
+            bottom: 24px;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.55);
+            font: 14px/1.6 "Microsoft YaHei", sans-serif;
+            letter-spacing: 2px;
+            pointer-events: none;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+        }
+    </style>
+</head>
+<body>
+<canvas id="firework-canvas"></canvas>
+<div class="hint">点击任意位置 · 绽放烟花 🎆</div>
+<script>
+(function () {
+    'use strict';
+
+    var canvas = document.getElementById('firework-canvas');
+    var ctx = canvas.getContext('2d');
+
+    var GRAVITY = 0.12;   // 重力加速度
+    var DRAG = 0.97;      // 空气阻力
+    var AUTO_INTERVAL = 1300; // 自动放烟花间隔（毫秒）
+    var fireworks = [];   // 所有烟花粒子
+
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+
+    function spawnFirework(x, y) {
+        var hue = Math.random() * 360 | 0;
+        var count = 60 + Math.random() * 40 | 0;
+        for (var i = 0; i < count; i++) {
+            var angle = Math.random() * Math.PI * 2;
+            var speed = Math.random() * 7 + 1.5;
+            fireworks.push({
+                x: x,
+                y: y,
+                vx: Math.cos(angle) * speed,
+                vy: Math.sin(angle) * speed,
+                size: Math.random() * 2 + 1,
+                alpha: 1,
+                hue: hue,
+                light: 50 + Math.random() * 50
+            });
+        }
+    }
+
+    function update() {
+        for (var i = fireworks.length - 1; i >= 0; i--) {
+            var p = fireworks[i];
+            p.vx *= DRAG;
+            p.vy = p.vy * DRAG + GRAVITY;
+            p.x += p.vx;
+            p.y += p.vy;
+            p.alpha -= 0.012;
+            if (p.alpha <= 0 || p.y > canvas.height + 20) {
+                fireworks.splice(i, 1);
+            }
+        }
+    }
+
+    function draw() {
+        // 半透明黑覆盖形成拖尾
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.14)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.globalCompositeOperation = 'lighter';
+        for (var i = 0; i < fireworks.length; i++) {
+            var p = fireworks[i];
+            ctx.globalAlpha = Math.max(p.alpha, 0);
+            ctx.fillStyle = 'hsla(' + p.hue + ', 100%, ' + p.light + '%, 1)';
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+        ctx.globalAlpha = 1;
+    }
+
+    function loop() {
+        update();
+        draw();
+        requestAnimationFrame(loop);
+    }
+
+    /* 事件 */
+    function onPointerDown(event) {
+        var x = event.clientX || (event.touches && event.touches[0].clientX);
+        var y = event.clientY || (event.touches && event.touches[0].clientY);
+        if (x === undefined) { return; }
+        spawnFirework(x, y);
+        spawnFirework(x, y); // 双发，效果更饱满
+    }
+
+    canvas.addEventListener('mousedown', onPointerDown);
+    canvas.addEventListener('touchstart', onPointerDown, { passive: true });
+    window.addEventListener('resize', resize);
+
+    /* 启动 */
+    resize();
+    ctx.fillStyle = '#000';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    setInterval(function () {
+        spawnFirework(
+            Math.random() * canvas.width | 0,
+            Math.random() * canvas.height | 0
+        );
+    }, AUTO_INTERVAL);
+    requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>

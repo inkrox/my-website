@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D旋转烟花</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #000;
+        }
+
+        #firework-canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<canvas id="firework-canvas"></canvas>
+<script>
+(function () {
+    'use strict';
+
+    var canvas = document.getElementById('firework-canvas');
+    var ctx = canvas.getContext('2d');
+    var PI = Math.PI;
+
+    var centerX;
+    var centerY;
+    var scale = 600;
+
+    /* 视角参数 */
+    var playerX = 0, playerY = 0, playerZ = -25;
+    var playerVX = 0, playerVY = 0, playerVZ = 0;
+    var pitch = 0, yaw = 0;
+    var pitchV = 0, yawV = 0;
+
+    /* 烟花状态 */
+    var frames = 0;
+    var seedTimer = 0;
+    var SEED_INTERVAL = 5;
+    var SEED_LIFE = 100;
+    var GRAVITY = 0.02;
+    var seeds = [];
+    var sparks = [];
+
+    /* 火花贴图：本地 canvas 生成，不再依赖外链图片 */
+    var SPRITE_COLORS = ['#ff8844', '#8844ff', '#88ffff', '#ffffff', '#44ff88',
+        '#ff4444', '#ff8844', '#8844ff', '#ffffff', '#4444ff'];
+    var sparkSprites = SPRITE_COLORS.map(function (color) {
+        var size = 64;
+        var off = document.createElement('canvas');
+        off.width = off.height = size;
+        var c = off.getContext('2d');
+        var grad = c.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
+        grad.addColorStop(0, '#ffffff');
+        grad.addColorStop(0.25, color);
+        grad.addColorStop(1, 'rgba(0,0,0,0)');
+        c.fillStyle = grad;
+        c.fillRect(0, 0, size, size);
+        return off;
+    });
+
+    function resize() {
+        canvas.width = canvas.clientWidth;
+        canvas.height = canvas.clientHeight;
+        centerX = canvas.width / 2;
+        centerY = canvas.height / 2;
+    }
+
+    /* 3D 坐标投影到屏幕 */
+    function rasterizePoint(x, y, z) {
+        x -= playerX;
+        y -= playerY;
+        z -= playerZ;
+
+        var angle = Math.atan2(x, z);
+        var dist = Math.sqrt(x * x + z * z);
+        x = Math.sin(angle - yaw) * dist;
+        z = Math.cos(angle - yaw) * dist;
+
+        angle = Math.atan2(y, z);
+        dist = Math.sqrt(y * y + z * z);
+        y = Math.sin(angle - pitch) * dist;
+        z = Math.cos(angle - pitch) * dist;
+
+        var rx1 = -1000, ry1 = 1;
+        var rx2 = 1000, ry2 = 1;
+        var rx3 = 0, ry3 = 0;
+        var rx4 = x, ry4 = z;
+        var cross = (ry4 - ry3) * (rx2 - rx1) - (rx4 - rx3) * (ry2 - ry1);
+        if (!cross) {
+            return { x: 0, y: 0, d: -1 };
+        }
+        var ua = ((rx4 - rx3) * (ry1 - ry3) - (ry4 - ry3) * (rx1 - rx3)) / cross;
+        var ub = ((rx2 - rx1) * (ry1 - ry3) - (ry2 - ry1) * (rx1 - rx3)) / cross;
+        if (!z) { z = 0.000000001; }
+        if (ua > 0 && ua < 1 && ub > 0 && ub < 1) {
+            return {
+                x: centerX + (rx1 + ua * (rx2 - rx1)) * scale,
+                y: centerY + y / z * scale,
+                d: Math.sqrt(x * x + y * y + z * z)
+            };
+        }
+        return { x: 0, y: 0, d: -1 };
+    }
+
+    /* 生成上升的烟花弹 */
+    function spawnSeed() {
+        seeds.push({
+            x: -50 + Math.random() * 100,
+            y: 25,
+            z: -50 + Math.random() * 100,
+            vx: 0.1 - Math.random() * 0.2,
+            vy: -1.5,
+            vz: 0.1 - Math.random() * 0.2,
+            born: frames
+        });
+    }
+
+    /* 烟花爆炸：生成一圈火花 */
+    function explode(x, y, z) {
+        var count = 5 + parseInt(Math.random() * 150, 10);
+        var speed = 1 + Math.random() * 2.5;
+        var mode = parseInt(Math.random() * 3, 10); // 使用 1/2/3 种贴图的模式
+
+        var spriteIndexA = parseInt(Math.random() * sparkSprites.length, 10);
+        var spriteIndexB = spriteIndexA;
+        var spriteIndexC = spriteIndexA;
+        if (mode >= 1) {
+            do { spriteIndexB = parseInt(Math.random() * sparkSprites.length, 10); }
+            while (spriteIndexB === spriteIndexA);
+        }
+        if (mode >= 2) {
+            do { spriteIndexC = parseInt(Math.random() * sparkSprites.length, 10); }
+            while (spriteIndexC === spriteIndexA || spriteIndexC === spriteIndexB);
+        }
+
+        for (var i = 1; i < count; i++) {
+            var theta = PI * 2 * Math.random();
+            var phi = PI * Math.random();
+            var velocity = speed * (1 + Math.random() / 6);
+
+            var spriteIndex = spriteIndexA;
+            if (mode === 1) {
+                spriteIndex = parseInt(Math.random() * 2, 10) ? spriteIndexA : spriteIndexB;
+            } else if (mode === 2) {
+                var pick = parseInt(Math.random() * 3, 10);
+                spriteIndex = pick === 0 ? spriteIndexA : (pick === 1 ? spriteIndexB : spriteIndexC);
+            }
+
+            sparks.push({
+                x: x,
+                y: y,
+                z: z,
+                vx: Math.sin(theta) * Math.sin(phi) * velocity,
+                vz: Math.cos(theta) * Math.sin(phi) * velocity,
+                vy: Math.cos(phi) * velocity,
+                spriteIndex: spriteIndex,
+                radius: 25 + Math.random() * 50,
+                alpha: 1,
+                trail: []
+            });
+        }
+    }
+
+    function doLogic() {
+        /* 生成烟花弹 */
+        if (seedTimer < frames) {
+            seedTimer = frames + SEED_INTERVAL * Math.random() * 10;
+            spawnSeed();
+        }
+        /* 更新烟花弹 */
+        for (var i = 0; i < seeds.length; i++) {
+            seeds[i].vy += GRAVITY;
+            seeds[i].x += seeds[i].vx;
+            seeds[i].y += seeds[i].vy;
+            seeds[i].z += seeds[i].vz;
+            if (frames - seeds[i].born > SEED_LIFE) {
+                explode(seeds[i].x, seeds[i].y, seeds[i].z);
+                seeds.splice(i, 1);
+                i--;
+            }
+        }
+        /* 更新火花 */
+        for (var j = 0; j < sparks.length; j++) {
+            var spark = sparks[j];
+            if (spark.alpha > 0 && spark.radius > 5) {
+                spark.alpha -= 0.01;
+                spark.radius /= 1.02;
+                spark.vy += GRAVITY;
+
+                var point = { x: spark.x, y: spark.y, z: spark.z };
+                if (spark.trail.length) {
+                    var last = spark.trail[spark.trail.length - 1];
+                    var distSq = (point.x - last.x) * (point.x - last.x) +
+                                 (point.y - last.y) * (point.y - last.y) +
+                                 (point.z - last.z) * (point.z - last.z);
+                    if (distSq > 9) { spark.trail.push(point); }
+                } else {
+                    spark.trail.push(point);
+                }
+                if (spark.trail.length > 5) { spark.trail.splice(0, 1); }
+
+                spark.x += spark.vx;
+                spark.y += spark.vy;
+                spark.z += spark.vz;
+                spark.vx /= 1.075;
+                spark.vy /= 1.075;
+                spark.vz /= 1.075;
+            } else {
+                sparks.splice(j, 1);
+                j--;
+            }
+        }
+        /* 视角缓慢旋转 */
+        var angle = Math.atan2(playerX, playerZ);
+        var dist = Math.sqrt(playerX * playerX + playerZ * playerZ);
+        dist += Math.sin(frames / 80) / 1.25;
+        var tilt = Math.sin(frames / 200) / 40;
+        playerX = Math.sin(angle + tilt) * dist;
+        playerZ = Math.cos(angle + tilt) * dist;
+        yaw = PI + angle + tilt;
+    }
+
+    function draw() {
+        ctx.clearRect(0, 0, centerX * 2, centerY * 2);
+
+        /* 地面网格 */
+        ctx.fillStyle = '#ff8';
+        for (var i = -100; i < 100; i += 3) {
+            for (var j = -100; j < 100; j += 4) {
+                var point = rasterizePoint(i, 25, j);
+                if (point.d !== -1) {
+                    var size = 250 / (1 + point.d);
+                    var dist = Math.sqrt(i * i + j * j);
+                    var alpha = 0.75 - Math.pow(dist / 100, 6) * 0.75;
+                    if (alpha > 0) {
+                        ctx.globalAlpha = alpha;
+                        ctx.fillRect(point.x - size / 2, point.y - size / 2, size, size);
+                    }
+                }
+            }
+        }
+        ctx.globalAlpha = 1;
+
+        /* 烟花弹 */
+        for (var s = 0; s < seeds.length; s++) {
+            var seedPoint = rasterizePoint(seeds[s].x, seeds[s].y, seeds[s].z);
+            if (seedPoint.d !== -1) {
+                var seedSize = 200 / (1 + seedPoint.d);
+                ctx.fillRect(seedPoint.x - seedSize / 2, seedPoint.y - seedSize / 2, seedSize, seedSize);
+            }
+        }
+
+        /* 火花与拖尾 */
+        for (var k = 0; k < sparks.length; k++) {
+            var spark = sparks[k];
+            var sparkPoint = rasterizePoint(spark.x, spark.y, spark.z);
+            if (sparkPoint.d === -1) { continue; }
+
+            var sparkSize = spark.radius * 200 / (1 + sparkPoint.d);
+            if (spark.alpha < 0) { spark.alpha = 0; }
+
+            if (spark.trail.length) {
+                ctx.strokeStyle = SPRITE_COLORS[spark.spriteIndex];
+                var prev = { x: sparkPoint.x, y: sparkPoint.y };
+                for (var t = spark.trail.length - 1; t >= 0; t--) {
+                    var next = rasterizePoint(spark.trail[t].x, spark.trail[t].y, spark.trail[t].z);
+                    if (next.d !== -1) {
+                        ctx.globalAlpha = t / spark.trail.length * spark.alpha / 2;
+                        ctx.beginPath();
+                        ctx.moveTo(prev.x, prev.y);
+                        ctx.lineWidth = 1 + spark.radius * 10 / (spark.trail.length - t) / (1 + next.d);
+                        ctx.lineTo(next.x, next.y);
+                        ctx.stroke();
+                        prev.x = next.x;
+                        prev.y = next.y;
+                    }
+                }
+            }
+
+            ctx.globalAlpha = spark.alpha;
+            ctx.drawImage(sparkSprites[spark.spriteIndex],
+                sparkPoint.x - sparkSize / 2, sparkPoint.y - sparkSize / 2, sparkSize, sparkSize);
+        }
+        ctx.globalAlpha = 1;
+    }
+
+    function frame() {
+        if (frames > 100000) {
+            seedTimer = 0;
+            frames = 0;
+        }
+        frames++;
+        draw();
+        doLogic();
+        requestAnimationFrame(frame);
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+    frame();
+})();
+</script>
+</body>
+</html>

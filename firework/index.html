@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>烟花</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: #000;
+        }
+        canvas {
+            display: block;
+            background: #000;
+        }
+    </style>
+</head>
+<body>
+<canvas id="firework-canvas"></canvas>
+<script>
+(function () {
+    'use strict';
+
+    var canvas;
+    var ctx;
+    var width;
+    var height;
+    var particles = [];
+    var SPAWN_PROBABILITY = 0.04; // 每帧生成烟花的概率
+    var MAX_PARTICLES = 500;      // 粒子数量上限
+
+    window.requestAnimationFrame =
+        window.requestAnimationFrame ||
+        window.webkitRequestAnimationFrame ||
+        window.mozRequestAnimationFrame ||
+        window.oRequestAnimationFrame ||
+        window.msRequestAnimationFrame ||
+        function (callback) {
+            window.setTimeout(callback, 1000 / 60);
+        };
+
+    function onLoad() {
+        canvas = document.getElementById('firework-canvas');
+        ctx = canvas.getContext('2d');
+        resizeCanvas();
+        window.requestAnimationFrame(updateWorld);
+    }
+
+    function resizeCanvas() {
+        if (canvas) {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+    }
+
+    function updateWorld() {
+        update();
+        paint();
+        window.requestAnimationFrame(updateWorld);
+    }
+
+    function update() {
+        if (particles.length < MAX_PARTICLES && Math.random() < SPAWN_PROBABILITY) {
+            createFirework();
+        }
+        var alive = [];
+        for (var i = 0; i < particles.length; i++) {
+            if (particles[i].move()) {
+                alive.push(particles[i]);
+            }
+        }
+        particles = alive;
+    }
+
+    function paint() {
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.fillStyle = 'rgba(0,0,0,0.2)';
+        ctx.fillRect(0, 0, width, height);
+        ctx.globalCompositeOperation = 'lighter';
+        for (var i = 0; i < particles.length; i++) {
+            particles[i].draw(ctx);
+        }
+    }
+
+    function createFirework() {
+        var originX = Math.random() * (width - 200) + 100;
+        var originY = Math.random() * (height - 200) + 100;
+        var count = Math.random() * 50 + 100;
+        var color = 'rgb(' +
+            (~~(Math.random() * 200 + 55)) + ',' +
+            (~~(Math.random() * 200 + 55)) + ',' +
+            (~~(Math.random() * 200 + 55)) + ')';
+        for (var i = 0; i < count; i++) {
+            var particle = new Particle();
+            particle.color = color;
+            particle.x = originX - particle.size / 2;
+            particle.y = originY - particle.size / 2;
+            var maxSpeed = Math.sqrt(25 - particle.velocityX * particle.velocityX);
+            if (Math.abs(particle.velocityY) > maxSpeed) {
+                particle.velocityY = particle.velocityY > 0 ? maxSpeed : -maxSpeed;
+            }
+            particles.push(particle);
+        }
+    }
+
+    function Particle() {
+        this.size = Math.random() * 4 + 1;
+        this.velocityX = (Math.random() - 0.5) * 10;
+        this.velocityY = (Math.random() - 0.5) * 10;
+        this.alpha = Math.random() * 0.5 + 0.5;
+        this.color = '#ffffff';
+    }
+
+    Particle.prototype = {
+        gravity: 0.05,
+        move: function () {
+            this.x += this.velocityX;
+            this.velocityY += this.gravity;
+            this.y += this.velocityY;
+            this.alpha -= 0.01;
+            // 超出屏幕或完全透明后移除
+            if (this.x <= -this.size || this.x >= window.innerWidth ||
+                this.y >= window.innerHeight || this.alpha <= 0) {
+                return false;
+            }
+            return true;
+        },
+        draw: function (context) {
+            context.save();
+            context.beginPath();
+            context.translate(this.x + this.size / 2, this.y + this.size / 2);
+            context.arc(0, 0, this.size, 0, Math.PI * 2);
+            context.fillStyle = this.color;
+            context.globalAlpha = this.alpha;
+            context.closePath();
+            context.fill();
+            context.restore();
+        }
+    };
+
+    window.addEventListener('resize', resizeCanvas, false);
+    window.addEventListener('DOMContentLoaded', onLoad, false);
+})();
+</script>
+</body>
+</html>

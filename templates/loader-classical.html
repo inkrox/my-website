@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="refresh" content="4;url=../index.html?style=classical">
+<title>载入中 · BXR 少年行</title>
+<link rel="icon" href="../me.jpg" type="image/jpeg">
+<style>
+  :root {
+    --paper: #f6f1e3;
+    --ink: #33291f;
+    --ink-dim: #6d5f4c;
+    --vermilion: #a63a2b;
+    --gold: #a8863d;
+    --font-head: "STKaiti", "KaiTi", "楷体", "SimSun", serif;
+    --font-body: "Songti SC", "SimSun", "宋体", "Microsoft YaHei", serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    min-height: 100vh; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-body); color: var(--ink);
+    background:
+      repeating-linear-gradient(0deg, rgba(120, 90, 40, .025) 0 1px, transparent 1px 4px),
+      repeating-linear-gradient(90deg, rgba(120, 90, 40, .02) 0 1px, transparent 1px 5px),
+      radial-gradient(ellipse at 30% 20%, #faf6ea 0%, var(--paper) 60%, #ece2ca 100%);
+  }
+  /* 水墨晕染 */
+  .wash {
+    position: fixed; border-radius: 50%; z-index: 0; pointer-events: none;
+    filter: blur(60px); opacity: .5;
+  }
+  .wash-1 { width: 420px; height: 420px; top: -120px; right: -100px; background: radial-gradient(circle, rgba(140, 120, 80, .35), transparent 70%); }
+  .wash-2 { width: 400px; height: 400px; bottom: -110px; left: -100px; background: radial-gradient(circle, rgba(120, 150, 130, .3), transparent 70%); }
+  /* 远山 */
+  .mountains {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 0; pointer-events: none; opacity: .75;
+  }
+  .mountains svg { display: block; width: 100%; height: 26vh; }
+
+  .loader { position: relative; z-index: 1; width: min(400px, 86vw); text-align: center; }
+  .loader .avatar {
+    width: 88px; height: 88px; border-radius: 50%; object-fit: cover; object-position: center 30%;
+    border: 2px solid rgba(51, 41, 31, .55);
+    filter: sepia(.18) saturate(.9);
+    box-shadow: 0 8px 24px rgba(80, 60, 30, .25);
+  }
+  /* 墨环旋转 */
+  .ring-wrap { display: inline-block; position: relative; }
+  .ring {
+    position: absolute; inset: -12px; border-radius: 50%;
+    border: 2px dashed rgba(51, 41, 31, .4);
+    animation: spin 6s linear infinite;
+  }
+  .ring::after {
+    content: ""; position: absolute; top: -4px; left: 50%;
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--vermilion);
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loader .title {
+    margin-top: 20px; font-family: var(--font-head); font-weight: 700;
+    font-size: 30px; letter-spacing: 10px;
+  }
+  .loader .poem { margin-top: 8px; font-family: var(--font-head); font-size: 14px; letter-spacing: 4px; color: var(--ink-dim); }
+  .loader .poem b { color: var(--vermilion); font-weight: 700; }
+
+  /* 进度：水墨长线 */
+  .track {
+    margin-top: 28px; height: 4px;
+    background: rgba(51, 41, 31, .15);
+  }
+  .bar {
+    height: 100%; width: 0;
+    background: linear-gradient(90deg, var(--ink), var(--vermilion));
+    transition: width .1s linear;
+  }
+  .status {
+    margin-top: 12px; display: flex; justify-content: space-between;
+    font-family: var(--font-head); font-size: 13.5px; letter-spacing: 3px; color: var(--ink-dim);
+  }
+  .status b { color: var(--vermilion); font-weight: 700; }
+  .skip {
+    margin-top: 24px; padding: 9px 34px; cursor: pointer;
+    font-family: var(--font-head); font-size: 15px; letter-spacing: 4px;
+    color: var(--vermilion); background: transparent;
+    border: 1px solid var(--vermilion);
+    transition: .3s;
+  }
+  .skip:hover { background: var(--vermilion); color: #f7e9c8; }
+  .seal {
+    display: inline-block; margin-top: 18px;
+    width: 34px; height: 34px; line-height: 30px;
+    border: 1.5px solid var(--vermilion); color: var(--vermilion);
+    font-family: var(--font-head); font-size: 14px;
+    box-shadow: inset 0 0 0 2px var(--paper), inset 0 0 0 3px var(--vermilion);
+    transform: rotate(-8deg);
+  }
+</style>
+</head>
+<body>
+<div class="wash wash-1"></div>
+<div class="wash wash-2"></div>
+<div class="mountains">
+  <svg viewBox="0 0 1440 320" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path fill="#d9d2bd" d="M0,200 L180,90 L320,190 L480,70 L640,200 L800,110 L980,205 L1160,120 L1320,195 L1440,150 L1440,320 L0,320 Z" opacity="0.55"/>
+    <path fill="#c9c0a6" d="M0,250 L200,150 L360,240 L560,140 L760,250 L960,160 L1160,245 L1340,170 L1440,230 L1440,320 L0,320 Z" opacity="0.7"/>
+  </svg>
+</div>
+
+<div class="loader">
+  <div class="ring-wrap">
+    <span class="ring"></span>
+    <img class="avatar" src="../me.jpg" alt="BXR">
+  </div>
+  <div class="title">少年行</div>
+  <div class="poem">正在铺纸研墨 · <b>载入中</b>…</div>
+  <div class="track"><div class="bar" id="bar"></div></div>
+  <div class="status"><span>敬请稍候</span><span><b id="percent">0%</b></span></div>
+  <button class="skip" id="skip">即刻入内 →</button>
+  <br><span class="seal">印</span>
+</div>
+<script>
+(function () {
+  'use strict';
+  var TARGET = '../index.html?style=classical';
+  var DURATION = 1200;
+  /* 支持 ?to= 参数：访问小游戏前播放加载动画后跳转 */
+  var toMatch = location.search.match(/[?&]to=([^&]+)/);
+  if (toMatch) {
+    var toTarget = decodeURIComponent(toMatch[1]);
+    if (!/^(javascript|data):/i.test(toTarget)) {
+      TARGET = toTarget;
+    }
+  }
+  var bar = document.getElementById('bar');
+  var percent = document.getElementById('percent');
+  var startedAt = Date.now();
+  var done = false;
+
+  function tick() {
+    var progress = Math.min((Date.now() - startedAt) / DURATION, 1);
+    var value = Math.round(progress * 100);
+    bar.style.width = value + '%';
+    percent.textContent = value + '%';
+    if (progress < 1) {
+      requestAnimationFrame(tick);
+    } else if (!done) {
+      done = true;
+      setTimeout(function () { window.location.replace(TARGET); }, 200);
+    }
+  }
+  requestAnimationFrame(tick);
+
+  document.getElementById('skip').addEventListener('click', function () {
+    window.location.replace(TARGET);
+  });
+})();
+</script>
+</body>
+</html>

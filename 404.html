@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="skin-default">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 · 你已偏离航线</title>
+<link rel="icon" href="me.jpg" type="image/jpeg">
+<meta property="og:title" content="404 · BXR 的个人主页">
+<meta property="og:description" content="页面不存在，你已偏离航线。返回主页继续探索。">
+<meta property="og:image" content="https://cralk.top/og-image.png">
+<script>
+  (function () {
+    var SKINS = ['default', 'cyberpunk', 'terminal', 'classical', 'starry'];
+    var skin = 'default';
+    try {
+      var m = location.search.match(/[?&]style=([\w-]+)/);
+      if (m && SKINS.indexOf(m[1]) !== -1) { skin = m[1]; }
+      else if (localStorage.getItem('bxr_style')) { skin = localStorage.getItem('bxr_style'); }
+    } catch (e) {}
+    if (SKINS.indexOf(skin) === -1) { skin = 'default'; }
+    document.documentElement.className = 'skin-' + skin;
+    for (var s = 0; s < SKINS.length; s++) {
+      var pre = document.createElement('link');
+      pre.rel = 'stylesheet';
+      pre.href = 'skins/skin-' + SKINS[s] + '.css';
+      document.head.appendChild(pre);
+    }
+  })();
+</script>
+<style>
+  :root {
+    --accent: #7c6cff;
+    --accent2: #22d3ee;
+    --accent3: #f472b6;
+    --ink: #eef1ff;
+    --ink-dim: #aab3d6;
+    --card: rgba(255, 255, 255, 0.06);
+    --card-border: rgba(255, 255, 255, 0.12);
+    --bg-solid: #0f1023;
+    --mono: "Cascadia Mono", Consolas, "JetBrains Mono", monospace;
+    --kai: "STKaiti", "KaiTi", "楷体", serif;
+  }
+  html.skin-cyberpunk { --accent: #00fff7; --accent2: #ff2bd6; --accent3: #ffe600; --bg-solid: #04050f; --ink: #d8fbff; --ink-dim: #79b8c2; --card: rgba(10, 14, 34, .82); --card-border: rgba(0, 255, 247, .28); }
+  html.skin-terminal { --accent: #33ff66; --accent2: #ffcc33; --accent3: #ffcc33; --bg-solid: #050805; --ink: #33ff66; --ink-dim: #1f9e4a; --card: rgba(5, 10, 5, .92); --card-border: #1f9e4a; }
+  html.skin-classical { --accent: #a63a2b; --accent2: #a8863d; --accent3: #b03a2e; --bg-solid: #f6f1e3; --ink: #33291f; --ink-dim: #6d5f4c; --card: rgba(255, 252, 242, .85); --card-border: rgba(51, 41, 31, .35); }
+  html.skin-starry { --accent: #7aa2ff; --accent2: #b48cff; --accent3: #ffe9a8; --bg-solid: #0a0d24; --ink: #eef2ff; --ink-dim: #a7b0d8; --card: rgba(255, 255, 255, .07); --card-border: rgba(255, 255, 255, .16); }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--kai), "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    color: var(--ink); background: var(--bg-solid);
+    overflow: hidden; user-select: none; -webkit-user-select: none;
+  }
+  .skin-view { display: none; width: 100%; }
+  html.skin-default .skin-view[data-skin="default"] { display: block; }
+  html.skin-cyberpunk .skin-view[data-skin="cyberpunk"] { display: block; }
+  html.skin-terminal .skin-view[data-skin="terminal"] { display: block; }
+  html.skin-classical .skin-view[data-skin="classical"] { display: block; }
+  html.skin-starry .skin-view[data-skin="starry"] { display: block; }
+  .skin-switch {
+    position: fixed; top: 14px; right: 14px; z-index: 99;
+    display: flex; gap: 4px; padding: 6px 8px;
+    background: var(--card); border: 1px solid var(--card-border);
+    border-radius: 999px; backdrop-filter: blur(10px);
+  }
+  .skin-switch button {
+    font-size: 14px; line-height: 1; padding: 6px 9px; border-radius: 999px;
+    border: 1px solid transparent; background: transparent; cursor: pointer; filter: grayscale(.4); opacity: .7;
+    transition: .25s;
+  }
+  .skin-switch button:hover { filter: none; opacity: 1; }
+  .skin-switch button.cur { border-color: var(--accent); opacity: 1; filter: none; box-shadow: 0 0 10px var(--accent); }
+  .box { position: relative; text-align: center; padding: 40px 24px; }
+  .code {
+    font-size: clamp(90px, 22vw, 170px);
+    font-weight: 800; letter-spacing: 6px; line-height: 1;
+    background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    filter: drop-shadow(0 0 30px var(--accent));
+  }
+  .title { margin-top: 10px; font-size: clamp(20px, 4vw, 28px); font-weight: 700; letter-spacing: 4px; }
+  .sub { margin-top: 12px; color: var(--ink-dim); font-size: 15px; letter-spacing: 1px; line-height: 1.8; }
+  .btns { margin-top: 30px; display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+  .btn {
+    display: inline-block; padding: 12px 30px; border-radius: 999px;
+    text-decoration: none; font-size: 15px; letter-spacing: 2px; color: var(--ink);
+    background: var(--card); border: 1px solid var(--card-border);
+    backdrop-filter: blur(10px);
+    transition: .3s;
+  }
+  .btn:hover { border-color: var(--accent); box-shadow: 0 0 24px var(--accent); transform: translateY(-3px); }
+  .btn.main { background: linear-gradient(135deg, var(--accent), var(--accent2)); border-color: transparent; color: #fff; }
+  html.skin-terminal .btn, html.skin-terminal .skin-switch, html.skin-terminal .btn.main { border-radius: 0; font-family: var(--mono); }
+  html.skin-cyberpunk .btn, html.skin-cyberpunk .skin-switch { border-radius: 0; }
+  html.skin-classical .btn { border-radius: 8px; }
+  footer {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 1;
+    text-align: center; padding: 14px 4vw 20px;
+    color: var(--ink-dim); font-size: 12.5px; line-height: 2;
+  }
+  footer a { color: var(--accent2); text-decoration: none; }
+  .box { z-index: 1; }
+  /* 古风彩蛋：失字印章 */
+  .seal-404 {
+    position: absolute; top: 6px; right: 10px; width: 56px; height: 56px;
+    display: none; align-items: center; justify-content: center;
+    border: 2.5px solid var(--vermilion); color: var(--vermilion);
+    font-family: var(--kai); font-size: 26px; font-weight: 700;
+    transform: rotate(-8deg);
+    box-shadow: inset 0 0 0 2px var(--bg-solid), inset 0 0 0 3px var(--vermilion);
+  }
+  html.skin-classical .seal-404 { display: inline-flex; }
+  /* 终端彩蛋：打字光标 */
+  .caret { display: none; }
+  html.skin-terminal .caret {
+    display: inline-block; width: 10px; height: 24px;
+    background: var(--accent); margin-left: 6px; vertical-align: -4px;
+    animation: nfBlink 1s steps(1) infinite;
+  }
+  @keyframes nfBlink { 50% { opacity: 0; } }
+  /* 赛博彩蛋：404 故障抖动 */
+  html.skin-cyberpunk .code { animation: nfGlitch 3s steps(2) infinite; text-shadow: 4px 0 var(--accent2), -4px 0 var(--accent); }
+  @keyframes nfGlitch {
+    0%, 86%, 100% { transform: none; opacity: 1; }
+    88% { transform: translate(-3px, 1px); opacity: .9; }
+    92% { transform: translate(3px, -1px); opacity: .9; }
+    96% { transform: translate(-1px, 2px); opacity: .9; }
+  }
+  /* 星空彩蛋：流星 */
+  .meteor {
+    position: fixed; top: 0; left: 0; width: 150px; height: 2px;
+    border-radius: 999px; background: linear-gradient(90deg, #fff, rgba(255, 255, 255, 0));
+    display: none; pointer-events: none; z-index: -1; opacity: 0;
+  }
+  html.skin-starry .meteor { display: block; }
+  .m1 { top: 12%; animation: nfMeteor 3.6s linear infinite; }
+  .m2 { top: 30%; animation: nfMeteor 4.8s linear 1.5s infinite; }
+  .m3 { top: 52%; animation: nfMeteor 4s linear 2.8s infinite; }
+  @keyframes nfMeteor {
+    0% { transform: translate(-180px, 0) rotate(28deg); opacity: 0; }
+    10% { opacity: 1; }
+    100% { transform: translate(calc(100vw + 240px), calc((100vw + 240px) * 0.53)) rotate(28deg); opacity: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="skin-view" id="nfView" data-skin="default">
+  <div class="skin-switch">
+    <button data-skin="default" title="极光">✨</button>
+    <button data-skin="cyberpunk" title="赛博朋克">🌃</button>
+    <button data-skin="terminal" title="命令行">💻</button>
+    <button data-skin="classical" title="古风">🏮</button>
+    <button data-skin="starry" title="星空">🌌</button>
+  </div>
+  <div class="box">
+    <span class="seal-404">失</span>
+    <span class="meteor m1"></span>
+    <span class="meteor m2"></span>
+    <span class="meteor m3"></span>
+    <div class="code">404</div>
+    <div class="title"><span id="nfTitle">你已偏离航线</span><span class="caret" id="nfCaret"></span></div>
+    <p class="sub" id="nfSub">这片星域没有你要找的页面<br>也许它被移动了，也许它从未存在</p>
+    <div class="btns">
+      <a class="btn main" href="index.html">🏠 返回主页</a>
+      <a class="btn" data-go="works" href="index.html#works-default">🎮 去小游戏</a>
+      <a class="btn" data-go="links" href="index.html#links-default">🔗 友情链接</a>
+    </div>
+  </div>
+  <footer>
+    <div>© <span id="year"></span> BXR · Version v2.2.0.260823 Alpha</div>
+    <div><a href="https://icp.gov.moe/?keyword=20243331" target="_blank" rel="noopener">萌ICP备20243331号</a> · 🧑‍💻 Made by BXR &amp; <a href="https://www.deepseek.com" target="_blank" rel="noopener">蓝色大肥鱼</a> 🐟</div>
+  </footer>
+</div>
+<script>
+  (function () {
+    var SKIN_LIST = ['default', 'cyberpunk', 'terminal', 'classical', 'starry'];
+    var currentSkin = document.documentElement.className.replace('skin-', '');
+    var container = document.getElementById('nfView');
+    var NF_TEXT = {
+      default: { title: '你已偏离航线', sub: '这片星域没有你要找的页面<br>也许它被移动了，也许它从未存在' },
+      cyberpunk: { title: 'SYSTEM ERROR // 404', sub: '目标文件不存在或已被删除<br>请检查路径后重试，或返回主页' },
+      terminal: { title: '404: file not found', sub: 'bash: 你要找的页面: No such file or directory<br>输入 exit 可返回主页' },
+      classical: { title: '此页已随风去', sub: '寻遍四十九中，不见此页踪迹<br>或移、或逝、或本无此页' },
+      starry: { title: '迷失在星海', sub: '你要找的页面坠入了深空<br>或许它正在某颗星星上闪烁' }
+    };
+    function setNfText(skin) {
+      var t = NF_TEXT[skin];
+      var title = document.getElementById('nfTitle');
+      var sub = document.getElementById('nfSub');
+      if (!t || !title) { return; }
+      sub.innerHTML = t.sub;
+      document.title = t.title + ' · BXR';
+      clearInterval(window._nfType);
+      if (skin === 'terminal') {
+        var txt = t.title;
+        title.textContent = '';
+        var i = 0;
+        window._nfType = setInterval(function () {
+          i++;
+          title.textContent = txt.slice(0, i);
+          if (i >= txt.length) { clearInterval(window._nfType); }
+        }, 45);
+      } else {
+        title.textContent = t.title;
+      }
+    }
+    function applySkin(skin) {
+      if (SKIN_LIST.indexOf(skin) === -1) { return; }
+      currentSkin = skin;
+      document.documentElement.className = 'skin-' + skin;
+      if (container) { container.setAttribute('data-skin', skin); }
+      try { localStorage.setItem('bxr_style', skin); } catch (e) {}
+      var btns = document.querySelectorAll('.skin-switch button[data-skin]');
+      for (var i = 0; i < btns.length; i++) {
+        btns[i].classList.toggle('cur', btns[i].getAttribute('data-skin') === skin);
+      }
+      setNfText(skin);
+      var gBtns = document.querySelectorAll('.btn[data-go]');
+      for (var j = 0; j < gBtns.length; j++) {
+        var go = gBtns[j].getAttribute('data-go');
+        gBtns[j].href = 'index.html?style=' + skin + '#' + (skin === 'terminal' ? 'term-' : '') + go;
+      }
+    }
+    var btns = document.querySelectorAll('.skin-switch button[data-skin]');
+    for (var i = 0; i < btns.length; i++) {
+      btns[i].addEventListener('click', function () {
+        applySkin(this.getAttribute('data-skin'));
+      });
+    }
+    applySkin(currentSkin);
+    var y = document.getElementById('year');
+    if (y) { y.textContent = new Date().getFullYear(); }
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="refresh" content="8;url=../index.html?style=terminal">
+<title>BXR@home: ~/boot</title>
+<link rel="icon" href="../me.jpg" type="image/jpeg">
+<style>
+  :root {
+    --green: #33ff66;
+    --green-dim: #1f9e4a;
+    --amber: #ffcc33;
+    --bg: #050805;
+    --font: "Cascadia Mono", Consolas, "Courier New", "Microsoft YaHei", monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { height: 100%; }
+  body {
+    min-height: 100%; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--bg); color: var(--green);
+    font-family: var(--font); font-size: 15px;
+  }
+  ::selection { background: var(--green); color: #000; }
+  .crt::before {
+    content: ""; position: fixed; inset: 0; z-index: 5; pointer-events: none;
+    background: repeating-linear-gradient(0deg, rgba(0, 0, 0, .3) 0 2px, transparent 2px 4px);
+  }
+  .crt::after {
+    content: ""; position: fixed; inset: 0; z-index: 5; pointer-events: none;
+    background: radial-gradient(ellipse at center, transparent 60%, rgba(0, 30, 5, .6) 100%);
+  }
+  .term {
+    position: relative; z-index: 2;
+    width: min(560px, 92vw);
+    border: 1px solid var(--green-dim);
+    border-radius: 8px;
+    background: rgba(5, 10, 5, .95);
+    box-shadow: 0 0 40px rgba(51, 255, 102, .12);
+  }
+  .term-bar {
+    display: flex; align-items: center; gap: 8px;
+    border-bottom: 1px solid var(--green-dim);
+    padding: 8px 14px; font-size: 13px; color: var(--green-dim);
+  }
+  .term-bar .dot { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
+  .dot.r { background: #ff5f57; } .dot.y { background: #febc2e; } .dot.g { background: #28c840; }
+  .term-bar .title { margin: 0 auto; letter-spacing: 1px; }
+  .term-body { padding: 18px 20px 22px; line-height: 1.9; white-space: pre-wrap; word-break: break-all; }
+  .term-body .prompt { color: var(--green); }
+  .term-body .user { color: var(--amber); }
+  .term-body .path { color: #6fdc9c; }
+  .dim { color: var(--green-dim); }
+  .cursor {
+    display: inline-block; width: 9px; height: 16px;
+    background: var(--green); vertical-align: -3px;
+    animation: blink 1s steps(1) infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+  .progress { margin-top: 14px; }
+  .progress .line {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    color: var(--green);
+  }
+  .progress .bar {
+    display: block;
+    height: 100%;
+    width: 0;
+    background: repeating-linear-gradient(90deg, var(--green) 0 8px, #0a3d1c 8px 16px);
+    transition: width .1s linear;
+  }
+  .progress .box {
+    flex: 1 1 120px;
+    max-width: 200px;
+    min-width: 60px;
+    height: 14px;
+    border: 1px solid var(--green-dim);
+    padding: 1px;
+  }
+  .progress .percent {
+    margin-left: auto;
+    color: var(--green);
+  }
+  .skip {
+    margin-top: 16px; padding: 8px 20px; cursor: pointer;
+    font-family: var(--font); font-size: 13.5px; letter-spacing: 1px;
+    color: var(--green); background: transparent;
+    border: 1px solid var(--green-dim);
+  }
+  .skip:hover { background: var(--green); color: #000; box-shadow: 0 0 14px rgba(51, 255, 102, .5); }
+</style>
+</head>
+<body class="crt">
+<div class="term">
+  <div class="term-bar">
+    <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+    <span class="title">BXR@home: ~/boot</span>
+  </div>
+  <div class="term-body" id="output">
+  </div>
+</div>
+<script>
+(function () {
+  'use strict';
+  var TARGET = '../index.html?style=terminal';
+  var DURATION = 1200;
+  /* 支持 ?to= 参数：访问小游戏前播放加载动画后跳转 */
+  var toMatch = location.search.match(/[?&]to=([^&]+)/);
+  if (toMatch) {
+    var toTarget = decodeURIComponent(toMatch[1]);
+    if (!/^(javascript|data):/i.test(toTarget)) {
+      TARGET = toTarget;
+    }
+  }
+  var output = document.getElementById('output');
+  var done = false;
+
+  var bootLines = [
+    '> BXR-OS v2.2.0.260823 BOOTING ...',
+    '> CPU: BRAIN(14y) 4 CORES ... OK',
+    '> MEM: DREAMS 100% ... OK',
+    '> LOADING PROFILE: BXR ... DONE',
+    '> 正在进入命令行主页 ...'
+  ];
+  var lineIndex = 0;
+  var charIndex = 0;
+  var typed = '';
+  var barHtml = '<div class="progress"><div class="line">LOADING [<span class="box"><span class="bar" id="bar"></span></span>] <span class="percent" id="percent">0%</span></div>' +
+    '\n<div class="line dim">> 点击任意位置 · 立即进入</div></div>';
+
+  function typeLine() {
+    if (lineIndex >= bootLines.length) {
+      output.insertAdjacentHTML('beforeend', barHtml);
+      startProgress();
+      return;
+    }
+    typed += bootLines[lineIndex][charIndex] || '';
+    charIndex++;
+    if (charIndex >= bootLines[lineIndex].length) {
+      typed += '\n';
+      lineIndex++;
+      charIndex = 0;
+    }
+    output.innerHTML = '<span class="dim">' + typed.replace(/</g, '&lt;') + '</span>';
+    setTimeout(typeLine, 6);
+  }
+
+  function startProgress() {
+    var startedAt = Date.now();
+    var bar = document.getElementById('bar');
+    var percent = document.getElementById('percent');
+    (function tick() {
+      var progress = Math.min((Date.now() - startedAt) / DURATION, 1);
+      var value = Math.round(progress * 100);
+      bar.style.width = value + '%';
+      percent.textContent = value + '%';
+      if (progress < 1) {
+        setTimeout(tick, 50);
+      } else if (!done) {
+        done = true;
+        output.insertAdjacentHTML('beforeend',
+          '\n<div class="line"><span class="prompt"><span class="user">bxr</span>@<span class="user">home</span>:<span class="path">~</span>$</span> <span class="cursor"></span></div>');
+        setTimeout(function () { window.location.replace(TARGET); }, 200);
+      }
+    })();
+  }
+
+  document.addEventListener('click', function () { window.location.replace(TARGET); });
+  setTimeout(typeLine, 350);
+})();
+</script>
+</body>
+</html>

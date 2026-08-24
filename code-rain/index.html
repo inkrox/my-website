@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>黑客帝国代码雨</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: #000;
+        }
+        canvas {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<canvas id="code-rain-canvas"></canvas>
+<script>
+(function () {
+    'use strict';
+
+    var canvas = document.getElementById('code-rain-canvas');
+    var ctx = canvas.getContext('2d');
+
+    var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+    var FONT_SIZE = 16;
+    var columns = 0;
+    var drops = []; // 每列当前下落的位置
+
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        columns = Math.floor(canvas.width / FONT_SIZE);
+        drops = [];
+        for (var i = 0; i < columns; i++) {
+            drops[i] = Math.floor(Math.random() * canvas.height / FONT_SIZE); // 随机起始位置
+        }
+    }
+
+    function randomColor() {
+        var r = Math.floor(Math.random() * 256);
+        var g = Math.floor(Math.random() * 256);
+        var b = Math.floor(Math.random() * 256);
+        return 'rgb(' + r + ',' + g + ',' + b + ')';
+    }
+
+    function draw() {
+        // 半透明黑覆盖，形成渐隐拖尾
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.fillStyle = randomColor();
+        ctx.font = FONT_SIZE + 'px "Microsoft YaHei", monospace';
+
+        for (var i = 0; i < drops.length; i++) {
+            var text = chars[Math.floor(Math.random() * chars.length)];
+            ctx.fillText(text, i * FONT_SIZE, drops[i] * FONT_SIZE);
+
+            // 落到底部或随机重置
+            if (drops[i] * FONT_SIZE > canvas.height || Math.random() > 0.95) {
+                drops[i] = 0;
+            }
+            drops[i]++;
+        }
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+    setInterval(draw, 50);
+})();
+</script>
+</body>
+</html>

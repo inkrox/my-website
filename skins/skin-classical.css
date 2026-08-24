@@ -1,0 +1,159 @@
+/* ============ 皮肤 4/5 · 古风（scoped） ============ */
+html.skin-classical{
+  --paper: #f6f1e3;
+  --paper2: #efe7d3;
+  --ink: #33291f;
+  --ink-dim: #6d5f4c;
+  --vermilion: #a63a2b;
+  --gold: #a8863d;
+  --font-head: "STKaiti", "KaiTi", "楷体", "SimSun", serif;
+  --font-body: "Songti SC", "SimSun", "宋体", "Microsoft YaHei", serif;
+}html.skin-classical body{
+  font-family: var(--font-body);
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 100vh;
+  overflow-x: hidden;
+}html.skin-classical .skin-view[data-skin="classical"] /* 宣纸纹理 */
+body::before{
+  content: ""; position: fixed; inset: 0; z-index: -3; pointer-events: none;
+  background:
+    repeating-linear-gradient(0deg, rgba(120, 90, 40, .025) 0 1px, transparent 1px 4px),
+    repeating-linear-gradient(90deg, rgba(120, 90, 40, .02) 0 1px, transparent 1px 5px),
+    radial-gradient(ellipse at 30% 20%, #faf6ea 0%, var(--paper) 60%, #ece2ca 100%),
+      radial-gradient(700px 500px at 78% 12%, rgba(255, 175, 195, .14), transparent 65%);
+}html.skin-classical .skin-view[data-skin="classical"] /* 水墨晕染 */
+.wash{
+  position: fixed; border-radius: 50%; z-index: -2; pointer-events: none;
+  filter: blur(60px); opacity: .5;
+}html.skin-classical .skin-view[data-skin="classical"] .wash-1{ width: 500px; height: 500px; top: -140px; right: -120px; background: radial-gradient(circle, rgba(140, 120, 80, .35), transparent 70%); }html.skin-classical .skin-view[data-skin="classical"] #sakura{ position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+html.skin-classical .skin-view[data-skin="classical"] .wash-3{ width: 460px; height: 460px; top: 35%; right: -120px; background: radial-gradient(circle, rgba(255, 160, 185, .30), transparent 70%); }html.skin-classical .skin-view[data-skin="classical"] .wash-2{ width: 460px; height: 460px; bottom: 80px; left: -140px; background: radial-gradient(circle, rgba(120, 150, 130, .30), transparent 70%); }html.skin-classical .skin-view[data-skin="classical"] /* 远山 */
+.mountains{
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: -1; pointer-events: none;
+  opacity: .8;
+}html.skin-classical .skin-view[data-skin="classical"] .mountains svg{ display: block; width: 100%; height: 30vh; }html.skin-classical .skin-view[data-skin="classical"] /* 飘雾 */
+.mist{
+  position: fixed; left: -20%; right: -20%; top: 38%; height: 120px; z-index: -1;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .55) 30%, rgba(255, 255, 255, .55) 70%, transparent);
+  filter: blur(14px);
+  animation: mistDrift-classical 16s ease-in-out infinite alternate;
+  pointer-events: none;
+}@keyframes mistDrift-classical{ from { transform: translateX(-6%); } to { transform: translateX(6%); } }html.skin-classical .skin-view[data-skin="classical"] .hero .vtext{
+  position: absolute; left: 0; top: 30px;
+  display: flex; gap: 14px;
+  font-family: var(--font-head); font-size: 20px; letter-spacing: 8px;
+  color: var(--ink-dim); opacity: .85;
+}html.skin-classical .skin-view[data-skin="classical"] .hero .vtext span{
+  writing-mode: vertical-rl;
+  white-space: nowrap;
+}html.skin-classical .skin-view[data-skin="classical"] .hero .vtext b{ color: var(--vermilion); font-weight: 700; }html.skin-classical .skin-view[data-skin="classical"] /* 顶栏 */
+header{
+  position: sticky; top: 0; z-index: 10;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 4vw;
+  background: rgba(246, 241, 227, .88);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(51, 41, 31, .25);
+}html.skin-classical .skin-view[data-skin="classical"] .logo{ font-family: var(--font-head); font-size: 21px; letter-spacing: 4px; font-weight: 700; }html.skin-classical .skin-view[data-skin="classical"] .logo span{ color: var(--vermilion); }html.skin-classical .skin-view[data-skin="classical"] nav{ display: flex; gap: 2px; flex-wrap: wrap; }html.skin-classical .skin-view[data-skin="classical"] nav a{
+  font-family: var(--font-head); font-size: 16px; letter-spacing: 2px;
+  color: var(--ink); text-decoration: none; padding: 6px 16px; transition: .25s;
+}html.skin-classical .skin-view[data-skin="classical"] nav a:hover{ color: var(--vermilion); text-shadow: 0 0 10px rgba(166, 58, 43, .35); }html.skin-classical .skin-view[data-skin="classical"] main{ max-width: 1060px; margin: 0 auto; padding: 44px 4vw 90px; }html.skin-classical .skin-view[data-skin="classical"] /* Hero */
+.hero{ text-align: center; padding: 40px 0 26px; position: relative; }html.skin-classical .skin-view[data-skin="classical"] .hero .avatar-wrap{ position: relative; display: inline-block; }html.skin-classical .skin-view[data-skin="classical"] .hero .avatar-wrap::after{
+  content: ""; position: absolute; inset: -8px;
+  border: 1.5px solid rgba(166, 58, 43, .5);
+  border-radius: 50%;
+}html.skin-classical .skin-view[data-skin="classical"] .hero .avatar-wrap img{
+  width: 118px; height: 118px; border-radius: 50%; object-fit: cover;
+  border: 2px solid rgba(51, 41, 31, .6);
+  filter: sepia(.18) saturate(.9);
+  box-shadow: 0 10px 30px rgba(80, 60, 30, .25);
+}html.skin-classical .skin-view[data-skin="classical"] .hero h1{
+  margin-top: 22px; font-family: var(--font-head); font-weight: 700;
+  font-size: clamp(38px, 6.5vw, 56px); letter-spacing: 12px;
+  display: inline-block; position: relative;
+}html.skin-classical .skin-view[data-skin="classical"] /* 印章 */
+.seal{
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 44px; height: 44px; margin-left: 12px;
+  border: 2px solid var(--vermilion); color: var(--vermilion);
+  font-family: var(--font-head); font-size: 18px; font-weight: 700;
+  box-shadow: inset 0 0 0 2px var(--paper), inset 0 0 0 3px var(--vermilion);
+  transform: rotate(-8deg); vertical-align: 10px;
+}html.skin-classical .skin-view[data-skin="classical"] .hero .sub{ margin-top: 12px; font-family: var(--font-head); font-size: 18px; letter-spacing: 4px; color: var(--ink-dim); }html.skin-classical .skin-view[data-skin="classical"] .hero .poem{ margin-top: 14px; font-family: var(--font-head); font-size: 15px; letter-spacing: 3px; color: var(--gold); }html.skin-classical .skin-view[data-skin="classical"] /* 区块 */
+section{ margin-top: 52px; }html.skin-classical .skin-view[data-skin="classical"] .sec-title{
+  display: flex; align-items: center; gap: 14px;
+  font-family: var(--font-head); font-size: 25px; font-weight: 700;
+  letter-spacing: 5px; margin-bottom: 20px;
+}html.skin-classical .skin-view[data-skin="classical"] .sec-title::before,html.skin-classical .skin-view[data-skin="classical"] .sec-title::after{
+  content: "❖"; color: var(--vermilion); font-size: 15px;
+}html.skin-classical .skin-view[data-skin="classical"] .sec-title::after{ flex: 1; height: 0; border-bottom: 1px solid rgba(51, 41, 31, .3); margin-left: 6px; }html.skin-classical .skin-view[data-skin="classical"] .sec-title .orn{ color: var(--gold); font-size: 15px; }html.skin-classical .skin-view[data-skin="classical"] /* 关于 */
+.about-card{
+  background: linear-gradient(180deg, rgba(255, 252, 242, .85), rgba(250, 244, 228, .9));
+  border: 1px solid rgba(51, 41, 31, .35);
+  box-shadow: 0 6px 24px rgba(80, 60, 30, .12), inset 0 0 40px rgba(140, 110, 60, .06);
+  border-radius: 20px;
+  padding: 28px 32px; line-height: 2.1; font-size: 16px;
+}html.skin-classical .skin-view[data-skin="classical"] .about-card b{ font-family: var(--font-head); color: var(--vermilion); font-weight: 700; }html.skin-classical .skin-view[data-skin="classical"] .about-card .sig{
+  text-align: right; font-family: var(--font-head); font-size: 18px;
+  letter-spacing: 3px; color: var(--vermilion); margin-top: 10px;
+}html.skin-classical .skin-view[data-skin="classical"] .info-grid{ margin-top: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }html.skin-classical .skin-view[data-skin="classical"] .info-item{
+  border: 1px solid rgba(51, 41, 31, .3); padding: 12px 16px;
+  background: rgba(255, 253, 246, .7); text-align: center; border-radius: 12px;
+  font-family: var(--font-head); letter-spacing: 2px;
+}html.skin-classical .skin-view[data-skin="classical"] .info-item .k{ display: block; font-size: 12.5px; color: var(--ink-dim); letter-spacing: 3px; }html.skin-classical .skin-view[data-skin="classical"] .info-item .v{ display: block; margin-top: 4px; font-size: 17px; font-weight: 700; }html.skin-classical .skin-view[data-skin="classical"] /* 作品 */
+.grid{ display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(225px, 1fr)); }html.skin-classical .skin-view[data-skin="classical"] .card{
+  position: relative; display: block; text-decoration: none; color: var(--ink);
+  background: linear-gradient(180deg, rgba(255, 252, 242, .9), rgba(248, 241, 222, .92));
+  border: 1px solid rgba(51, 41, 31, .35);
+  border-radius: 16px;
+  padding: 20px 18px;
+  box-shadow: 0 4px 16px rgba(80, 60, 30, .1);
+  transition: .3s;
+}html.skin-classical .skin-view[data-skin="classical"] .card::before,html.skin-classical .skin-view[data-skin="classical"] .card::after{
+  content: ""; position: absolute; width: 16px; height: 16px;
+  border: 1.5px solid var(--vermilion); opacity: .55; transition: .3s;
+}html.skin-classical .skin-view[data-skin="classical"] .card::before{ top: 6px; left: 6px; border-right: none; border-bottom: none; }html.skin-classical .skin-view[data-skin="classical"] .card::after{ bottom: 6px; right: 6px; border-left: none; border-top: none; }html.skin-classical .skin-view[data-skin="classical"] .card:hover{
+  transform: translateY(-4px);
+  box-shadow: 0 14px 34px rgba(80, 60, 30, .2);
+  border-color: rgba(166, 58, 43, .6);
+}html.skin-classical .skin-view[data-skin="classical"] .card:hover::before,html.skin-classical .skin-view[data-skin="classical"] .card:hover::after{ opacity: 1; }html.skin-classical .skin-view[data-skin="classical"] .card .emoji{ font-size: 26px; }html.skin-classical .skin-view[data-skin="classical"] .card .name{ margin-top: 10px; font-family: var(--font-head); font-size: 18px; letter-spacing: 3px; font-weight: 700; }html.skin-classical .skin-view[data-skin="classical"] .card:hover .name{ color: var(--vermilion); }html.skin-classical .skin-view[data-skin="classical"] .card .desc{ margin-top: 5px; font-size: 13px; color: var(--ink-dim); letter-spacing: 1px; }html.skin-classical .skin-view[data-skin="classical"] .card .seal-tag{
+  position: absolute; right: 14px; top: 14px;
+  font-family: var(--font-head); font-size: 12px;
+  color: var(--vermilion); border: 1px solid var(--vermilion); padding: 1px 8px;
+  border-radius: 999px;
+  transform: rotate(4deg); opacity: .85;
+}html.skin-classical .skin-view[data-skin="classical"] .card .badge-new{
+  display: inline-block; font-size: 11px; color: #fdfaf0; background: var(--vermilion);
+  padding: 2px 8px; vertical-align: 2px; margin-left: 6px; letter-spacing: 2px;
+  border-radius: 999px; transform: rotate(-3deg);
+}html.skin-classical .skin-view[data-skin="classical"] .links-note{ margin-top: 12px; font-family: var(--font-head); font-size: 15px; letter-spacing: 2px; color: var(--ink-dim); text-align: center; }html.skin-classical .skin-view[data-skin="classical"] /* 主题切换 */
+.theme-bar{
+  margin-top: 56px; padding: 16px 18px; text-align: center;
+  border: 1px solid rgba(51, 41, 31, .3); border-radius: 16px;
+  background: rgba(255, 252, 242, .75);
+}html.skin-classical .skin-view[data-skin="classical"] .theme-bar .t{ font-family: var(--font-head); font-size: 15px; letter-spacing: 3px; color: var(--ink-dim); margin-right: 8px; }html.skin-classical .skin-view[data-skin="classical"] .theme-bar button{
+  display: inline-block; margin: 4px; padding: 7px 15px;
+  font-family: var(--font-head); font-size: 15px; letter-spacing: 2px;
+  color: var(--ink); background: rgba(255, 255, 255, .4); cursor: pointer;
+  border: 1px solid rgba(51, 41, 31, .35); transition: .25s;
+}html.skin-classical .skin-view[data-skin="classical"] .theme-bar button:hover{ color: var(--vermilion); border-color: var(--vermilion); }html.skin-classical .skin-view[data-skin="classical"] .theme-bar button.cur{ background: var(--vermilion); color: #f7e9c8; border-color: var(--vermilion); }html.skin-classical .skin-view[data-skin="classical"] footer{
+  text-align: center; padding: 24px 4vw 34px;
+  font-size: 13.5px; color: var(--ink-dim); letter-spacing: 2px; line-height: 2;
+  border-top: 1px solid rgba(51, 41, 31, .25);
+  font-family: var(--font-head);
+}html.skin-classical .skin-view[data-skin="classical"] footer a{ color: var(--vermilion); text-decoration: none; }html.skin-classical .skin-view[data-skin="classical"] footer a:hover{ text-decoration: underline; }html.skin-classical .skin-view[data-skin="classical"] .reveal{ opacity: 0; transform: translateY(20px); transition: opacity .7s, transform .7s; }html.skin-classical .skin-view[data-skin="classical"] .reveal.in{ opacity: 1; transform: none; }@media (max-width: 640px){html.skin-classical .skin-view[data-skin="classical"] .hero .vtext{ display: none; }}@media (max-width: 640px){html.skin-classical .skin-view[data-skin="classical"] header{ flex-direction: column; gap: 8px; }}
+/* ============ UI 升级：导航高亮 / CTA / 标签 ============ */
+html.skin-classical .skin-view[data-skin="classical"] nav a.active{ color: var(--vermilion); box-shadow: inset 0 -2px 0 var(--vermilion); }
+html.skin-classical .skin-view[data-skin="classical"] .hero .cta{
+  border-radius: 10px; font-family: var(--font-head); letter-spacing: 3px; font-size: 16px;
+  background: var(--vermilion); color: #f7e9c8; box-shadow: 0 6px 18px rgba(166, 58, 43, .35);
+}
+html.skin-classical .skin-view[data-skin="classical"] .hero .cta:hover{ transform: translateY(-3px); box-shadow: 0 10px 26px rgba(166, 58, 43, .45); }
+html.skin-classical .skin-view[data-skin="classical"] .hero .cta.ghost{ background: transparent; border: 1.5px solid var(--vermilion); color: var(--vermilion); box-shadow: none; }
+html.skin-classical .skin-view[data-skin="classical"] .hero .cta.ghost:hover{ background: rgba(166, 58, 43, .08); }
+html.skin-classical .skin-view[data-skin="classical"] .card .tags{ margin-top: 10px; display: flex; gap: 6px; }
+html.skin-classical .skin-view[data-skin="classical"] .card .tag{
+  font-size: 11.5px; padding: 1px 9px; letter-spacing: 1px;
+  border: 1px solid rgba(166, 58, 43, .5); color: var(--vermilion);
+  background: rgba(255, 252, 242, .6); font-family: var(--font-head);
+}

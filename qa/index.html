@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>实时答题——数学万岁</title>
+  <link rel="stylesheet" href="qa.css">
+</head>
+
+<body>
+  <h1>实时答题——数学万岁</h1>
+  <div id="question-container">
+    <p id="question-text"></p>
+    <div id="options"></div>
+    <span id="feedback" class="feedback"></span>
+    <p id="progress" style="margin-top:14px;color:#888;font-size:15px;"></p>
+  </div>
+  <div id="score-container">
+    <p>你的得分: <span id="score">0</span> / 10</p>
+    <button id="restart" style="display:none;">重新开始</button>
+  </div>
+  <script src="qa.js"></script>
+</body>
+
+</html>

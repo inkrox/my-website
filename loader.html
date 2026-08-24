@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="refresh" content="4;url=index.html">
+<title>加载中 · BXR 的主页</title>
+<link rel="icon" href="me.jpg" type="image/jpeg">
+<style>
+  :root {
+    --accent: #7c6cff;
+    --accent2: #22d3ee;
+    --accent3: #f472b6;
+    --ink: #eef1ff;
+    --dim: #aab3d6;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    color: var(--ink);
+    background: linear-gradient(135deg, #0f1023, #1b1440 45%, #0b1e3f);
+    overflow: hidden;
+  }
+  body::before {
+    content: ""; position: fixed; inset: 0; z-index: 0;
+    background:
+      radial-gradient(600px 400px at 15% 20%, rgba(124, 108, 255, .3), transparent 65%),
+      radial-gradient(700px 500px at 85% 15%, rgba(34, 211, 238, .22), transparent 65%),
+      radial-gradient(800px 600px at 50% 110%, rgba(244, 114, 182, .18), transparent 65%);
+    animation: drift 14s ease-in-out infinite alternate;
+  }
+  @keyframes drift {
+    0% { transform: translate3d(-2%, -1%, 0) scale(1); }
+    100% { transform: translate3d(2%, 2%, 0) scale(1.08); }
+  }
+  .loader { position: relative; z-index: 1; width: min(420px, 86vw); text-align: center; }
+  .loader .logo {
+    font-size: 30px; font-weight: 800; letter-spacing: 4px;
+    background: linear-gradient(90deg, #c9c4ff, var(--accent2), #ffd1ec);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .loader .sub { margin-top: 8px; font-size: 14px; color: var(--dim); letter-spacing: 2px; }
+  .loader .avatar {
+    width: 88px; height: 88px; border-radius: 50%; object-fit: cover; object-position: center 30%;
+    border: 3px solid rgba(255, 255, 255, .35);
+    box-shadow: 0 0 30px rgba(124, 108, 255, .5);
+    animation: breathe 2.4s ease-in-out infinite;
+  }
+  @keyframes breathe {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 24px rgba(124, 108, 255, .4); }
+    50% { transform: scale(1.06); box-shadow: 0 0 44px rgba(34, 211, 238, .6); }
+  }
+  .loader .avatar-wrap { margin-bottom: 26px; }
+  .track {
+    height: 10px; border-radius: 999px; overflow: hidden;
+    background: rgba(255, 255, 255, .1);
+    border: 1px solid rgba(255, 255, 255, .15);
+  }
+  .bar {
+    height: 100%; width: 0; border-radius: 999px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3));
+    box-shadow: 0 0 16px rgba(124, 108, 255, .8);
+    transition: width .1s linear;
+  }
+  .status {
+    margin-top: 14px; display: flex; justify-content: space-between;
+    font-size: 13px; color: var(--dim); letter-spacing: 1px;
+  }
+  .status b { color: var(--accent2); font-weight: 600; }
+  .skip {
+    margin-top: 22px; padding: 10px 34px; cursor: pointer;
+    font-size: 14px; letter-spacing: 2px; color: #fff;
+    background: rgba(255, 255, 255, .08);
+    border: 1px solid rgba(255, 255, 255, .2); border-radius: 999px;
+    transition: .3s;
+  }
+  .skip:hover { background: rgba(124, 108, 255, .35); border-color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="loader">
+  <div class="avatar-wrap"><img class="avatar" src="me.jpg" alt="BXR"></div>
+  <div class="logo">BXR</div>
+  <div class="sub">正在加载主页 · 极光风格</div>
+  <div style="margin-top:22px" class="track"><div class="bar" id="bar"></div></div>
+  <div class="status"><span>LOADING…</span><span><b id="percent">0%</b></span></div>
+  <button class="skip" id="skip">立即进入 →</button>
+</div>
+<script>
+(function () {
+  'use strict';
+  var TARGET = 'index.html';
+  var DURATION = 1200; // 毫秒
+  /* 支持 ?to= 参数：访问小游戏前播放加载动画后跳转 */
+  var toMatch = location.search.match(/[?&]to=([^&]+)/);
+  if (toMatch) {
+    var toTarget = decodeURIComponent(toMatch[1]);
+    if (!/^(javascript|data):/i.test(toTarget)) {
+      TARGET = toTarget;
+    }
+  }
+  var bar = document.getElementById('bar');
+  var percent = document.getElementById('percent');
+  var startedAt = Date.now();
+  var done = false;
+
+  function tick() {
+    var elapsed = Date.now() - startedAt;
+    var progress = Math.min(elapsed / DURATION, 1);
+    var value = Math.round(progress * 100);
+    bar.style.width = value + '%';
+    percent.textContent = value + '%';
+    if (progress < 1) {
+      requestAnimationFrame(tick);
+    } else if (!done) {
+      done = true;
+      setTimeout(function () { window.location.replace(TARGET); }, 200);
+    }
+  }
+  requestAnimationFrame(tick);
+
+  document.getElementById('skip').addEventListener('click', function () {
+    window.location.replace(TARGET);
+  });
+})();
+</script>
+</body>
+</html>
