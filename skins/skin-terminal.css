@@ -130,3 +130,13 @@ html.skin-terminal .skin-view[data-skin="terminal"] .wline .ts{ color: var(--gre
 html.skin-terminal .skin-view[data-skin="terminal"] .wline:hover .ts{ color: #064a1e; }
 html.skin-terminal .skin-view[data-skin="terminal"] .term-nav a.active{ background: var(--green); color: #000; }
 html.skin-terminal .skin-view[data-skin="terminal"] .term-out{ margin: 2px 0; }
+/* ============ 友链输出链接：亮琥珀色 + 下划线，避免默认暗色看不清 ============ */
+html.skin-terminal .skin-view[data-skin="terminal"] .cmd-out a,
+html.skin-terminal .skin-view[data-skin="terminal"] .term-out a{
+  color: var(--amber); text-decoration: underline;
+  text-underline-offset: 3px;
+}
+html.skin-terminal .skin-view[data-skin="terminal"] .cmd-out a:hover,
+html.skin-terminal .skin-view[data-skin="terminal"] .term-out a:hover{
+  background: var(--amber); color: #000;
+}
