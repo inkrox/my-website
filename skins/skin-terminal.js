@@ -55,7 +55,7 @@
   var bootEl = document.getElementById('boot');
   var asciiEl = document.getElementById('asciiArt');
   var bootLines = [
-    '> BXR-OS v2.2.1 BOOTING ...',
+    '> BXR-OS v2.2.2 BOOTING ...',
     '> CPU: BRAIN(14y) 4 CORES ... OK',
     '> MEM: DREAMS 100% ... OK',
     '> LOADING PROFILE: BXR ... DONE',
@@ -216,7 +216,7 @@
     } else if (cmd === 'links') {
       termOut('<div class="line">🐙 GitHub — <a href="https://github.com/inkrox" target="_blank" rel="noopener">https://github.com/inkrox</a></div>' +
         '<div class="line">📦 本站源码 — <a href="https://github.com/inkrox/my-website/" target="_blank" rel="noopener">https://github.com/inkrox/my-website/</a></div>' +
-        '<div class="line">📮 邮箱 — <a href="mailto:inkrox@outlook.com">inkrox@outlook.com</a></div>' +
+        '<div class="line">📮 邮箱 — <a href="mailto:inkrox@outlook.com">inkrox@outlook.com</a> · <a href="mailto:root@cralk.top">root@cralk.top</a></div>' +
         '<div class="line">💬 知乎 — <a href="https://www.zhihu.com/people/9wbhos" target="_blank" rel="noopener">https://www.zhihu.com/people/9wbhos</a></div>' +
         '<div class="line">🚩 洛谷 — <a href="https://www.luogu.com.cn/user/1766805" target="_blank" rel="noopener">https://www.luogu.com.cn/user/1766805</a></div>');
     } else if (cmd === 'whoami') {
