@@ -36,9 +36,10 @@ html.skin-classical .skin-view[data-skin="classical"] .wash-3{ width: 460px; hei
   position: fixed; left: -20%; right: -20%; top: 38%; height: 120px; z-index: -1;
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .55) 30%, rgba(255, 255, 255, .55) 70%, transparent);
   filter: blur(14px);
-  animation: mistDrift-classical 16s ease-in-out infinite alternate;
+  opacity: 0; /* 先隐藏，等内容渐入后再浮现，避免加载时闪白条 */
+  animation: mistFadeIn-classical .9s ease .5s forwards, mistDrift-classical 16s ease-in-out .5s infinite alternate;
   pointer-events: none;
-}@keyframes mistDrift-classical{ from { transform: translateX(-6%); } to { transform: translateX(6%); } }html.skin-classical .skin-view[data-skin="classical"] .hero .vtext{
+}@keyframes mistFadeIn-classical{ to { opacity: 1; } }@keyframes mistDrift-classical{ from { transform: translateX(-6%); } to { transform: translateX(6%); } }html.skin-classical .skin-view[data-skin="classical"] .hero .vtext{
   position: absolute; left: 0; top: 30px;
   display: flex; gap: 14px;
   font-family: var(--font-head); font-size: 20px; letter-spacing: 8px;
@@ -77,6 +78,7 @@ header{
   width: 44px; height: 44px; margin-left: 12px;
   border: 2px solid var(--vermilion); color: var(--vermilion);
   font-family: var(--font-head); font-size: 18px; font-weight: 700;
+  letter-spacing: 0; line-height: 1; /* 归零 h1 继承的 12px 字距，否则"印"会偏左 */
   box-shadow: inset 0 0 0 2px var(--paper), inset 0 0 0 3px var(--vermilion);
   transform: rotate(-8deg); vertical-align: 10px;
 }html.skin-classical .skin-view[data-skin="classical"] .hero .sub{ margin-top: 12px; font-family: var(--font-head); font-size: 18px; letter-spacing: 4px; color: var(--ink-dim); }html.skin-classical .skin-view[data-skin="classical"] .hero .poem{ margin-top: 14px; font-family: var(--font-head); font-size: 15px; letter-spacing: 3px; color: var(--gold); }html.skin-classical .skin-view[data-skin="classical"] /* 区块 */
