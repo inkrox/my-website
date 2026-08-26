@@ -37,20 +37,20 @@ python -m http.server 8080
 
 ## 版本
 
-当前版本 **v2.2.16.260826**，格式为 `v主.次.修订.日期`，每次改动递增。
+当前版本 **v2.2.19.260826**，格式为 `v主.次.修订.日期`，每次改动递增。
 
 发布时需保证 git tag、GitHub tag 与 Release 三者名称一致：
 
 ```bash
-git tag -a v2.2.16.260826 -m "v2.2.16.260826"
-git push origin v2.2.16.260826
+git tag -a v2.2.19.260826 -m "v2.2.19.260826"
+git push origin v2.2.19.260826
 ```
 
 也可以在 GitHub 网页端创建 Release 时直接填写同名 tag。
 
 ## 版权
 
-© BXR · v2.2.16.260826 · 更新记录见 [changelog.html](changelog.html)
+© BXR · v2.2.19.260826 · 更新记录见 [changelog.html](changelog.html)
 背景音乐：Kevin MacLeod（[incompetech.com](https://incompetech.com)）· CC-BY 4.0
 [萌ICP备20243331号](https://icp.gov.moe/?keyword=20243331)
 Made by BXR & 蓝色大肥鱼 🐟

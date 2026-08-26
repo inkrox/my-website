@@ -64,7 +64,7 @@
   var bootEl = document.getElementById('boot');
   var asciiEl = document.getElementById('asciiArt');
   var bootLines = [
-    '> BXR-OS v2.2.16 BOOTING ...',
+    '> BXR-OS v2.2.19 BOOTING ...',
     '> CPU: BRAIN(14y) 4 CORES ... OK',
     '> MEM: DREAMS 100% ... OK',
     '> LOADING PROFILE: BXR ... DONE',

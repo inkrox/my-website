@@ -174,7 +174,7 @@ html.skin-starry .player-ctrl button { border-radius: 999px; }
   border: 1px solid rgba(255, 255, 255, .25);
   background: rgba(255, 255, 255, .1);
   backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-  color: var(--accent); font-size: 22px; cursor: pointer;
+  color: var(--ink); font-size: 22px; cursor: pointer;
   box-shadow: 0 8px 24px rgba(0, 0, 0, .35);
   transition: .3s;
 }
@@ -217,11 +217,11 @@ html.skin-starry #musicBtn { background: rgba(255, 255, 255, .08); border-color:
 .player-vol input[type="range"]::-moz-range-track { height: 5px; border-radius: 999px; background: rgba(255, 255, 255, .18); }
 .player-vol input[type="range"]::-moz-range-thumb { width: 14px; height: 14px; border-radius: 50%; background: var(--accent); border: 2px solid #fff; cursor: pointer; }
 #topBtn {
-  position: fixed; right: 22px; bottom: 88px; z-index: 998;
+  position: fixed; right: 22px; bottom: 132px; z-index: 998;
   width: 52px; height: 52px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   border: 1px solid var(--card-border); background: var(--card);
-  color: var(--accent); font-size: 20px; cursor: pointer; line-height: 1;
+  color: var(--ink); font-size: 20px; cursor: pointer; line-height: 1;
   backdrop-filter: blur(10px);
   opacity: 0; pointer-events: none; transform: translateY(10px);
   transition: opacity .3s, transform .3s, box-shadow .3s;
@@ -234,18 +234,19 @@ html.skin-classical #topBtn { border-radius: 10px; background: #fdfaf0; border: 
 html.skin-starry #topBtn { border-radius: 18px; background: rgba(255, 255, 255, .08); }
 /* ============ 中英切换按钮 ============ */
 #langBtn {
-  position: fixed; right: 22px; bottom: 154px; top: auto; z-index: 999;
-  width: 52px; height: 52px; padding: 0;
+  position: fixed; right: 22px; bottom: 88px; top: auto; z-index: 999;
+  width: 52px; height: 30px; padding: 0;
   display: flex; align-items: center; justify-content: center;
   border-radius: 999px; cursor: pointer;
   border: 1px solid var(--card-border); background: var(--card);
-  color: var(--accent); font-size: 13px; font-family: inherit;
+  color: var(--ink); font-size: 13px; font-family: inherit;
   backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
   transition: .25s;
 }
 #langBtn:hover { border-color: var(--accent2); transform: scale(1.06); }
-html.skin-cyberpunk #langBtn, html.skin-terminal #langBtn { border-radius: 0; font-family: var(--mono); }
-html.skin-classical #langBtn { border-radius: 10px; font-family: var(--kai); }
+html.skin-cyberpunk #langBtn { border-radius: 0; font-family: var(--mono); background: rgba(10, 14, 34, .88); border-color: var(--accent); color: var(--accent); }
+html.skin-terminal #langBtn { border-radius: 0; font-family: var(--mono); background: #000; border-color: var(--accent); color: var(--accent); }
+html.skin-classical #langBtn { border-radius: 10px; font-family: var(--kai); color: var(--accent); }
 html.skin-classical .player { background: rgba(253, 250, 240, .97); border: 1px solid rgba(166, 58, 43, .45); }
 html.skin-classical .player-song, html.skin-classical .player-vol { color: #33291f; }
 html.skin-classical .player-song #playerTime, html.skin-classical .player-vol .vol-val { color: rgba(51, 41, 31, .55); }
@@ -427,7 +428,7 @@ html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张�
   </section>
 </main>
 <footer class="reveal">
-  <div>© <span class="year"></span> BXR · Version v2.2.16.260826</div>
+  <div>© <span class="year"></span> BXR · Version v2.2.19.260826</div>
   <div><a href="https://icp.gov.moe/?keyword=20243331" target="_blank" rel="noopener">萌ICP备20243331号</a> · 访客 <span class="bz-uv">…</span> 人 · 总访问 <span class="bz-pv">…</span> 次 · <span class="visitor-city"></span></div>
   <div><a href="loader.html?to=changelog.html">📜 更新日志</a> · <a href="https://github.com/inkrox/my-website" target="_blank" rel="noopener">🐙 GitHub 仓库</a></div>
   <div style="font-size:11px;opacity:.6;">BGM: Kevin MacLeod (incompetech.com) · CC-BY 4.0</div>
@@ -533,7 +534,7 @@ html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张�
 </main>
 
 <footer class="reveal">
-  <div>© <span class="year"></span> BXR_MAIN.EXE · VERSION v2.2.16.260826</div>
+  <div>© <span class="year"></span> BXR_MAIN.EXE · VERSION v2.2.19.260826</div>
   <div><a href="https://icp.gov.moe/?keyword=20243331" target="_blank" rel="noopener">萌ICP备20243331号</a> · 访客 <span class="bz-uv">…</span> 人 · 总访问 <span class="bz-pv">…</span> 次 · <span class="visitor-city"></span></div>
   <div><a href="templates/loader-cyberpunk.html?to=../changelog.html">📜 更新日志</a> · <a href="https://github.com/inkrox/my-website" target="_blank" rel="noopener">🐙 GitHub 仓库</a></div>
   <div style="font-size:11px;opacity:.6;">BGM: Kevin MacLeod (incompetech.com) · CC-BY 4.0</div>
@@ -562,7 +563,7 @@ html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张�
  | __ )   \ \/ /  |  _ \
  |  _ \    \  /   | |_) |
  | |_) |   /  \   |  _ <
- |____/   /_/\_\  |_| \_\   v2.2.16</pre>
+ |____/   /_/\_\  |_| \_\   v2.2.19</pre>
 
     <div class="line cta-line"><span class="prompt"><span class="user">bxr</span>@<span class="user">home</span>:<span class="path">~</span>$</span> <a class="cta" href="templates/loader-terminal.html?to=https://shoot.cralk.top/">./shoot.sh</a> <a class="cta ghost" href="templates/loader-terminal.html?to=../changelog.html">cat changelog.md</a></div>
     </div>
@@ -634,7 +635,7 @@ html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张�
   </div>
 
   <footer class="reveal">
-    <div>© <span class="year"></span> BXR · VERSION v2.2.16.260826 · <a href="https://icp.gov.moe/?keyword=20243331" target="_blank" rel="noopener">萌ICP备20243331号</a> · <a href="templates/loader-terminal.html?to=../changelog.html">📜 更新日志</a> · <a href="https://github.com/inkrox/my-website" target="_blank" rel="noopener">🐙 GitHub 仓库</a></div>
+    <div>© <span class="year"></span> BXR · VERSION v2.2.19.260826 · <a href="https://icp.gov.moe/?keyword=20243331" target="_blank" rel="noopener">萌ICP备20243331号</a> · <a href="templates/loader-terminal.html?to=../changelog.html">📜 更新日志</a> · <a href="https://github.com/inkrox/my-website" target="_blank" rel="noopener">🐙 GitHub 仓库</a></div>
     <div style="font-size:11px;opacity:.6;">BGM: Kevin MacLeod (incompetech.com) · CC-BY 4.0</div>
     <div style="margin-top:4px;letter-spacing:1px;">🧑‍💻 Made by <b>BXR</b> &amp; <a href="https://www.deepseek.com" target="_blank" rel="noopener">蓝色大肥鱼</a> 🐟</div>
   </footer>
@@ -743,7 +744,7 @@ html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张�
 </main>
 
 <footer class="reveal">
-  <div>© <span class="year"></span> BXR · Version v2.2.16.260826 · 访客 <span class="bz-uv">…</span> 人 · 总访问 <span class="bz-pv">…</span> 次 · <span class="visitor-city"></span></div>
+  <div>© <span class="year"></span> BXR · Version v2.2.19.260826 · 访客 <span class="bz-uv">…</span> 人 · 总访问 <span class="bz-pv">…</span> 次 · <span class="visitor-city"></span></div>
   <div><a href="https://icp.gov.moe/?keyword=20243331" target="_blank" rel="noopener">萌ICP备20243331号</a> · <a href="templates/loader-classical.html?to=../changelog.html">📜 更新日志</a> · <a href="https://github.com/inkrox/my-website" target="_blank" rel="noopener">🐙 GitHub 仓库</a></div>
   <div style="font-size:11px;opacity:.7;">BGM: Kevin MacLeod (incompetech.com) · CC-BY 4.0</div>
   <div style="margin-top:4px;letter-spacing:2px;">🧑‍💻 Made by <b>BXR</b> &amp; <a href="https://www.deepseek.com" target="_blank" rel="noopener">蓝色大肥鱼</a> 🐟</div>
@@ -847,7 +848,7 @@ html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张�
 </main>
 
 <footer class="reveal">
-  <div>© <span class="year"></span> BXR · Version v2.2.16.260826</div>
+  <div>© <span class="year"></span> BXR · Version v2.2.19.260826</div>
   <div><a href="https://icp.gov.moe/?keyword=20243331" target="_blank" rel="noopener">萌ICP备20243331号</a> · 访客 <span class="bz-uv">…</span> 人 · 总访问 <span class="bz-pv">…</span> 次 · <span class="visitor-city"></span></div>
   <div><a href="templates/loader-starry.html?to=../changelog.html">📜 更新日志</a> · <a href="https://github.com/inkrox/my-website" target="_blank" rel="noopener">🐙 GitHub 仓库</a></div>
   <div style="font-size:11px;opacity:.6;">BGM: Kevin MacLeod (incompetech.com) · CC-BY 4.0</div>
@@ -871,7 +872,7 @@ html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张�
     <ul id="updatesList"></ul>
   </div>
 </div>
-<button id="musicBtn" title="播放/暂停背景音乐">🎵</button>
+<button id="musicBtn" title="播放/暂停背景音乐">♪</button>
 <div id="musicTip">背景音乐</div>
 <div class="player" id="player">
   <div class="player-song"><span id="playerSong">♪ 未播放</span><span id="playerTime">0:00 / 0:00</span></div>
@@ -880,7 +881,7 @@ html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张�
   <div class="player-vol"><span>🔊</span><input type="range" id="playerVolume" min="0" max="100" value="70"><span class="vol-val" id="playerVolVal">70%</span></div>
 </div>
 <button id="topBtn" title="回到顶部">↑</button>
-<button id="langBtn" title="切换语言 / Language">🌐 中</button>
+<button id="langBtn" title="切换语言 / Language">中</button>
 <div id="scrollbar"></div>
 <div id="toast"></div>
 <audio id="bgm" src="bgm.mp3" loop preload="metadata"></audio>
@@ -1218,14 +1219,14 @@ html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张�
     if (playing) {
       bgm.pause();
       btn.classList.remove('playing');
-      btn.textContent = '🎵';
+      btn.textContent = '♪';
       tip.textContent = window.bxrLang === 'en' ? '⏸ Music paused' : '⏸ 音乐已暂停';
       player.classList.remove('show');
     } else {
       var p = bgm.play();
       if (p && p.catch) { p.catch(function () {}); }
       btn.classList.add('playing');
-      btn.textContent = '🎶';
+      btn.textContent = '♫';
       tip.textContent = (window.bxrLang === 'en' ? '♪ Playing: ' : '♪ 正在播放：') + SONG_BY_SKIN[currentSkin];
       player.classList.add('show');
     }
@@ -1465,6 +1466,9 @@ html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张�
 
   /* ============ 最近更新窗口 ============ */
   var UPDATES = [
+    { d: '08-26', t: '版本升级 v2.2.19.260826 · 悬浮按钮字体颜色统一（浅底保留）', f: 'index.html · changelog.html · changelog-en.html', s: 'all' },
+    { d: '08-26', t: '版本升级 v2.2.18.260826 · 回顶部与 EN 间距统一 14px', f: 'index.html · changelog.html · changelog-en.html', s: 'all' },
+    { d: '08-26', t: '版本升级 v2.2.17.260826 · EN 与回顶部互换位置 · EN 改扁', f: 'index.html · changelog.html · changelog-en.html', s: 'all' },
     { d: '08-26', t: '版本升级 v2.2.16.260826 · 代码雨纯英文数字符号 · 去掉扰动', f: 'code-rain/index.html · changelog.html · changelog-en.html', s: 'all' },
     { d: '08-26', t: '版本升级 v2.2.15.260826 · 代码雨重制炫酷版 · QA 英文 · 缓存清理', f: 'code-rain/index.html · qa/ · _tools/ · changelog.html · changelog-en.html', s: 'all' },
     { d: '08-26', t: '版本升级 v2.2.14.260826 · 5 套加载页英文跟随', f: 'loader.html · templates/loader-*.html · changelog.html · changelog-en.html', s: 'all' },
@@ -1797,13 +1801,13 @@ html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张�
     ['.skin-view[data-skin="starry"] .theme-bar .t', 'Switch style:'],
     ['.skin-view[data-skin="starry"] #themes-starry .sec-title', '🎨 Themes'],
     /* ---- 皮肤切换按钮（5 套容器 × 5 个按钮） ---- */
-    ['#langBtn', '🌐 EN'],
+    ['#langBtn', 'EN'],
     /* ---- 页脚（5 套） ---- */
-    ['.skin-view[data-skin="default"] footer', '<div>© <span class="year"></span> BXR · Version v2.2.16.260826</div><div><a href="https://icp.gov.moe/?keyword=20243331" target="_blank" rel="noopener">萌ICP备20243331号</a> · Visitors <span class="bz-uv">…</span> · Total views <span class="bz-pv">…</span> · <span class="visitor-city"></span></div><div><a href="loader.html?to=changelog.html">📜 Changelog</a> · <a href="https://github.com/inkrox/my-website" target="_blank" rel="noopener">🐙 GitHub Repo</a></div><div style="font-size:11px;opacity:.6;">BGM: Kevin MacLeod (incompetech.com) · CC-BY 4.0</div><div style="margin-top:4px;letter-spacing:1px;">🧑‍💻 Made by <b>BXR</b> &amp; <a href="https://www.deepseek.com" target="_blank" rel="noopener">Blue Fat Fish</a> 🐟</div>'],
-    ['.skin-view[data-skin="cyberpunk"] footer', '<div>© <span class="year"></span> BXR_MAIN.EXE · VERSION v2.2.16.260826</div><div><a href="https://icp.gov.moe/?keyword=20243331" target="_blank" rel="noopener">萌ICP备20243331号</a> · Visitors <span class="bz-uv">…</span> · Total views <span class="bz-pv">…</span> · <span class="visitor-city"></span></div><div><a href="templates/loader-cyberpunk.html?to=../changelog.html">📜 Changelog</a> · <a href="https://github.com/inkrox/my-website" target="_blank" rel="noopener">🐙 GitHub Repo</a></div><div style="font-size:11px;opacity:.6;">BGM: Kevin MacLeod (incompetech.com) · CC-BY 4.0</div><div style="margin-top:4px;letter-spacing:1px;">🧑‍💻 Made by <b>BXR</b> &amp; <a href="https://www.deepseek.com" target="_blank" rel="noopener">Blue Fat Fish</a> 🐟</div>'],
-    ['.skin-view[data-skin="terminal"] footer', '<div>© <span class="year"></span> BXR · VERSION v2.2.16.260826 · <a href="https://icp.gov.moe/?keyword=20243331" target="_blank" rel="noopener">萌ICP备20243331号</a> · <a href="templates/loader-terminal.html?to=../changelog.html">📜 Changelog</a> · <a href="https://github.com/inkrox/my-website" target="_blank" rel="noopener">🐙 GitHub Repo</a></div><div style="font-size:11px;opacity:.6;">BGM: Kevin MacLeod (incompetech.com) · CC-BY 4.0</div><div style="margin-top:4px;letter-spacing:1px;">🧑‍💻 Made by <b>BXR</b> &amp; <a href="https://www.deepseek.com" target="_blank" rel="noopener">Blue Fat Fish</a> 🐟</div>'],
-    ['.skin-view[data-skin="classical"] footer', '<div>© <span class="year"></span> BXR · Version v2.2.16.260826 · Visitors <span class="bz-uv">…</span> · Total views <span class="bz-pv">…</span> · <span class="visitor-city"></span></div><div><a href="https://icp.gov.moe/?keyword=20243331" target="_blank" rel="noopener">萌ICP备20243331号</a> · <a href="templates/loader-classical.html?to=../changelog.html">📜 Changelog</a> · <a href="https://github.com/inkrox/my-website" target="_blank" rel="noopener">🐙 GitHub Repo</a></div><div style="font-size:11px;opacity:.7;">BGM: Kevin MacLeod (incompetech.com) · CC-BY 4.0</div><div style="margin-top:4px;letter-spacing:2px;">🧑‍💻 Made by <b>BXR</b> &amp; <a href="https://www.deepseek.com" target="_blank" rel="noopener">Blue Fat Fish</a> 🐟</div>'],
-    ['.skin-view[data-skin="starry"] footer', '<div>© <span class="year"></span> BXR · Version v2.2.16.260826</div><div><a href="https://icp.gov.moe/?keyword=20243331" target="_blank" rel="noopener">萌ICP备20243331号</a> · Visitors <span class="bz-uv">…</span> · Total views <span class="bz-pv">…</span> · <span class="visitor-city"></span></div><div><a href="templates/loader-starry.html?to=../changelog.html">📜 Changelog</a> · <a href="https://github.com/inkrox/my-website" target="_blank" rel="noopener">🐙 GitHub Repo</a></div><div style="font-size:11px;opacity:.6;">BGM: Kevin MacLeod (incompetech.com) · CC-BY 4.0</div><div style="margin-top:4px;letter-spacing:1px;">🧑‍💻 Made by <b>BXR</b> &amp; <a href="https://www.deepseek.com" target="_blank" rel="noopener">Blue Fat Fish</a> 🐟</div>']
+    ['.skin-view[data-skin="default"] footer', '<div>© <span class="year"></span> BXR · Version v2.2.19.260826</div><div><a href="https://icp.gov.moe/?keyword=20243331" target="_blank" rel="noopener">萌ICP备20243331号</a> · Visitors <span class="bz-uv">…</span> · Total views <span class="bz-pv">…</span> · <span class="visitor-city"></span></div><div><a href="loader.html?to=changelog.html">📜 Changelog</a> · <a href="https://github.com/inkrox/my-website" target="_blank" rel="noopener">🐙 GitHub Repo</a></div><div style="font-size:11px;opacity:.6;">BGM: Kevin MacLeod (incompetech.com) · CC-BY 4.0</div><div style="margin-top:4px;letter-spacing:1px;">🧑‍💻 Made by <b>BXR</b> &amp; <a href="https://www.deepseek.com" target="_blank" rel="noopener">Blue Fat Fish</a> 🐟</div>'],
+    ['.skin-view[data-skin="cyberpunk"] footer', '<div>© <span class="year"></span> BXR_MAIN.EXE · VERSION v2.2.19.260826</div><div><a href="https://icp.gov.moe/?keyword=20243331" target="_blank" rel="noopener">萌ICP备20243331号</a> · Visitors <span class="bz-uv">…</span> · Total views <span class="bz-pv">…</span> · <span class="visitor-city"></span></div><div><a href="templates/loader-cyberpunk.html?to=../changelog.html">📜 Changelog</a> · <a href="https://github.com/inkrox/my-website" target="_blank" rel="noopener">🐙 GitHub Repo</a></div><div style="font-size:11px;opacity:.6;">BGM: Kevin MacLeod (incompetech.com) · CC-BY 4.0</div><div style="margin-top:4px;letter-spacing:1px;">🧑‍💻 Made by <b>BXR</b> &amp; <a href="https://www.deepseek.com" target="_blank" rel="noopener">Blue Fat Fish</a> 🐟</div>'],
+    ['.skin-view[data-skin="terminal"] footer', '<div>© <span class="year"></span> BXR · VERSION v2.2.19.260826 · <a href="https://icp.gov.moe/?keyword=20243331" target="_blank" rel="noopener">萌ICP备20243331号</a> · <a href="templates/loader-terminal.html?to=../changelog.html">📜 Changelog</a> · <a href="https://github.com/inkrox/my-website" target="_blank" rel="noopener">🐙 GitHub Repo</a></div><div style="font-size:11px;opacity:.6;">BGM: Kevin MacLeod (incompetech.com) · CC-BY 4.0</div><div style="margin-top:4px;letter-spacing:1px;">🧑‍💻 Made by <b>BXR</b> &amp; <a href="https://www.deepseek.com" target="_blank" rel="noopener">Blue Fat Fish</a> 🐟</div>'],
+    ['.skin-view[data-skin="classical"] footer', '<div>© <span class="year"></span> BXR · Version v2.2.19.260826 · Visitors <span class="bz-uv">…</span> · Total views <span class="bz-pv">…</span> · <span class="visitor-city"></span></div><div><a href="https://icp.gov.moe/?keyword=20243331" target="_blank" rel="noopener">萌ICP备20243331号</a> · <a href="templates/loader-classical.html?to=../changelog.html">📜 Changelog</a> · <a href="https://github.com/inkrox/my-website" target="_blank" rel="noopener">🐙 GitHub Repo</a></div><div style="font-size:11px;opacity:.7;">BGM: Kevin MacLeod (incompetech.com) · CC-BY 4.0</div><div style="margin-top:4px;letter-spacing:2px;">🧑‍💻 Made by <b>BXR</b> &amp; <a href="https://www.deepseek.com" target="_blank" rel="noopener">Blue Fat Fish</a> 🐟</div>'],
+    ['.skin-view[data-skin="starry"] footer', '<div>© <span class="year"></span> BXR · Version v2.2.19.260826</div><div><a href="https://icp.gov.moe/?keyword=20243331" target="_blank" rel="noopener">萌ICP备20243331号</a> · Visitors <span class="bz-uv">…</span> · Total views <span class="bz-pv">…</span> · <span class="visitor-city"></span></div><div><a href="templates/loader-starry.html?to=../changelog.html">📜 Changelog</a> · <a href="https://github.com/inkrox/my-website" target="_blank" rel="noopener">🐙 GitHub Repo</a></div><div style="font-size:11px;opacity:.6;">BGM: Kevin MacLeod (incompetech.com) · CC-BY 4.0</div><div style="margin-top:4px;letter-spacing:1px;">🧑‍💻 Made by <b>BXR</b> &amp; <a href="https://www.deepseek.com" target="_blank" rel="noopener">Blue Fat Fish</a> 🐟</div>']
   ];
 
   /* 主题栏按钮文案统一生成 */

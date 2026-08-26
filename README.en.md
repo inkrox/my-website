@@ -37,20 +37,20 @@ Note: `download.html` (the secret download page) relies on WebCrypto and won't w
 
 ## Versioning
 
-Current version: **v2.2.16.260826**. Format: `vMAJOR.MINOR.PATCH.YYMMDD`, incremented on every change.
+Current version: **v2.2.19.260826**. Format: `vMAJOR.MINOR.PATCH.YYMMDD`, incremented on every change.
 
 When releasing, the git tag, GitHub tag and Release must share the same name:
 
 ```bash
-git tag -a v2.2.16.260826 -m "v2.2.16.260826"
-git push origin v2.2.16.260826
+git tag -a v2.2.19.260826 -m "v2.2.19.260826"
+git push origin v2.2.19.260826
 ```
 
 Alternatively, create the Release on GitHub's web UI and fill in the same tag name.
 
 ## License
 
-© BXR · v2.2.16.260826 · Changelog: [changelog-en.html](changelog-en.html)
+© BXR · v2.2.19.260826 · Changelog: [changelog-en.html](changelog-en.html)
 Background music: Kevin MacLeod ([incompetech.com](https://incompetech.com)) · CC-BY 4.0
 [萌ICP备20243331号](https://icp.gov.moe/?keyword=20243331)
 Made by BXR & Blue Fat Fish 🐟
