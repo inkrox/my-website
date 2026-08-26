@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>黑客帝国代码雨</title>
+    <title>黑客帝国代码雨 · Matrix Rain</title>
     <style>
         html, body {
             margin: 0;
@@ -24,52 +24,109 @@
 
     var canvas = document.getElementById('code-rain-canvas');
     var ctx = canvas.getContext('2d');
-
-    var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+    var DPR = Math.min(window.devicePixelRatio || 1, 2);
     var FONT_SIZE = 16;
-    var columns = 0;
-    var drops = []; // 每列当前下落的位置
+    var W = 0, H = 0, columns = 0;
+
+    /* 字符集：英文 + 数字 + 符号 */
+    var chars = ('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz' +
+        '0123456789<>/\\|:;{}[]$@#%&*+=?').split('');
+
+    var drops = [];   /* 每列头部位置（行） */
+    var speeds = [];  /* 每列下落速度（行/步）——速度差异制造层次感 */
+    var glows = [];   /* 头部光晕强度 */
 
     function resize() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        columns = Math.floor(canvas.width / FONT_SIZE);
-        drops = [];
+        W = window.innerWidth;
+        H = window.innerHeight;
+        canvas.width = W * DPR;
+        canvas.height = H * DPR;
+        canvas.style.width = W + 'px';
+        canvas.style.height = H + 'px';
+        ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+        columns = Math.floor(W / FONT_SIZE);
+        drops = []; speeds = []; glows = [];
         for (var i = 0; i < columns; i++) {
-            drops[i] = Math.floor(Math.random() * canvas.height / FONT_SIZE); // 随机起始位置
+            drops[i] = Math.floor(Math.random() * H / FONT_SIZE);
+            speeds[i] = 0.6 + Math.random() * 1.2;
+            glows[i] = 0;
         }
     }
 
-    function randomColor() {
-        var r = Math.floor(Math.random() * 256);
-        var g = Math.floor(Math.random() * 256);
-        var b = Math.floor(Math.random() * 256);
-        return 'rgb(' + r + ',' + g + ',' + b + ')';
+    function pickGlyph() {
+        return chars[(Math.random() * chars.length) | 0];
     }
 
-    function draw() {
-        // 半透明黑覆盖，形成渐隐拖尾
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+    /* 点缀色：大部分经典绿，少量亮色跳出来 */
+    function accentColor() {
+        var r = Math.random();
+        if (r < 0.72) { return '#33ff66'; }
+        if (r < 0.86) { return '#6fdc9c'; }
+        if (r < 0.93) { return '#22d3ee'; }
+        if (r < 0.98) { return '#ffd166'; }
+        return '#ff5fa2';
+    }
 
-        ctx.fillStyle = randomColor();
-        ctx.font = FONT_SIZE + 'px "Microsoft YaHei", monospace';
+    function step() {
+        /* 半透明黑覆盖 → 渐隐拖尾 */
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+        ctx.fillRect(0, 0, W, H);
 
-        for (var i = 0; i < drops.length; i++) {
-            var text = chars[Math.floor(Math.random() * chars.length)];
-            ctx.fillText(text, i * FONT_SIZE, drops[i] * FONT_SIZE);
+        ctx.font = FONT_SIZE + 'px "MS Gothic", "Microsoft YaHei", monospace';
 
-            // 落到底部或随机重置
-            if (drops[i] * FONT_SIZE > canvas.height || Math.random() > 0.95) {
-                drops[i] = 0;
+        for (var i = 0; i < columns; i++) {
+            var gx = i * FONT_SIZE;
+            var y = drops[i] * FONT_SIZE;
+
+            /* 头部：白色高亮 + 绿色光晕 */
+            ctx.fillStyle = '#eafff0';
+            ctx.shadowColor = '#33ff66';
+            ctx.shadowBlur = glows[i] || 8;
+            ctx.fillText(pickGlyph(), gx, y);
+            ctx.shadowBlur = 0;
+
+            /* 残影列：头部后面拉出渐隐字符串 */
+            ctx.fillStyle = 'rgba(51, 255, 102, 0.30)';
+            for (var j = 1; j <= 8; j++) {
+                var ty = y - j * FONT_SIZE;
+                if (ty < -FONT_SIZE) { break; }
+                ctx.fillText(pickGlyph(), gx, ty);
             }
-            drops[i]++;
+
+            /* 偶发彩色点缀字符 */
+            if (Math.random() < 0.02) {
+                ctx.fillStyle = accentColor();
+                ctx.fillText(pickGlyph(), gx, y - 4 * FONT_SIZE);
+            }
+
+            drops[i] += speeds[i];
+            glows[i] = Math.max(0, glows[i] - 1.2);
+            if (drops[i] * FONT_SIZE > H + 40 || Math.random() > 0.985) {
+                drops[i] = 0;
+                speeds[i] = 0.6 + Math.random() * 1.2;
+                glows[i] = 10 + Math.random() * 14; /* 新列头部闪亮登场 */
+            }
         }
+    }
+
+    /* 30fps 固定节奏（经典味道），rAF 驱动，休眠唤醒不堆积 */
+    var STEP_MS = 1000 / 30;
+    var last = 0;
+    var acc = 0;
+    function frame(now) {
+        acc += now - last;
+        last = now;
+        if (acc > STEP_MS * 4) { acc = STEP_MS * 4; }
+        while (acc >= STEP_MS) {
+            acc -= STEP_MS;
+            step();
+        }
+        requestAnimationFrame(frame);
     }
 
     window.addEventListener('resize', resize);
     resize();
-    setInterval(draw, 50);
+    requestAnimationFrame(function (t) { last = t; requestAnimationFrame(frame); });
 })();
 </script>
 </body>

@@ -155,6 +155,7 @@
     <button data-skin="terminal">💻 终端</button>
     <button data-skin="classical">🏮 古风</button>
     <button data-skin="starry">🌌 星空</button>
+    <a href="changelog-en.html">🌐 English</a>
     <a href="index.html">🏠 返回主页</a>
   </nav>
 </header>
@@ -164,6 +165,86 @@
 
   <div class="timeline">
     <div class="entry cur">
+      <div class="ver">v2.2.16.260826</div>
+      <div class="date">2026-08-26 · 代码雨调整</div>
+      <ul>
+        <li><span class="skin-tag t-all">全站</span>代码雨字符集改为纯英文/数字/符号（移除日文片假名）</li>
+        <li><span class="skin-tag t-all">全站</span>移除点击扰动矩阵玩法与提示文字</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <div class="ver">v2.2.15.260826</div>
+      <div class="date">2026-08-26 · 代码雨重制 + QA 双语</div>
+      <ul>
+        <li><span class="skin-tag t-all">全站</span>代码雨重制：高清屏适配、经典矩阵绿 + 彩色点缀、白色高亮头部、光晕拖尾、变速层次、点击扰动玩法</li>
+        <li><span class="skin-tag t-all">全站</span>QA 问答支持英文（跟随语言设置，题目与界面全翻译，总分不再写死）</li>
+        <li><span class="skin-tag t-all">全站</span>清理临时缓存与含 token 的凭据备份；测试脚本归入 _tools/</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <div class="ver">v2.2.14.260826</div>
+      <div class="date">2026-08-26 · 加载页英文</div>
+      <ul>
+        <li><span class="skin-tag t-all">全站</span>5 套加载页跟随主页语言：英文模式显示英文文案（古风「少年行」/印章等诗意元素保留中文）</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <div class="ver">v2.2.13.260826</div>
+      <div class="date">2026-08-26 · 英文措辞统一</div>
+      <ul>
+        <li><span class="skin-tag t-all">全站</span>「本站源码」英文统一为 Source Code，终端命令行同步修改，全站措辞一致</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <div class="ver">v2.2.12.260826</div>
+      <div class="date">2026-08-26 · 界面统一 + 翻译补漏</div>
+      <ul>
+        <li><span class="skin-tag t-all">全站</span>音乐 / 回顶部 / 语言三个悬浮按钮统一为 52×52、同一右对齐、等距排列</li>
+        <li><span class="skin-tag t-terminal">终端</span>修复 cat links 中「本站源码」英文模式未翻译</li>
+        <li><span class="skin-tag t-all">全站</span>英文模式残留中文全面排查（新增自动扫描机制）</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <div class="ver">v2.2.11.260826</div>
+      <div class="date">2026-08-26 · 细节修复</div>
+      <ul>
+        <li><span class="skin-tag t-all">全站</span>语言切换按钮移到右下角，不再遮挡右上角导航</li>
+        <li><span class="skin-tag t-all">全站</span>英文模式下「蓝色大肥鱼」显示为 Blue Fat Fish</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <div class="ver">v2.2.10.260826</div>
+      <div class="date">2026-08-26 · 友链卡片英文化</div>
+      <ul>
+        <li><span class="skin-tag t-all">全站</span>英文模式下友链卡片名字同步翻译（本站源码 / 邮箱 / 知乎 / 洛谷），5 套皮肤统一</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <div class="ver">v2.2.9.260826</div>
+      <div class="date">2026-08-26 · 汉化修复 + 智能语言</div>
+      <ul>
+        <li><span class="skin-tag t-terminal">终端</span>修复英文模式下终端访客行（您是第 X 位访客）未翻译的问题</li>
+        <li><span class="skin-tag t-all">全站</span>首次访问按 IP 自动选择语言（国内中文 / 海外 English），手动切换后不再覆盖</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <div class="ver">v2.2.8.260826</div>
+      <div class="date">2026-08-26 · 中英双语</div>
+      <ul>
+        <li><span class="skin-tag t-all">全站</span>主页新增中/英切换按钮（🌐），5 套皮肤文案全覆盖，选择自动记忆</li>
+        <li><span class="skin-tag t-all">全站</span>新增英文版更新日志 changelog-en.html</li>
+      </ul>
+    </div>
+
+    <div class="entry">
       <div class="ver">v2.2.7.260825</div>
       <div class="date">2026-08-25 · 日志整理</div>
       <ul>
@@ -282,7 +363,7 @@
   </div>
 </main>
 <footer>
-  <div>© <span id="year"></span> BXR · Version v2.2.7.260825</div>
+  <div>© <span id="year"></span> BXR · Version v2.2.16.260826</div>
   <div><a href="https://icp.gov.moe/?keyword=20243331" target="_blank" rel="noopener">萌ICP备20243331号</a> · 🧑‍💻 Made by BXR &amp; <a href="https://www.deepseek.com" target="_blank" rel="noopener">蓝色大肥鱼</a> 🐟</div>
 </footer>
 </div>

@@ -170,6 +170,7 @@ html.skin-starry .player-ctrl button { border-radius: 999px; }
 #musicBtn {
   position: fixed; right: 22px; bottom: 22px; z-index: 90;
   width: 52px; height: 52px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
   border: 1px solid rgba(255, 255, 255, .25);
   background: rgba(255, 255, 255, .1);
   backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
@@ -178,7 +179,7 @@ html.skin-starry .player-ctrl button { border-radius: 999px; }
   transition: .3s;
 }
 html.skin-cyberpunk #musicBtn { border-radius: 6px; border-color: var(--accent); color: var(--accent); background: rgba(10, 14, 34, .85); box-shadow: 0 0 16px rgba(0, 255, 247, .35); }
-html.skin-terminal #musicBtn { border-radius: 0; width: auto; height: auto; padding: 10px 16px; font-size: 14px; font-family: var(--mono); background: #000; border-color: var(--accent); color: var(--accent); box-shadow: 0 0 12px rgba(51, 255, 102, .35); }
+html.skin-terminal #musicBtn { border-radius: 0; font-family: var(--mono); background: #000; border-color: var(--accent); color: var(--accent); box-shadow: 0 0 12px rgba(51, 255, 102, .35); }
 html.skin-classical #musicBtn { border-radius: 50%; background: #fdfaf0; border: 1.5px solid var(--accent); color: var(--accent); box-shadow: 0 6px 18px rgba(80, 60, 30, .3); }
 html.skin-starry #musicBtn { background: rgba(255, 255, 255, .08); border-color: rgba(255, 255, 255, .2); box-shadow: 0 8px 24px rgba(0, 0, 0, .4); }
 #musicBtn:hover { transform: scale(1.1); border-color: var(--accent2); }
@@ -216,8 +217,9 @@ html.skin-starry #musicBtn { background: rgba(255, 255, 255, .08); border-color:
 .player-vol input[type="range"]::-moz-range-track { height: 5px; border-radius: 999px; background: rgba(255, 255, 255, .18); }
 .player-vol input[type="range"]::-moz-range-thumb { width: 14px; height: 14px; border-radius: 50%; background: var(--accent); border: 2px solid #fff; cursor: pointer; }
 #topBtn {
-  position: fixed; right: 18px; bottom: 96px; z-index: 998;
-  width: 46px; height: 46px; border-radius: 50%;
+  position: fixed; right: 22px; bottom: 88px; z-index: 998;
+  width: 52px; height: 52px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
   border: 1px solid var(--card-border); background: var(--card);
   color: var(--accent); font-size: 20px; cursor: pointer; line-height: 1;
   backdrop-filter: blur(10px);
@@ -230,6 +232,20 @@ html.skin-cyberpunk #topBtn { border-radius: 6px; border-color: var(--accent); b
 html.skin-terminal #topBtn { border-radius: 0; font-family: var(--mono); background: #000; border-color: var(--accent); color: var(--accent); }
 html.skin-classical #topBtn { border-radius: 10px; background: #fdfaf0; border: 1.5px solid var(--accent); color: var(--accent); font-family: var(--kai); }
 html.skin-starry #topBtn { border-radius: 18px; background: rgba(255, 255, 255, .08); }
+/* ============ 中英切换按钮 ============ */
+#langBtn {
+  position: fixed; right: 22px; bottom: 154px; top: auto; z-index: 999;
+  width: 52px; height: 52px; padding: 0;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--card-border); background: var(--card);
+  color: var(--accent); font-size: 13px; font-family: inherit;
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  transition: .25s;
+}
+#langBtn:hover { border-color: var(--accent2); transform: scale(1.06); }
+html.skin-cyberpunk #langBtn, html.skin-terminal #langBtn { border-radius: 0; font-family: var(--mono); }
+html.skin-classical #langBtn { border-radius: 10px; font-family: var(--kai); }
 html.skin-classical .player { background: rgba(253, 250, 240, .97); border: 1px solid rgba(166, 58, 43, .45); }
 html.skin-classical .player-song, html.skin-classical .player-vol { color: #33291f; }
 html.skin-classical .player-song #playerTime, html.skin-classical .player-vol .vol-val { color: rgba(51, 41, 31, .55); }
@@ -411,7 +427,7 @@ html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张�
   </section>
 </main>
 <footer class="reveal">
-  <div>© <span class="year"></span> BXR · Version v2.2.7.260825</div>
+  <div>© <span class="year"></span> BXR · Version v2.2.16.260826</div>
   <div><a href="https://icp.gov.moe/?keyword=20243331" target="_blank" rel="noopener">萌ICP备20243331号</a> · 访客 <span class="bz-uv">…</span> 人 · 总访问 <span class="bz-pv">…</span> 次 · <span class="visitor-city"></span></div>
   <div><a href="loader.html?to=changelog.html">📜 更新日志</a> · <a href="https://github.com/inkrox/my-website" target="_blank" rel="noopener">🐙 GitHub 仓库</a></div>
   <div style="font-size:11px;opacity:.6;">BGM: Kevin MacLeod (incompetech.com) · CC-BY 4.0</div>
@@ -517,7 +533,7 @@ html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张�
 </main>
 
 <footer class="reveal">
-  <div>© <span class="year"></span> BXR_MAIN.EXE · VERSION v2.2.7.260825</div>
+  <div>© <span class="year"></span> BXR_MAIN.EXE · VERSION v2.2.16.260826</div>
   <div><a href="https://icp.gov.moe/?keyword=20243331" target="_blank" rel="noopener">萌ICP备20243331号</a> · 访客 <span class="bz-uv">…</span> 人 · 总访问 <span class="bz-pv">…</span> 次 · <span class="visitor-city"></span></div>
   <div><a href="templates/loader-cyberpunk.html?to=../changelog.html">📜 更新日志</a> · <a href="https://github.com/inkrox/my-website" target="_blank" rel="noopener">🐙 GitHub 仓库</a></div>
   <div style="font-size:11px;opacity:.6;">BGM: Kevin MacLeod (incompetech.com) · CC-BY 4.0</div>
@@ -546,7 +562,7 @@ html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张�
  | __ )   \ \/ /  |  _ \
  |  _ \    \  /   | |_) |
  | |_) |   /  \   |  _ <
- |____/   /_/\_\  |_| \_\   v2.2.7</pre>
+ |____/   /_/\_\  |_| \_\   v2.2.16</pre>
 
     <div class="line cta-line"><span class="prompt"><span class="user">bxr</span>@<span class="user">home</span>:<span class="path">~</span>$</span> <a class="cta" href="templates/loader-terminal.html?to=https://shoot.cralk.top/">./shoot.sh</a> <a class="cta ghost" href="templates/loader-terminal.html?to=../changelog.html">cat changelog.md</a></div>
     </div>
@@ -613,12 +629,12 @@ html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张�
     </div></div>
 
     <div class="tblk reveal"><div class="line" style="margin-top:14px"><span class="prompt"><span class="user">bxr</span>@<span class="user">home</span>:<span class="path">~</span>$</span> <span class="cmd">echo $visitors</span></div>
-    <div class="cmd-out"><div class="line">您是第 <span class="bz-uv">…</span> 位访客 · 总访问 <span class="bz-pv">…</span> 次 · <span class="visitor-city"></span></div></div></div>
+    <div class="cmd-out"><div class="line" id="termVisitors">您是第 <span class="bz-uv">…</span> 位访客 · 总访问 <span class="bz-pv">…</span> 次 · <span class="visitor-city"></span></div></div></div>
     <div class="term-input"><span class="prompt"><span class="user">bxr</span>@<span class="user">home</span>:<span class="path">~</span>$</span> <input id="termCmd" type="text" autocomplete="off" spellcheck="false" placeholder="输入 help 查看命令"></div>
   </div>
 
   <footer class="reveal">
-    <div>© <span class="year"></span> BXR · VERSION v2.2.7.260825 · <a href="https://icp.gov.moe/?keyword=20243331" target="_blank" rel="noopener">萌ICP备20243331号</a> · <a href="templates/loader-terminal.html?to=../changelog.html">📜 更新日志</a> · <a href="https://github.com/inkrox/my-website" target="_blank" rel="noopener">🐙 GitHub 仓库</a></div>
+    <div>© <span class="year"></span> BXR · VERSION v2.2.16.260826 · <a href="https://icp.gov.moe/?keyword=20243331" target="_blank" rel="noopener">萌ICP备20243331号</a> · <a href="templates/loader-terminal.html?to=../changelog.html">📜 更新日志</a> · <a href="https://github.com/inkrox/my-website" target="_blank" rel="noopener">🐙 GitHub 仓库</a></div>
     <div style="font-size:11px;opacity:.6;">BGM: Kevin MacLeod (incompetech.com) · CC-BY 4.0</div>
     <div style="margin-top:4px;letter-spacing:1px;">🧑‍💻 Made by <b>BXR</b> &amp; <a href="https://www.deepseek.com" target="_blank" rel="noopener">蓝色大肥鱼</a> 🐟</div>
   </footer>
@@ -727,7 +743,7 @@ html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张�
 </main>
 
 <footer class="reveal">
-  <div>© <span class="year"></span> BXR · Version v2.2.7.260825 · 访客 <span class="bz-uv">…</span> 人 · 总访问 <span class="bz-pv">…</span> 次 · <span class="visitor-city"></span></div>
+  <div>© <span class="year"></span> BXR · Version v2.2.16.260826 · 访客 <span class="bz-uv">…</span> 人 · 总访问 <span class="bz-pv">…</span> 次 · <span class="visitor-city"></span></div>
   <div><a href="https://icp.gov.moe/?keyword=20243331" target="_blank" rel="noopener">萌ICP备20243331号</a> · <a href="templates/loader-classical.html?to=../changelog.html">📜 更新日志</a> · <a href="https://github.com/inkrox/my-website" target="_blank" rel="noopener">🐙 GitHub 仓库</a></div>
   <div style="font-size:11px;opacity:.7;">BGM: Kevin MacLeod (incompetech.com) · CC-BY 4.0</div>
   <div style="margin-top:4px;letter-spacing:2px;">🧑‍💻 Made by <b>BXR</b> &amp; <a href="https://www.deepseek.com" target="_blank" rel="noopener">蓝色大肥鱼</a> 🐟</div>
@@ -831,7 +847,7 @@ html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张�
 </main>
 
 <footer class="reveal">
-  <div>© <span class="year"></span> BXR · Version v2.2.7.260825</div>
+  <div>© <span class="year"></span> BXR · Version v2.2.16.260826</div>
   <div><a href="https://icp.gov.moe/?keyword=20243331" target="_blank" rel="noopener">萌ICP备20243331号</a> · 访客 <span class="bz-uv">…</span> 人 · 总访问 <span class="bz-pv">…</span> 次 · <span class="visitor-city"></span></div>
   <div><a href="templates/loader-starry.html?to=../changelog.html">📜 更新日志</a> · <a href="https://github.com/inkrox/my-website" target="_blank" rel="noopener">🐙 GitHub 仓库</a></div>
   <div style="font-size:11px;opacity:.6;">BGM: Kevin MacLeod (incompetech.com) · CC-BY 4.0</div>
@@ -864,6 +880,7 @@ html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张�
   <div class="player-vol"><span>🔊</span><input type="range" id="playerVolume" min="0" max="100" value="70"><span class="vol-val" id="playerVolVal">70%</span></div>
 </div>
 <button id="topBtn" title="回到顶部">↑</button>
+<button id="langBtn" title="切换语言 / Language">🌐 中</button>
 <div id="scrollbar"></div>
 <div id="toast"></div>
 <audio id="bgm" src="bgm.mp3" loop preload="metadata"></audio>
@@ -903,6 +920,13 @@ html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张�
     terminal: '💻 已切换：命令行',
     classical: '🏮 已切换：古风',
     starry: '🌌 已切换：星空'
+  };
+  var SKIN_NAME_EN = {
+    default: '✨ Aurora',
+    cyberpunk: '🌃 Cyberpunk',
+    terminal: '💻 Terminal',
+    classical: '🏮 Classical',
+    starry: '🌌 Starry'
   };
   var FX_BY_SKIN = {
     default: ['#7c6cff', '#22d3ee', '#f472b6', '#ffd166'],
@@ -1009,7 +1033,7 @@ html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张�
     if (!firstApply) {
       forceRevealActive();
       if (skin === 'terminal' && window.bxrTerminalReplay) { window.bxrTerminalReplay(); }
-      showToast(SKIN_NAME[skin]);
+      showToast((window.bxrLang === 'en' ? SKIN_NAME_EN : SKIN_NAME)[skin]);
     }
     firstApply = false;
     document.title = TITLE_BY_SKIN[skin];
@@ -1019,7 +1043,7 @@ html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张�
       bgm.load();
       var p = bgm.play();
       if (p && p.catch) { p.catch(function () {}); }
-      tip.textContent = '♪ 正在播放：' + SONG_BY_SKIN[skin];
+      tip.textContent = (window.bxrLang === 'en' ? '♪ Playing: ' : '♪ 正在播放：') + SONG_BY_SKIN[skin];
       tip.classList.add('show');
       clearTimeout(btn._t);
     }
@@ -1187,7 +1211,7 @@ html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张�
 
   /* ============ 音乐播放器 ============ */
   bgm.addEventListener('error', function () {
-    tip.textContent = '⚠ BGM 文件缺失，请放入音乐文件';
+    tip.textContent = window.bxrLang === 'en' ? '⚠ BGM file missing' : '⚠ BGM 文件缺失，请放入音乐文件';
     tip.classList.add('show');
   });
   btn.addEventListener('click', function () {
@@ -1195,14 +1219,14 @@ html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张�
       bgm.pause();
       btn.classList.remove('playing');
       btn.textContent = '🎵';
-      tip.textContent = '⏸ 音乐已暂停';
+      tip.textContent = window.bxrLang === 'en' ? '⏸ Music paused' : '⏸ 音乐已暂停';
       player.classList.remove('show');
     } else {
       var p = bgm.play();
       if (p && p.catch) { p.catch(function () {}); }
       btn.classList.add('playing');
       btn.textContent = '🎶';
-      tip.textContent = '♪ 正在播放：' + SONG_BY_SKIN[currentSkin];
+      tip.textContent = (window.bxrLang === 'en' ? '♪ Playing: ' : '♪ 正在播放：') + SONG_BY_SKIN[currentSkin];
       player.classList.add('show');
     }
     playing = !playing;
@@ -1441,6 +1465,15 @@ html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张�
 
   /* ============ 最近更新窗口 ============ */
   var UPDATES = [
+    { d: '08-26', t: '版本升级 v2.2.16.260826 · 代码雨纯英文数字符号 · 去掉扰动', f: 'code-rain/index.html · changelog.html · changelog-en.html', s: 'all' },
+    { d: '08-26', t: '版本升级 v2.2.15.260826 · 代码雨重制炫酷版 · QA 英文 · 缓存清理', f: 'code-rain/index.html · qa/ · _tools/ · changelog.html · changelog-en.html', s: 'all' },
+    { d: '08-26', t: '版本升级 v2.2.14.260826 · 5 套加载页英文跟随', f: 'loader.html · templates/loader-*.html · changelog.html · changelog-en.html', s: 'all' },
+    { d: '08-26', t: '版本升级 v2.2.13.260826 · 本站源码英文统一为 Source Code（终端同步）', f: 'index.html · changelog.html · changelog-en.html', s: 'all' },
+    { d: '08-26', t: '版本升级 v2.2.12.260826 · 悬浮按钮统一 · 终端源码行补翻 · 英文残留全面排查', f: 'index.html · changelog.html · changelog-en.html · MAINTENANCE.md', s: 'all' },
+    { d: '08-26', t: '版本升级 v2.2.11.260826 · 语言按钮移右下角 · 蓝色大肥鱼英文化', f: 'index.html · changelog.html · changelog-en.html', s: 'all' },
+    { d: '08-26', t: '版本升级 v2.2.10.260826 · 友链卡片名字英文化（本站源码/邮箱/知乎/洛谷）', f: 'index.html · changelog.html · changelog-en.html', s: 'all' },
+    { d: '08-26', t: '版本升级 v2.2.9.260826 · 终端访客行汉化修复 · 按 IP 自动选语言', f: 'index.html · changelog.html · changelog-en.html', s: 'all' },
+    { d: '08-26', t: '版本升级 v2.2.8.260826 · 中英双语：主页语言切换 + 英文更新日志', f: 'index.html · changelog.html · changelog-en.html · skins/', s: 'all' },
     { d: '08-25', t: '版本升级 v2.2.7.260825 · 移除日志计划中条目', f: 'changelog.html · index.html', s: 'all' },
     { d: '08-25', t: '版本升级 v2.2.6.260825 · 古风加载白条修复 · 日志页加载动画', f: 'skins/skin-classical.css · index.html · changelog.html', s: 'all' },
     { d: '08-25', t: '版本升级 v2.2.5.260825 · 古风印章"印"居中修复', f: 'skins/skin-classical.css · index.html · changelog.html', s: 'classical' },
@@ -1507,10 +1540,395 @@ html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张�
   try {
     if (!localStorage.getItem('bxr_hint')) {
       localStorage.setItem('bxr_hint', '1');
-      setTimeout(function () { showToast('🎹 ← → 换皮肤 · Space 音乐 · ESC 关闭', 3800); }, 2200);
+      setTimeout(function () { showToast(window.bxrLang === 'en' ? '🎹 ← → skins · Space music · ESC close' : '🎹 ← → 换皮肤 · Space 音乐 · ESC 关闭', 3800); }, 2200);
     }
   } catch (e) {}
 
+})();
+</script>
+<script>
+/* ============ 中英切换（i18n）：选择器 → 英文文案，切换回中文时恢复页面原始内容 ============ */
+(function () {
+  'use strict';
+  var lang = 'zh';
+  try { lang = localStorage.getItem('bxr_lang') === 'en' ? 'en' : 'zh'; } catch (e) {}
+  window.bxrLang = lang;
+
+  var EN = [
+    /* ---- 全局 ---- */
+    ['#updates .updates-head span', '📜 Recent Updates'],
+    ['#updAllLink', 'All →'],
+    ['.updates-filter button[data-f="all"]', 'All'],
+    ['#musicTip', 'Background Music'],
+    ['#playerSong', '♪ Not playing'],
+    /* ---- 导航 ---- */
+    ['.skin-view[data-skin="default"] header nav a[href="#about-default"]', 'About'],
+    ['.skin-view[data-skin="default"] header nav a[href="#works-default"]', 'Projects'],
+    ['.skin-view[data-skin="default"] header nav a[href="#links-default"]', 'Links'],
+    ['.skin-view[data-skin="default"] header nav a[href="#themes-default"]', 'Themes'],
+    ['.skin-view[data-skin="default"] .logo', '<span class="dot"></span>BXR · Homepage'],
+    ['.skin-view[data-skin="classical"] header nav a[href="#about-classical"]', 'About'],
+    ['.skin-view[data-skin="classical"] header nav a[href="#works-classical"]', 'Works'],
+    ['.skin-view[data-skin="classical"] header nav a[href="#links-classical"]', 'Links'],
+    ['.skin-view[data-skin="classical"] header nav a[href="#themes-classical"]', 'Themes'],
+    ['.skin-view[data-skin="starry"] header nav a[href="#about-starry"]', 'About'],
+    ['.skin-view[data-skin="starry"] header nav a[href="#works-starry"]', 'Projects'],
+    ['.skin-view[data-skin="starry"] header nav a[href="#links-starry"]', 'Links'],
+    ['.skin-view[data-skin="starry"] header nav a[href="#themes-starry"]', 'Themes'],
+    /* ---- 极光 Hero ---- */
+    ['.skin-view[data-skin="default"] .hero .tagline', 'Age 14 · Grade 9 · Harbin · changing the world with code'],
+    ['.skin-view[data-skin="default"] .hero .chips .chip:nth-of-type(1)', '🧑‍💻 <b>Python</b>'],
+    ['.skin-view[data-skin="default"] .hero .chips .chip:nth-of-type(4)', '🎻 Violin'],
+    ['.skin-view[data-skin="default"] .hero .chips .chip:nth-of-type(5)', '🏫 Harbin No.49 Middle School'],
+    ['.skin-view[data-skin="default"] .hero .chips .chip:nth-of-type(6)', '💪 Class 9'],
+    ['.skin-view[data-skin="default"] .hero .cta-row .cta:not(.ghost)', '🎮 Play Shooting Game'],
+    ['.skin-view[data-skin="default"] .hero .cta-row .cta.ghost', '📜 Changelog'],
+    /* ---- 极光 About ---- */
+    ['.skin-view[data-skin="default"] #about-default .sec-title', '👋 About Me'],
+    ['.skin-view[data-skin="default"] #about-default .about-card > p:nth-of-type(1)', 'Hi! I\'m <b>BXR</b>, a 14-year-old sunny boy from the beautiful ice city of Harbin. I study at Harbin No.49 Middle School, Grade 9.'],
+    ['.skin-view[data-skin="default"] #about-default .about-card > p:nth-of-type(2)', 'I love coding and playing the violin. I\'m good at <b>Python</b> and <b>C++</b>, and I\'m an OIer (competitive programming contestant). My dream is to become a great programmer and change the world with code.'],
+    ['.skin-view[data-skin="default"] #about-default .about-card > p:nth-of-type(3)', 'I work hard at my studies and like to take on challenges. I\'m an optimistic person who enjoys meeting new people and making friends.'],
+    ['.skin-view[data-skin="default"] #about-default .about-card > p:nth-of-type(4)', 'I believe that if you keep chasing your dreams and never give up, you can make them come true. Let\'s grow and move forward together! 💪✨🌈'],
+    /* ---- 极光信息表 ---- */
+    ['.skin-view[data-skin="default"] #about-default .info-item:nth-of-type(1) .k', '📍 City'],
+    ['.skin-view[data-skin="default"] #about-default .info-item:nth-of-type(1) .v', 'Harbin'],
+    ['.skin-view[data-skin="default"] #about-default .info-item:nth-of-type(2) .k', '🏫 School'],
+    ['.skin-view[data-skin="default"] #about-default .info-item:nth-of-type(2) .v', 'Harbin No.49 Middle School'],
+    ['.skin-view[data-skin="default"] #about-default .info-item:nth-of-type(3) .k', '📖 Grade'],
+    ['.skin-view[data-skin="default"] #about-default .info-item:nth-of-type(3) .v', 'Grade 9'],
+    ['.skin-view[data-skin="default"] #about-default .info-item:nth-of-type(4) .k', '🎓 Class'],
+    ['.skin-view[data-skin="default"] #about-default .info-item:nth-of-type(4) .v', 'Class 9'],
+    ['.skin-view[data-skin="default"] #about-default .info-item:nth-of-type(5) .k', '🔢 ID'],
+    ['.skin-view[data-skin="default"] #about-default .info-item:nth-of-type(6) .k', '🎂 Age'],
+    ['.skin-view[data-skin="default"] #about-default .info-item:nth-of-type(6) .v', '14'],
+    /* ---- 极光作品 ---- */
+    ['.skin-view[data-skin="default"] #works-default .sec-title', '🛠️ My Projects'],
+    ['.skin-view[data-skin="default"] #works-default .grid .card:nth-of-type(1)', '<span class="go">↗</span><div class="emoji">🎯</div><div class="name">Shooting Game<span class="badge-new">NEW</span></div><div class="desc">Play online at shoot.cralk.top</div>'],
+    ['.skin-view[data-skin="default"] #works-default .grid .card:nth-of-type(2)', '<span class="go">↗</span><div class="emoji">🌧️</div><div class="name">Code Rain</div><div class="desc">Matrix-style falling characters</div>'],
+    ['.skin-view[data-skin="default"] #works-default .grid .card:nth-of-type(3)', '<span class="go">↗</span><div class="emoji">🧭</div><div class="name">Compass Clock</div><div class="desc">A clock shaped like an ancient compass</div>'],
+    ['.skin-view[data-skin="default"] #works-default .grid .card:nth-of-type(4)', '<span class="go">↗</span><div class="emoji">⭕</div><div class="name">Aperture</div><div class="desc">Aperture contraction animation</div>'],
+    ['.skin-view[data-skin="default"] #works-default .grid .card:nth-of-type(5)', '<span class="go">↗</span><div class="emoji">☄️</div><div class="name">Meteor Shower</div><div class="desc">Shooting stars across the night sky</div>'],
+    ['.skin-view[data-skin="default"] #works-default .grid .card:nth-of-type(6)', '<span class="go">↗</span><div class="emoji">🎆</div><div class="name">Fireworks</div><div class="desc">2D particle fireworks</div>'],
+    ['.skin-view[data-skin="default"] #works-default .grid .card:nth-of-type(7)', '<span class="go">↗</span><div class="emoji">🧨</div><div class="name">3D Fireworks</div><div class="desc">3D fireworks show</div>'],
+    ['.skin-view[data-skin="default"] #works-default .grid .card:nth-of-type(8)', '<span class="go">↗</span><div class="emoji">🖱️</div><div class="name">Click Fireworks</div><div class="desc">Click anywhere to launch fireworks</div>'],
+    ['.skin-view[data-skin="default"] #works-default .grid .card:nth-of-type(9)', '<span class="go">↗</span><div class="emoji">⏱️</div><div class="name">Pixel Clock</div><div class="desc">Time made of particles</div>'],
+    ['.skin-view[data-skin="default"] #works-default .grid .card:nth-of-type(10)', '<span class="go">↗</span><div class="emoji">🕐</div><div class="name">Tech Watch</div><div class="desc">Cyber-style ring dial</div>'],
+    ['.skin-view[data-skin="default"] #works-default .grid .card:nth-of-type(11)', '<span class="go">↗</span><div class="emoji">⏲️</div><div class="name">Timer</div><div class="desc">Simple countdown timer</div>'],
+    ['.skin-view[data-skin="default"] #works-default .grid .card:nth-of-type(12)', '<span class="go">↗</span><div class="emoji">🚀</div><div class="name">Space Museum</div><div class="desc">China space program gallery</div>'],
+    ['.skin-view[data-skin="default"] #works-default .grid .card:nth-of-type(13)', '<span class="go">↗</span><div class="emoji">👨‍👧</div><div class="name">Father\'s Day</div><div class="desc">A greeting card for Dad</div>'],
+    ['.skin-view[data-skin="default"] #works-default .grid .card:nth-of-type(14)', '<span class="go">↗</span><div class="emoji">❓</div><div class="name">QA Quiz</div><div class="desc">Fun trivia quiz game</div>'],
+    ['.skin-view[data-skin="default"] #works-default .grid .card:nth-of-type(15)', '<span class="go">↗</span><div class="emoji">🔐</div><div class="name">Secret Downloads</div><div class="desc">Password-protected files</div>'],
+    /* ---- 极光友链 ---- */
+    ['.skin-view[data-skin="default"] #links-default .sec-title', '🔗 Links'],
+    ['.skin-view[data-skin="default"] #links-default .card:nth-of-type(1) .desc', 'My GitHub profile'],
+    ['.skin-view[data-skin="default"] #links-default .card:nth-of-type(2) .desc', 'Source code of this site'],
+    ['.skin-view[data-skin="default"] #links-default .card:nth-of-type(4) .desc', 'My Zhihu'],
+    ['.skin-view[data-skin="default"] #links-default .card:nth-of-type(5) .desc', 'OI practice profile'],
+    ['.skin-view[data-skin="default"] #links-default .card:nth-of-type(2) .name', 'Source Code'],
+    ['.skin-view[data-skin="default"] #links-default .card:nth-of-type(3) .name', 'Email'],
+    ['.skin-view[data-skin="default"] #links-default .card:nth-of-type(4) .name', 'Zhihu'],
+    ['.skin-view[data-skin="default"] #links-default .card:nth-of-type(5) .name', 'Luogu'],
+    /* ---- 极光主题 ---- */
+    ['.skin-view[data-skin="default"] .theme-bar .t', 'Current skin:'],
+    ['.skin-view[data-skin="default"] #themes-default .sec-title', '🎨 Themes'],
+    /* ---- 赛博 About/作品/友链/主题 ---- */
+    ['.skin-view[data-skin="cyberpunk"] #about-cyberpunk .sec-title', 'About Me'],
+    ['.skin-view[data-skin="cyberpunk"] #about-cyberpunk .about-card > p:nth-of-type(1)', 'SYSTEM LOG: <b>BXR</b>, age 14, based in <b>Harbin</b>, student at <b>Harbin No.49 Middle School</b>, Grade 9.'],
+    ['.skin-view[data-skin="cyberpunk"] #about-cyberpunk .about-card > p:nth-of-type(2)', 'SKILL TREE: <b>Python</b> (main) · <b>C++</b> (contest) · <b>OIer</b> · Violin · self-taught web effects.'],
+    ['.skin-view[data-skin="cyberpunk"] #about-cyberpunk .about-card > p:nth-of-type(3)', 'GOAL: become a great programmer and <b>change the world with code</b>. 💪✨🌈'],
+    ['.skin-view[data-skin="cyberpunk"] #about-cyberpunk .info-item:nth-of-type(1) .v', 'Harbin'],
+    ['.skin-view[data-skin="cyberpunk"] #about-cyberpunk .info-item:nth-of-type(2) .v', 'Harbin No.49 Middle School'],
+    ['.skin-view[data-skin="cyberpunk"] #about-cyberpunk .info-item:nth-of-type(3) .v', 'Grade 9'],
+    ['.skin-view[data-skin="cyberpunk"] #about-cyberpunk .info-item:nth-of-type(4) .v', 'Class 9'],
+    ['.skin-view[data-skin="cyberpunk"] #about-cyberpunk .info-item:nth-of-type(6) .v', '14'],
+    ['.skin-view[data-skin="cyberpunk"] #works-cyberpunk .sec-title', 'Projects'],
+    ['.skin-view[data-skin="cyberpunk"] #works-cyberpunk .grid .card:nth-of-type(1)', '<span class="id">[01]</span><div class="emoji">🎯</div><div class="name">Shooting Game<span class="badge-new">NEW</span></div><div class="desc">shoot.cralk.top</div>'],
+    ['.skin-view[data-skin="cyberpunk"] #works-cyberpunk .grid .card:nth-of-type(2)', '<span class="id">[02]</span><div class="emoji">🌧️</div><div class="name">Code Rain</div><div class="desc">Matrix characters</div>'],
+    ['.skin-view[data-skin="cyberpunk"] #works-cyberpunk .grid .card:nth-of-type(3)', '<span class="id">[03]</span><div class="emoji">🧭</div><div class="name">Compass Clock</div><div class="desc">Ancient compass clock</div>'],
+    ['.skin-view[data-skin="cyberpunk"] #works-cyberpunk .grid .card:nth-of-type(4)', '<span class="id">[04]</span><div class="emoji">⭕</div><div class="name">Aperture</div><div class="desc">Aperture animation</div>'],
+    ['.skin-view[data-skin="cyberpunk"] #works-cyberpunk .grid .card:nth-of-type(5)', '<span class="id">[05]</span><div class="emoji">☄️</div><div class="name">Meteor Shower</div><div class="desc">Shooting stars</div>'],
+    ['.skin-view[data-skin="cyberpunk"] #works-cyberpunk .grid .card:nth-of-type(6)', '<span class="id">[06]</span><div class="emoji">🎆</div><div class="name">Fireworks</div><div class="desc">2D particle fireworks</div>'],
+    ['.skin-view[data-skin="cyberpunk"] #works-cyberpunk .grid .card:nth-of-type(7)', '<span class="id">[07]</span><div class="emoji">🧨</div><div class="name">3D Fireworks</div><div class="desc">3D fireworks show</div>'],
+    ['.skin-view[data-skin="cyberpunk"] #works-cyberpunk .grid .card:nth-of-type(8)', '<span class="id">[08]</span><div class="emoji">🖱️</div><div class="name">Click Fireworks</div><div class="desc">Click to launch</div>'],
+    ['.skin-view[data-skin="cyberpunk"] #works-cyberpunk .grid .card:nth-of-type(9)', '<span class="id">[09]</span><div class="emoji">⏱️</div><div class="name">Pixel Clock</div><div class="desc">Particle time</div>'],
+    ['.skin-view[data-skin="cyberpunk"] #works-cyberpunk .grid .card:nth-of-type(10)', '<span class="id">[10]</span><div class="emoji">🕐</div><div class="name">Tech Watch</div><div class="desc">Cyber ring dial</div>'],
+    ['.skin-view[data-skin="cyberpunk"] #works-cyberpunk .grid .card:nth-of-type(11)', '<span class="id">[11]</span><div class="emoji">⏲️</div><div class="name">Timer</div><div class="desc">Countdown timer</div>'],
+    ['.skin-view[data-skin="cyberpunk"] #works-cyberpunk .grid .card:nth-of-type(12)', '<span class="id">[12]</span><div class="emoji">🚀</div><div class="name">Space Museum</div><div class="desc">Space gallery</div>'],
+    ['.skin-view[data-skin="cyberpunk"] #works-cyberpunk .grid .card:nth-of-type(13)', '<span class="id">[13]</span><div class="emoji">👨‍👧</div><div class="name">Father\'s Day</div><div class="desc">Card for Dad</div>'],
+    ['.skin-view[data-skin="cyberpunk"] #works-cyberpunk .grid .card:nth-of-type(14)', '<span class="id">[14]</span><div class="emoji">❓</div><div class="name">QA Quiz</div><div class="desc">Trivia game</div>'],
+    ['.skin-view[data-skin="cyberpunk"] #works-cyberpunk .grid .card:nth-of-type(15)', '<span class="id">[15]</span><div class="emoji">🔐</div><div class="name">Secret Downloads</div><div class="desc">Password required</div>'],
+    ['.skin-view[data-skin="cyberpunk"] #links-cyberpunk .sec-title', 'Links'],
+    ['.skin-view[data-skin="cyberpunk"] #links-cyberpunk .card:nth-of-type(1) .desc', 'My GitHub profile'],
+    ['.skin-view[data-skin="cyberpunk"] #links-cyberpunk .card:nth-of-type(2) .desc', 'Source code of this site'],
+    ['.skin-view[data-skin="cyberpunk"] #links-cyberpunk .card:nth-of-type(4) .desc', 'Zhihu'],
+    ['.skin-view[data-skin="cyberpunk"] #links-cyberpunk .card:nth-of-type(5) .desc', 'OI practice profile'],
+    ['.skin-view[data-skin="cyberpunk"] #links-cyberpunk .card:nth-of-type(2) .name', 'Source Code'],
+    ['.skin-view[data-skin="cyberpunk"] #links-cyberpunk .card:nth-of-type(3) .name', 'Email'],
+    ['.skin-view[data-skin="cyberpunk"] #links-cyberpunk .card:nth-of-type(4) .name', 'Zhihu'],
+    ['.skin-view[data-skin="cyberpunk"] #links-cyberpunk .card:nth-of-type(5) .name', 'Luogu'],
+    ['.skin-view[data-skin="cyberpunk"] #themes-cyberpunk .sec-title', 'Themes'],
+    /* ---- 终端 ---- */
+    ['#term-about', '───── USER INFO ─────'],
+    ['#term-works', '───── PROJECTS ─────'],
+    ['#term-links', '───── LINKS ─────'],
+    ['#term-themes', '───── THEMES ─────'],
+    ['#term-about ~ .cmd-out .line:nth-of-type(1)', 'Hi! I\'m BXR, a 14-year-old sunny boy from the beautiful ice city of Harbin.'],
+    ['#term-about ~ .cmd-out .line:nth-of-type(2)', 'I study at Harbin No.49 Middle School, Grade 9. I love coding and the violin,'],
+    ['#term-about ~ .cmd-out .line:nth-of-type(3)', 'especially Python and C++ — an OIer (competitive programmer) 💪✨🌈'],
+    ['.skin-view[data-skin="terminal"] table.info tr:nth-of-type(3) td:nth-of-type(2)', 'Harbin'],
+    ['.skin-view[data-skin="terminal"] table.info tr:nth-of-type(4) td:nth-of-type(2)', 'Harbin No.49 Middle School'],
+    ['.skin-view[data-skin="terminal"] table.info tr:nth-of-type(5) td:nth-of-type(2)', 'Grade 9'],
+    ['.skin-view[data-skin="terminal"] table.info tr:nth-of-type(6) td:nth-of-type(2)', 'Class 9'],
+    ['.skin-view[data-skin="terminal"] #term-works ~ .cmd-out .wline:nth-of-type(1) .ds', 'Shooting Game'],
+    ['.skin-view[data-skin="terminal"] #term-works ~ .cmd-out .wline:nth-of-type(2) .ds', 'Code Rain'],
+    ['.skin-view[data-skin="terminal"] #term-works ~ .cmd-out .wline:nth-of-type(3) .ds', 'Compass Clock'],
+    ['.skin-view[data-skin="terminal"] #term-works ~ .cmd-out .wline:nth-of-type(4) .ds', 'Aperture'],
+    ['.skin-view[data-skin="terminal"] #term-works ~ .cmd-out .wline:nth-of-type(5) .ds', 'Meteor Shower'],
+    ['.skin-view[data-skin="terminal"] #term-works ~ .cmd-out .wline:nth-of-type(6) .ds', 'Fireworks'],
+    ['.skin-view[data-skin="terminal"] #term-works ~ .cmd-out .wline:nth-of-type(7) .ds', '3D Fireworks'],
+    ['.skin-view[data-skin="terminal"] #term-works ~ .cmd-out .wline:nth-of-type(8) .ds', 'Click Fireworks'],
+    ['.skin-view[data-skin="terminal"] #term-works ~ .cmd-out .wline:nth-of-type(9) .ds', 'Pixel Clock'],
+    ['.skin-view[data-skin="terminal"] #term-works ~ .cmd-out .wline:nth-of-type(10) .ds', 'Tech Watch'],
+    ['.skin-view[data-skin="terminal"] #term-works ~ .cmd-out .wline:nth-of-type(11) .ds', 'Timer'],
+    ['.skin-view[data-skin="terminal"] #term-works ~ .cmd-out .wline:nth-of-type(12) .ds', 'Space Museum'],
+    ['.skin-view[data-skin="terminal"] #term-works ~ .cmd-out .wline:nth-of-type(13) .ds', 'Father\'s Day'],
+    ['.skin-view[data-skin="terminal"] #term-works ~ .cmd-out .wline:nth-of-type(14) .ds', 'QA Quiz'],
+    ['.skin-view[data-skin="terminal"] #term-works ~ .cmd-out .wline:nth-of-type(15) .ds', 'Secret Downloads'],
+    ['#term-links ~ .cmd-out .line:nth-of-type(2)', '📦 Source Code — <a href="https://github.com/inkrox/my-website/" target="_blank" rel="noopener">https://github.com/inkrox/my-website/</a>'],
+    ['#term-links ~ .cmd-out .line:nth-of-type(3)', '📧 Email — <a href="mailto:inkrox@outlook.com">inkrox@outlook.com</a> · <a href="mailto:root@cralk.top">root@cralk.top</a>'],
+    ['#term-links ~ .cmd-out .line:nth-of-type(4)', '💬 Zhihu — <a href="https://www.zhihu.com/people/9wbhos" target="_blank" rel="noopener">https://www.zhihu.com/people/9wbhos</a>'],
+    ['#term-links ~ .cmd-out .line:nth-of-type(5)', '🚩 Luogu — <a href="https://www.luogu.com.cn/user/1766805" target="_blank" rel="noopener">https://www.luogu.com.cn/user/1766805</a>'],
+    ['#termVisitors', 'You are visitor #<span class="bz-uv">…</span> · Total views <span class="bz-pv">…</span> · <span class="visitor-city"></span>'],
+    /* ---- 古风 ---- */
+    ['.skin-view[data-skin="classical"] .hero .sub', 'Age 14 · Grade 9 · Harbin · Harbin No.49 Middle School'],
+    ['.skin-view[data-skin="classical"] .hero .cta-row .cta:not(.ghost)', '🎯 Play Shooting Game'],
+    ['.skin-view[data-skin="classical"] .hero .cta-row .cta.ghost', '📜 Changelog'],
+    ['.skin-view[data-skin="classical"] #about-classical .sec-title', 'About'],
+    ['.skin-view[data-skin="classical"] #about-classical .about-card > p:nth-of-type(1)', 'I am <b>BXR</b>, fourteen years old, from Harbin. I study at <b>Harbin No.49 Middle School</b>, Grade 9, Class 9, No. 01.'],
+    ['.skin-view[data-skin="classical"] #about-classical .about-card > p:nth-of-type(2)', 'I love programming, especially <b>Python</b> and <b>C++</b>. I\'m an <b>OIer</b> (competitive programmer), and I also play the violin. My dream is to become a great programmer and use code to make the world better.'],
+    ['.skin-view[data-skin="classical"] #about-classical .about-card > p:nth-of-type(3)', 'I study diligently, dare to take on challenges, and enjoy making friends. I believe that persistence and hard work will always pay off.'],
+    ['.skin-view[data-skin="classical"] #about-classical .about-card .sig', '— BXR'],
+    ['.skin-view[data-skin="classical"] #about-classical .info-item:nth-of-type(1) .k', 'Hometown'],
+    ['.skin-view[data-skin="classical"] #about-classical .info-item:nth-of-type(1) .v', 'Harbin'],
+    ['.skin-view[data-skin="classical"] #about-classical .info-item:nth-of-type(2) .k', 'School'],
+    ['.skin-view[data-skin="classical"] #about-classical .info-item:nth-of-type(2) .v', 'Harbin No.49 Middle School'],
+    ['.skin-view[data-skin="classical"] #about-classical .info-item:nth-of-type(3) .k', 'Grade'],
+    ['.skin-view[data-skin="classical"] #about-classical .info-item:nth-of-type(3) .v', 'Grade 9'],
+    ['.skin-view[data-skin="classical"] #about-classical .info-item:nth-of-type(4) .k', 'Class'],
+    ['.skin-view[data-skin="classical"] #about-classical .info-item:nth-of-type(4) .v', 'Class 9'],
+    ['.skin-view[data-skin="classical"] #about-classical .info-item:nth-of-type(5) .k', 'ID'],
+    ['.skin-view[data-skin="classical"] #about-classical .info-item:nth-of-type(6) .k', 'Age'],
+    ['.skin-view[data-skin="classical"] #about-classical .info-item:nth-of-type(6) .v', '14'],
+    ['.skin-view[data-skin="classical"] #works-classical .sec-title', 'My Works<span class="orn"> · 15 Works</span>'],
+    ['.skin-view[data-skin="classical"] #works-classical .grid .card:nth-of-type(1)', '<span class="seal-tag">New</span><div class="emoji">🎯</div><div class="name">Shooting Game<span class="badge-new">NEW</span></div><div class="desc">shoot.cralk.top</div>'],
+    ['.skin-view[data-skin="classical"] #works-classical .grid .card:nth-of-type(2)', '<div class="emoji">🌧️</div><div class="name">Code Rain</div><div class="desc">Rain of characters</div>'],
+    ['.skin-view[data-skin="classical"] #works-classical .grid .card:nth-of-type(3)', '<div class="emoji">🧭</div><div class="name">Compass Clock</div><div class="desc">Ancient compass, telling time</div>'],
+    ['.skin-view[data-skin="classical"] #works-classical .grid .card:nth-of-type(4)', '<div class="emoji">⭕</div><div class="name">Aperture</div><div class="desc">Light and shadow</div>'],
+    ['.skin-view[data-skin="classical"] #works-classical .grid .card:nth-of-type(5)', '<div class="emoji">☄️</div><div class="name">Meteor Shower</div><div class="desc">Shooting stars at night</div>'],
+    ['.skin-view[data-skin="classical"] #works-classical .grid .card:nth-of-type(6)', '<div class="emoji">🎆</div><div class="name">Fireworks</div><div class="desc">A night of blossoms</div>'],
+    ['.skin-view[data-skin="classical"] #works-classical .grid .card:nth-of-type(7)', '<div class="emoji">🧨</div><div class="name">3D Fireworks</div><div class="desc">A sky full of stars</div>'],
+    ['.skin-view[data-skin="classical"] #works-classical .grid .card:nth-of-type(8)', '<div class="emoji">🖱️</div><div class="name">Click Fireworks</div><div class="desc">Fireworks at your fingertips</div>'],
+    ['.skin-view[data-skin="classical"] #works-classical .grid .card:nth-of-type(9)', '<div class="emoji">⏱️</div><div class="name">Pixel Clock</div><div class="desc">A thousand particles, one moment</div>'],
+    ['.skin-view[data-skin="classical"] #works-classical .grid .card:nth-of-type(10)', '<div class="emoji">🕐</div><div class="name">Tech Watch</div><div class="desc">Rings of time</div>'],
+    ['.skin-view[data-skin="classical"] #works-classical .grid .card:nth-of-type(11)', '<div class="emoji">⏲️</div><div class="name">Timer</div><div class="desc">Don\'t waste a second</div>'],
+    ['.skin-view[data-skin="classical"] #works-classical .grid .card:nth-of-type(12)', '<div class="emoji">🚀</div><div class="name">Space Museum</div><div class="desc">China\'s journey to space</div>'],
+    ['.skin-view[data-skin="classical"] #works-classical .grid .card:nth-of-type(13)', '<div class="emoji">👨‍👧</div><div class="name">Father\'s Day</div><div class="desc">For Dad, with love</div>'],
+    ['.skin-view[data-skin="classical"] #works-classical .grid .card:nth-of-type(14)', '<div class="emoji">❓</div><div class="name">QA Quiz</div><div class="desc">Questions and laughter</div>'],
+    ['.skin-view[data-skin="classical"] #works-classical .grid .card:nth-of-type(15)', '<div class="emoji">🔐</div><div class="name">Secret Downloads</div><div class="desc">Open with a password</div>'],
+    ['.skin-view[data-skin="classical"] #links-classical .sec-title', 'Links'],
+    ['.skin-view[data-skin="classical"] #links-classical .card:nth-of-type(1) .desc', 'GitHub profile'],
+    ['.skin-view[data-skin="classical"] #links-classical .card:nth-of-type(2) .desc', 'Site source code'],
+    ['.skin-view[data-skin="classical"] #links-classical .card:nth-of-type(4) .desc', 'Zhihu'],
+    ['.skin-view[data-skin="classical"] #links-classical .card:nth-of-type(5) .desc', 'OI practice'],
+    ['.skin-view[data-skin="classical"] #links-classical .card:nth-of-type(2) .name', 'Source Code'],
+    ['.skin-view[data-skin="classical"] #links-classical .card:nth-of-type(3) .name', 'Email'],
+    ['.skin-view[data-skin="classical"] #links-classical .card:nth-of-type(4) .name', 'Zhihu'],
+    ['.skin-view[data-skin="classical"] #links-classical .card:nth-of-type(5) .name', 'Luogu'],
+    ['.skin-view[data-skin="classical"] #links-classical .links-note', '— Friends from near and far —'],
+    ['.skin-view[data-skin="classical"] .theme-bar .t', 'Choose a style:'],
+    ['.skin-view[data-skin="classical"] #themes-classical .sec-title', 'Themes'],
+    /* ---- 星空 ---- */
+    ['.skin-view[data-skin="starry"] .hero .sub', '**14** · **Grade 9** · Harbin · Harbin No.49 Middle School'],
+    ['.skin-view[data-skin="starry"] .hero .chips .chip:nth-of-type(4)', '🎻 Violin'],
+    ['.skin-view[data-skin="starry"] .hero .chips .chip:nth-of-type(5)', '💪 Class 9'],
+    ['.skin-view[data-skin="starry"] .hero .cta-row .cta:not(.ghost)', '🎯 Play Shooting Game'],
+    ['.skin-view[data-skin="starry"] .hero .cta-row .cta.ghost', '📜 Changelog'],
+    ['.skin-view[data-skin="starry"] #about-starry .sec-title', '🌠 About Me'],
+    ['.skin-view[data-skin="starry"] #about-starry .about-card > p:nth-of-type(1)', 'Hi! I\'m <b>BXR</b>, a 14-year-old sunny boy from the beautiful ice city of Harbin, studying at <b>Harbin No.49 Middle School</b>, Grade 9.'],
+    ['.skin-view[data-skin="starry"] #about-starry .about-card > p:nth-of-type(2)', 'I love coding and playing the violin. I\'m good at <b>Python</b> and <b>C++</b>, and I\'m an OIer (competitive programming contestant). My dream is to become a great programmer and change the world with code.'],
+    ['.skin-view[data-skin="starry"] #about-starry .about-card > p:nth-of-type(3)', 'I believe that as long as you hold on to your dreams and work hard, you can achieve them. 💪✨🌈'],
+    ['.skin-view[data-skin="starry"] #about-starry .about-card .quote', '— Keep coding, keep chasing stars —'],
+    ['.skin-view[data-skin="starry"] #about-starry .info-item:nth-of-type(1) .k', '📍 City'],
+    ['.skin-view[data-skin="starry"] #about-starry .info-item:nth-of-type(1) .v', 'Harbin'],
+    ['.skin-view[data-skin="starry"] #about-starry .info-item:nth-of-type(2) .k', '🏫 School'],
+    ['.skin-view[data-skin="starry"] #about-starry .info-item:nth-of-type(2) .v', 'Harbin No.49 Middle School'],
+    ['.skin-view[data-skin="starry"] #about-starry .info-item:nth-of-type(3) .k', '📖 Grade'],
+    ['.skin-view[data-skin="starry"] #about-starry .info-item:nth-of-type(3) .v', 'Grade 9'],
+    ['.skin-view[data-skin="starry"] #about-starry .info-item:nth-of-type(4) .k', '🎓 Class'],
+    ['.skin-view[data-skin="starry"] #about-starry .info-item:nth-of-type(4) .v', 'Class 9'],
+    ['.skin-view[data-skin="starry"] #about-starry .info-item:nth-of-type(5) .k', '🔢 ID'],
+    ['.skin-view[data-skin="starry"] #about-starry .info-item:nth-of-type(6) .k', '🎂 Age'],
+    ['.skin-view[data-skin="starry"] #about-starry .info-item:nth-of-type(6) .v', '14'],
+    ['.skin-view[data-skin="starry"] #works-starry .sec-title', '✨ My Projects'],
+    ['.skin-view[data-skin="starry"] #works-starry .grid .card:nth-of-type(1)', '<span class="go">↗</span><div class="emoji">🎯</div><div class="name">Shooting Game<span class="badge-new">NEW</span></div><div class="desc">shoot.cralk.top</div>'],
+    ['.skin-view[data-skin="starry"] #works-starry .grid .card:nth-of-type(2)', '<span class="go">↗</span><div class="emoji">🌧️</div><div class="name">Code Rain</div><div class="desc">Matrix characters</div>'],
+    ['.skin-view[data-skin="starry"] #works-starry .grid .card:nth-of-type(3)', '<span class="go">↗</span><div class="emoji">🧭</div><div class="name">Compass Clock</div><div class="desc">Ancient compass clock</div>'],
+    ['.skin-view[data-skin="starry"] #works-starry .grid .card:nth-of-type(4)', '<span class="go">↗</span><div class="emoji">⭕</div><div class="name">Aperture</div><div class="desc">Aperture animation</div>'],
+    ['.skin-view[data-skin="starry"] #works-starry .grid .card:nth-of-type(5)', '<span class="go">↗</span><div class="emoji">☄️</div><div class="name">Meteor Shower</div><div class="desc">Shooting stars</div>'],
+    ['.skin-view[data-skin="starry"] #works-starry .grid .card:nth-of-type(6)', '<span class="go">↗</span><div class="emoji">🎆</div><div class="name">Fireworks</div><div class="desc">2D particle fireworks</div>'],
+    ['.skin-view[data-skin="starry"] #works-starry .grid .card:nth-of-type(7)', '<span class="go">↗</span><div class="emoji">🧨</div><div class="name">3D Fireworks</div><div class="desc">3D fireworks show</div>'],
+    ['.skin-view[data-skin="starry"] #works-starry .grid .card:nth-of-type(8)', '<span class="go">↗</span><div class="emoji">🖱️</div><div class="name">Click Fireworks</div><div class="desc">Click to launch</div>'],
+    ['.skin-view[data-skin="starry"] #works-starry .grid .card:nth-of-type(9)', '<span class="go">↗</span><div class="emoji">⏱️</div><div class="name">Pixel Clock</div><div class="desc">Time from particles</div>'],
+    ['.skin-view[data-skin="starry"] #works-starry .grid .card:nth-of-type(10)', '<span class="go">↗</span><div class="emoji">🕐</div><div class="name">Tech Watch</div><div class="desc">Cyber ring dial</div>'],
+    ['.skin-view[data-skin="starry"] #works-starry .grid .card:nth-of-type(11)', '<span class="go">↗</span><div class="emoji">⏲️</div><div class="name">Timer</div><div class="desc">Countdown timer</div>'],
+    ['.skin-view[data-skin="starry"] #works-starry .grid .card:nth-of-type(12)', '<span class="go">↗</span><div class="emoji">🚀</div><div class="name">Space Museum</div><div class="desc">Space gallery</div>'],
+    ['.skin-view[data-skin="starry"] #works-starry .grid .card:nth-of-type(13)', '<span class="go">↗</span><div class="emoji">👨‍👧</div><div class="name">Father\'s Day</div><div class="desc">Card for Dad</div>'],
+    ['.skin-view[data-skin="starry"] #works-starry .grid .card:nth-of-type(14)', '<span class="go">↗</span><div class="emoji">❓</div><div class="name">QA Quiz</div><div class="desc">Trivia game</div>'],
+    ['.skin-view[data-skin="starry"] #works-starry .grid .card:nth-of-type(15)', '<span class="go">↗</span><div class="emoji">🔐</div><div class="name">Secret Downloads</div><div class="desc">Password protected</div>'],
+    ['.skin-view[data-skin="starry"] #links-starry .sec-title', '🔗 Links'],
+    ['.skin-view[data-skin="starry"] #links-starry .card:nth-of-type(1) .desc', 'My GitHub profile'],
+    ['.skin-view[data-skin="starry"] #links-starry .card:nth-of-type(2) .desc', 'Source code of this site'],
+    ['.skin-view[data-skin="starry"] #links-starry .card:nth-of-type(4) .desc', 'Zhihu'],
+    ['.skin-view[data-skin="starry"] #links-starry .card:nth-of-type(5) .desc', 'OI practice profile'],
+    ['.skin-view[data-skin="starry"] #links-starry .card:nth-of-type(2) .name', 'Source Code'],
+    ['.skin-view[data-skin="starry"] #links-starry .card:nth-of-type(3) .name', 'Email'],
+    ['.skin-view[data-skin="starry"] #links-starry .card:nth-of-type(4) .name', 'Zhihu'],
+    ['.skin-view[data-skin="starry"] #links-starry .card:nth-of-type(5) .name', 'Luogu'],
+    ['.skin-view[data-skin="starry"] .theme-bar .t', 'Switch style:'],
+    ['.skin-view[data-skin="starry"] #themes-starry .sec-title', '🎨 Themes'],
+    /* ---- 皮肤切换按钮（5 套容器 × 5 个按钮） ---- */
+    ['#langBtn', '🌐 EN'],
+    /* ---- 页脚（5 套） ---- */
+    ['.skin-view[data-skin="default"] footer', '<div>© <span class="year"></span> BXR · Version v2.2.16.260826</div><div><a href="https://icp.gov.moe/?keyword=20243331" target="_blank" rel="noopener">萌ICP备20243331号</a> · Visitors <span class="bz-uv">…</span> · Total views <span class="bz-pv">…</span> · <span class="visitor-city"></span></div><div><a href="loader.html?to=changelog.html">📜 Changelog</a> · <a href="https://github.com/inkrox/my-website" target="_blank" rel="noopener">🐙 GitHub Repo</a></div><div style="font-size:11px;opacity:.6;">BGM: Kevin MacLeod (incompetech.com) · CC-BY 4.0</div><div style="margin-top:4px;letter-spacing:1px;">🧑‍💻 Made by <b>BXR</b> &amp; <a href="https://www.deepseek.com" target="_blank" rel="noopener">Blue Fat Fish</a> 🐟</div>'],
+    ['.skin-view[data-skin="cyberpunk"] footer', '<div>© <span class="year"></span> BXR_MAIN.EXE · VERSION v2.2.16.260826</div><div><a href="https://icp.gov.moe/?keyword=20243331" target="_blank" rel="noopener">萌ICP备20243331号</a> · Visitors <span class="bz-uv">…</span> · Total views <span class="bz-pv">…</span> · <span class="visitor-city"></span></div><div><a href="templates/loader-cyberpunk.html?to=../changelog.html">📜 Changelog</a> · <a href="https://github.com/inkrox/my-website" target="_blank" rel="noopener">🐙 GitHub Repo</a></div><div style="font-size:11px;opacity:.6;">BGM: Kevin MacLeod (incompetech.com) · CC-BY 4.0</div><div style="margin-top:4px;letter-spacing:1px;">🧑‍💻 Made by <b>BXR</b> &amp; <a href="https://www.deepseek.com" target="_blank" rel="noopener">Blue Fat Fish</a> 🐟</div>'],
+    ['.skin-view[data-skin="terminal"] footer', '<div>© <span class="year"></span> BXR · VERSION v2.2.16.260826 · <a href="https://icp.gov.moe/?keyword=20243331" target="_blank" rel="noopener">萌ICP备20243331号</a> · <a href="templates/loader-terminal.html?to=../changelog.html">📜 Changelog</a> · <a href="https://github.com/inkrox/my-website" target="_blank" rel="noopener">🐙 GitHub Repo</a></div><div style="font-size:11px;opacity:.6;">BGM: Kevin MacLeod (incompetech.com) · CC-BY 4.0</div><div style="margin-top:4px;letter-spacing:1px;">🧑‍💻 Made by <b>BXR</b> &amp; <a href="https://www.deepseek.com" target="_blank" rel="noopener">Blue Fat Fish</a> 🐟</div>'],
+    ['.skin-view[data-skin="classical"] footer', '<div>© <span class="year"></span> BXR · Version v2.2.16.260826 · Visitors <span class="bz-uv">…</span> · Total views <span class="bz-pv">…</span> · <span class="visitor-city"></span></div><div><a href="https://icp.gov.moe/?keyword=20243331" target="_blank" rel="noopener">萌ICP备20243331号</a> · <a href="templates/loader-classical.html?to=../changelog.html">📜 Changelog</a> · <a href="https://github.com/inkrox/my-website" target="_blank" rel="noopener">🐙 GitHub Repo</a></div><div style="font-size:11px;opacity:.7;">BGM: Kevin MacLeod (incompetech.com) · CC-BY 4.0</div><div style="margin-top:4px;letter-spacing:2px;">🧑‍💻 Made by <b>BXR</b> &amp; <a href="https://www.deepseek.com" target="_blank" rel="noopener">Blue Fat Fish</a> 🐟</div>'],
+    ['.skin-view[data-skin="starry"] footer', '<div>© <span class="year"></span> BXR · Version v2.2.16.260826</div><div><a href="https://icp.gov.moe/?keyword=20243331" target="_blank" rel="noopener">萌ICP备20243331号</a> · Visitors <span class="bz-uv">…</span> · Total views <span class="bz-pv">…</span> · <span class="visitor-city"></span></div><div><a href="templates/loader-starry.html?to=../changelog.html">📜 Changelog</a> · <a href="https://github.com/inkrox/my-website" target="_blank" rel="noopener">🐙 GitHub Repo</a></div><div style="font-size:11px;opacity:.6;">BGM: Kevin MacLeod (incompetech.com) · CC-BY 4.0</div><div style="margin-top:4px;letter-spacing:1px;">🧑‍💻 Made by <b>BXR</b> &amp; <a href="https://www.deepseek.com" target="_blank" rel="noopener">Blue Fat Fish</a> 🐟</div>']
+  ];
+
+  /* 主题栏按钮文案统一生成 */
+  (function () {
+    var SKIN_EN = { default: 'Aurora', cyberpunk: 'Cyberpunk', terminal: 'Terminal', classical: 'Classical', starry: 'Starry' };
+    var ICON = { default: '✨', cyberpunk: '🌃', terminal: '💻', classical: '🏮', starry: '🌌' };
+    var skins = ['default', 'cyberpunk', 'terminal', 'classical', 'starry'];
+    for (var c = 0; c < skins.length; c++) {
+      for (var s = 0; s < skins.length; s++) {
+        var label = ICON[skins[s]] + ' ' + SKIN_EN[skins[s]] + (skins[s] === 'default' ? ' (Default)' : '');
+        EN.push(['.skin-view[data-skin="' + skins[c] + '"] button[data-skin="' + skins[s] + '"]', label]);
+      }
+    }
+  })();
+
+  /* 属性型文案（title / placeholder） */
+  var EN_ATTR = [
+    ['#musicBtn', 'title', 'Play / Pause Music'],
+    ['#updatesBtn', 'title', 'Recent Updates'],
+    ['#topBtn', 'title', 'Back to Top'],
+    ['#langBtn', 'title', 'Language / 语言'],
+    ['#playerPrev', 'title', 'Previous'],
+    ['#playerNext', 'title', 'Next'],
+    ['#termCmd', 'placeholder', 'Type help for commands']
+  ];
+
+  /* 终端交互命令的英文文案（skin-terminal.js 用） */
+  window.BXR_JS_EN = {
+    help: 'Available commands:<br>' +
+      '&nbsp;&nbsp;help&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;show this help<br>' +
+      '&nbsp;&nbsp;ls&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;list projects<br>' +
+      '&nbsp;&nbsp;open &lt;name&gt;&nbsp;&nbsp;&nbsp;&nbsp;open a project (e.g. open firework)<br>' +
+      '&nbsp;&nbsp;theme &lt;skin&gt;&nbsp;&nbsp;&nbsp;&nbsp;switch skin (default / cyberpunk / terminal / classical / starry)<br>' +
+      '&nbsp;&nbsp;about&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;about me<br>' +
+      '&nbsp;&nbsp;links&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;links<br>' +
+      '&nbsp;&nbsp;whoami&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;who am I?<br>' +
+      '&nbsp;&nbsp;date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;current time<br>' +
+      '&nbsp;&nbsp;echo &lt;text&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo text<br>' +
+      '&nbsp;&nbsp;clear&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;clear output',
+    works: ['Shooting Game', 'Code Rain', 'Compass Clock', 'Aperture', 'Meteor Shower', 'Fireworks', '3D Fireworks', 'Click Fireworks', 'Pixel Clock', 'Tech Watch', 'Timer', 'Space Museum', 'Father\'s Day', 'QA Quiz', 'Secret Downloads'],
+    about: 'Hi! I\'m BXR, a 14-year-old from Harbin, Grade 9 at Harbin No.49 Middle School, Class 9, No. 01.<br>Good at Python and C++ — OIer, violin.',
+    links: '<div class="line">🐙 GitHub — <a href="https://github.com/inkrox" target="_blank" rel="noopener">https://github.com/inkrox</a></div>' +
+      '<div class="line">📦 Source Code — <a href="https://github.com/inkrox/my-website/" target="_blank" rel="noopener">https://github.com/inkrox/my-website/</a></div>' +
+      '<div class="line">📧 Email — <a href="mailto:inkrox@outlook.com">inkrox@outlook.com</a> · <a href="mailto:root@cralk.top">root@cralk.top</a></div>' +
+      '<div class="line">💬 Zhihu — <a href="https://www.zhihu.com/people/9wbhos" target="_blank" rel="noopener">https://www.zhihu.com/people/9wbhos</a></div>' +
+      '<div class="line">🚩 Luogu — <a href="https://www.luogu.com.cn/user/1766805" target="_blank" rel="noopener">https://www.luogu.com.cn/user/1766805</a></div>',
+    whoami: 'bxr — 14 · Harbin · Grade 9 · OIer · changing the world with code 💪✨🌈'
+  };
+
+  /* 捕获中文原始内容（首次加载时） */
+  var ZH = {};
+  var ZH_ATTR = {};
+  (function capture() {
+    var i, j, el, k;
+    for (i = 0; i < EN.length; i++) {
+      el = document.querySelectorAll(EN[i][0]);
+      for (j = 0; j < el.length; j++) {
+        k = EN[i][0];
+        if (ZH[k] === undefined) { ZH[k] = el[j].innerHTML; }
+      }
+    }
+    for (i = 0; i < EN_ATTR.length; i++) {
+      el = document.querySelectorAll(EN_ATTR[i][0]);
+      for (j = 0; j < el.length; j++) {
+        k = EN_ATTR[i][0] + '|' + EN_ATTR[i][1];
+        if (ZH_ATTR[k] === undefined) { ZH_ATTR[k] = el[j].getAttribute(EN_ATTR[i][1]); }
+      }
+    }
+  })();
+
+  function applyLang() {
+    var i, j, el, k;
+    for (i = 0; i < EN.length; i++) {
+      el = document.querySelectorAll(EN[i][0]);
+      for (j = 0; j < el.length; j++) {
+        k = EN[i][0];
+        if (lang === 'en') { el[j].innerHTML = EN[i][1]; }
+        else if (ZH[k] !== undefined) { el[j].innerHTML = ZH[k]; }
+      }
+    }
+    for (i = 0; i < EN_ATTR.length; i++) {
+      el = document.querySelectorAll(EN_ATTR[i][0]);
+      for (j = 0; j < el.length; j++) {
+        k = EN_ATTR[i][0] + '|' + EN_ATTR[i][1];
+        el[j].setAttribute(EN_ATTR[i][1], lang === 'en' ? EN_ATTR[i][2] : (ZH_ATTR[k] !== undefined ? ZH_ATTR[k] : ''));
+      }
+    }
+  }
+
+  var langBtn = document.getElementById('langBtn');
+  if (langBtn) {
+    langBtn.addEventListener('click', function () {
+      lang = lang === 'en' ? 'zh' : 'en';
+      window.bxrLang = lang;
+      try { localStorage.setItem('bxr_lang', lang); } catch (e) {}
+      applyLang();
+      var toastEl = document.getElementById('toast');
+      if (toastEl) {
+        toastEl.textContent = lang === 'en' ? '🌐 Language: English' : '🌐 已切换为中文';
+        toastEl.classList.add('show');
+        clearTimeout(langBtn._t);
+        langBtn._t = setTimeout(function () { toastEl.classList.remove('show'); }, 1800);
+      }
+    });
+  }
+
+  /* 首次访问（用户没手动选过语言）：按 IP 自动选择（CN → 中文，其他 → English） */
+  var explicitLang = null;
+  try { explicitLang = localStorage.getItem('bxr_lang'); } catch (e) {}
+  if (!explicitLang && typeof fetch === 'function') {
+    fetch('https://ipwho.is/')
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        if (!d || !d.success) { return; }
+        var want = d.country_code === 'CN' ? 'zh' : 'en';
+        if (lang !== want) {
+          lang = want;
+          window.bxrLang = lang;
+          applyLang();
+        }
+      })
+      .catch(function () {});
+  }
+
+  applyLang();
 })();
 </script>
 </body>

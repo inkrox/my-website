@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en" class="skin-default">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Changelog · BXR's Homepage</title>
+<link rel="icon" href="me.jpg" type="image/jpeg">
+<meta property="og:title" content="Changelog · BXR's Homepage">
+<meta property="og:description" content="Version history of BXR's personal homepage.">
+<meta property="og:image" content="https://cralk.top/og-image.png">
+<script>
+  (function () {
+    var SKINS = ['default', 'cyberpunk', 'terminal', 'classical', 'starry'];
+    var skin = 'default';
+    try {
+      var m = location.search.match(/[?&]style=([\w-]+)/);
+      if (m && SKINS.indexOf(m[1]) !== -1) { skin = m[1]; }
+      else if (localStorage.getItem('bxr_style')) { skin = localStorage.getItem('bxr_style'); }
+    } catch (e) {}
+    if (SKINS.indexOf(skin) === -1) { skin = 'default'; }
+    document.documentElement.className = 'skin-' + skin;
+    for (var s = 0; s < SKINS.length; s++) {
+      var pre = document.createElement('link');
+      pre.rel = 'stylesheet';
+      pre.href = 'skins/skin-' + SKINS[s] + '.css';
+      document.head.appendChild(pre);
+    }
+  })();
+</script>
+<style>
+  :root {
+    --accent: #7c6cff;
+    --accent2: #22d3ee;
+    --accent3: #f472b6;
+    --ink: #eef1ff;
+    --ink-dim: #aab3d6;
+    --card: rgba(255, 255, 255, 0.06);
+    --card-border: rgba(255, 255, 255, 0.12);
+    --bg-solid: #0f1023;
+    --mono: "Cascadia Mono", Consolas, "JetBrains Mono", monospace;
+    --kai: "STKaiti", "KaiTi", "楷体", serif;
+  }
+  html.skin-cyberpunk { --accent: #00fff7; --accent2: #ff2bd6; --accent3: #ffe600; --bg-solid: #04050f; --ink: #d8fbff; --ink-dim: #79b8c2; --card: rgba(10, 14, 34, .82); --card-border: rgba(0, 255, 247, .28); }
+  html.skin-terminal { --accent: #33ff66; --accent2: #ffcc33; --accent3: #ffcc33; --bg-solid: #050805; --ink: #33ff66; --ink-dim: #1f9e4a; --card: rgba(5, 10, 5, .92); --card-border: #1f9e4a; }
+  html.skin-classical { --accent: #a63a2b; --accent2: #a8863d; --accent3: #b03a2e; --bg-solid: #f6f1e3; --ink: #33291f; --ink-dim: #6d5f4c; --card: rgba(255, 252, 242, .85); --card-border: rgba(51, 41, 31, .35); }
+  html.skin-starry { --accent: #7aa2ff; --accent2: #b48cff; --accent3: #ffe9a8; --bg-solid: #0a0d24; --ink: #eef2ff; --ink-dim: #a7b0d8; --card: rgba(255, 255, 255, .07); --card-border: rgba(255, 255, 255, .16); }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--kai), "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    color: var(--ink); min-height: 100vh; background: var(--bg-solid);
+    user-select: none; -webkit-user-select: none;
+  }
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--accent), var(--accent2));
+    border-radius: 999px; border: 2px solid transparent;
+  }
+  .skin-view { display: none; }
+  html.skin-default .skin-view[data-skin="default"] { display: block; }
+  html.skin-cyberpunk .skin-view[data-skin="cyberpunk"] { display: block; }
+  html.skin-terminal .skin-view[data-skin="terminal"] { display: block; }
+  html.skin-classical .skin-view[data-skin="classical"] { display: block; }
+  html.skin-starry .skin-view[data-skin="starry"] { display: block; }
+  header {
+    position: sticky; top: 0; z-index: 20;
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    padding: 12px 4vw; flex-wrap: wrap;
+    background: rgba(10, 12, 26, .62); backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--card-border);
+  }
+  .logo { font-weight: 700; letter-spacing: 1px; font-size: 15px; }
+  .logo span { color: var(--accent2); }
+  .chg-nav { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+  .chg-nav button {
+    font-family: inherit; font-size: 12.5px; padding: 6px 12px; border-radius: 999px;
+    border: 1px solid var(--card-border); background: var(--card); color: var(--ink-dim);
+    cursor: pointer; transition: .25s; line-height: 1;
+  }
+  .chg-nav button:hover { color: var(--ink); border-color: var(--accent); }
+  .chg-nav button.cur { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff; border-color: transparent; }
+  .chg-nav a {
+    color: var(--ink-dim); text-decoration: none; padding: 6px 14px;
+    border-radius: 999px; font-size: 13px; transition: .25s;
+  }
+  .chg-nav a:hover { color: var(--ink); background: var(--card); }
+  html.skin-terminal .chg-nav button, html.skin-terminal .chg-nav a { border-radius: 0; font-family: var(--mono); }
+  html.skin-cyberpunk .chg-nav button { border-radius: 0; }
+  html.skin-classical .chg-nav button { font-family: var(--kai); }
+  main { max-width: 800px; margin: 0 auto; padding: 40px 4vw 80px; }
+  h1 { font-size: clamp(26px, 4.5vw, 36px); font-weight: 800; letter-spacing: 2px; }
+  h1 .grad {
+    background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .sub { margin-top: 8px; color: var(--ink-dim); font-size: 14px; }
+  .timeline { margin-top: 34px; position: relative; padding-left: 26px; }
+  .timeline::before {
+    content: ""; position: absolute; left: 6px; top: 6px; bottom: 6px;
+    width: 2px; background: linear-gradient(180deg, var(--accent), var(--accent2), transparent);
+  }
+  .entry {
+    position: relative; margin-bottom: 26px;
+    background: var(--card); border: 1px solid var(--card-border); border-radius: 14px;
+    padding: 18px 22px; backdrop-filter: blur(6px);
+  }
+  .entry::before {
+    content: ""; position: absolute; left: -26px; top: 22px;
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--accent2); box-shadow: 0 0 12px var(--accent2);
+  }
+  .entry.cur::before { background: var(--accent3); box-shadow: 0 0 14px var(--accent3); }
+  .entry.cur { border-color: var(--accent); }
+  .ver { font-size: 17px; font-weight: 700; letter-spacing: 1px; }
+  .date { margin-top: 4px; font-size: 12.5px; color: var(--ink-dim); }
+  ul { margin-top: 10px; list-style: none; }
+  ul li {
+    position: relative; padding-left: 18px; margin-top: 6px;
+    font-size: 14px; color: var(--ink); line-height: 1.8; opacity: .92;
+  }
+  ul li::before { content: "▸"; position: absolute; left: 0; color: var(--accent2); }
+  ul li b { color: var(--accent2); }
+  .skin-tag {
+    display: inline-block; font-size: 11px; padding: 1px 9px; border-radius: 999px;
+    margin-right: 6px; color: #fff; vertical-align: 1px;
+  }
+  .skin-tag.t-all { background: rgba(255, 255, 255, .28); }
+  .skin-tag.t-aurora { background: #7c6cff; }
+  .skin-tag.t-cyberpunk { background: #0e7490; }
+  .skin-tag.t-terminal { background: #15803d; }
+  .skin-tag.t-classical { background: #a63a2b; }
+  .skin-tag.t-starry { background: #4c5fd5; }
+  footer {
+    border-top: 1px solid var(--card-border); text-align: center;
+    padding: 20px 4vw 26px; color: var(--ink-dim); font-size: 12.5px; line-height: 2;
+  }
+  footer a { color: var(--accent2); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="skin-view" id="chgView" data-skin="default">
+<header>
+  <div class="logo">📜 Changelog · <span>BXR</span></div>
+  <nav class="chg-nav">
+    <button data-skin="default">✨ Aurora</button>
+    <button data-skin="cyberpunk">🌃 Cyberpunk</button>
+    <button data-skin="terminal">💻 Terminal</button>
+    <button data-skin="classical">🏮 Classical</button>
+    <button data-skin="starry">🌌 Starry</button>
+    <a href="changelog.html">🌐 中文</a>
+    <a href="index.html">🏠 Home</a>
+  </nav>
+</header>
+<main>
+  <h1>Version <span class="grad">Changelog</span></h1>
+  <p class="sub">Every step of this site's growth · Version format vMAJOR.MINOR.PATCH.YYMMDD · Skin preference synced with the homepage</p>
+
+  <div class="timeline">
+    <div class="entry cur">
+      <div class="ver">v2.2.16.260826</div>
+      <div class="date">2026-08-26 · Code Rain tweaks</div>
+      <ul>
+        <li><span class="skin-tag t-all">All</span>Code Rain characters are now purely English letters / digits / symbols (katakana removed)</li>
+        <li><span class="skin-tag t-all">All</span>Removed the click-to-disturb gameplay and its hint text</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <div class="ver">v2.2.15.260826</div>
+      <div class="date">2026-08-26 · Code Rain remake + QA bilingual</div>
+      <ul>
+        <li><span class="skin-tag t-all">All</span>Code Rain remade: high-DPI support, classic Matrix green with colored accents, glowing white heads, fading trails, varied speeds, click-to-disturb gameplay</li>
+        <li><span class="skin-tag t-all">All</span>QA quiz now supports English (follows the site language; questions and UI fully translated, total score no longer hard-coded)</li>
+        <li><span class="skin-tag t-all">All</span>Cleaned up temporary caches and a credential backup containing a token; test scripts moved to _tools/</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <div class="ver">v2.2.14.260826</div>
+      <div class="date">2026-08-26 · Loading pages in English</div>
+      <ul>
+        <li><span class="skin-tag t-all">All</span>All 5 loading pages now follow the site language: English text in English mode (poetic elements like "少年行" and the seal stay Chinese)</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <div class="ver">v2.2.13.260826</div>
+      <div class="date">2026-08-26 · Wording consistency</div>
+      <ul>
+        <li><span class="skin-tag t-all">All</span>"本站源码" is now consistently "Source Code" everywhere, including the terminal shell output</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <div class="ver">v2.2.12.260826</div>
+      <div class="date">2026-08-26 · UI unification + translation gap</div>
+      <ul>
+        <li><span class="skin-tag t-all">All</span>Music / back-to-top / language buttons now share a uniform 52×52 size, same right edge and even spacing</li>
+        <li><span class="skin-tag t-terminal">Terminal</span>Fixed "本站源码" in the cat links output not being translated in English mode</li>
+        <li><span class="skin-tag t-all">All</span>Full sweep for leftover Chinese in English mode (automated scan added)</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <div class="ver">v2.2.11.260826</div>
+      <div class="date">2026-08-26 · Detail fixes</div>
+      <ul>
+        <li><span class="skin-tag t-all">All</span>Moved the language toggle to the bottom-right so it no longer covers the top-right navigation</li>
+        <li><span class="skin-tag t-all">All</span>"蓝色大肥鱼" now shows as "Blue Fat Fish" in English mode</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <div class="ver">v2.2.10.260826</div>
+      <div class="date">2026-08-26 · Links card names in English</div>
+      <ul>
+        <li><span class="skin-tag t-all">All</span>Link card names are now translated in English mode (Site Source / Email / Zhihu / Luogu), consistent across all 5 skins</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <div class="ver">v2.2.9.260826</div>
+      <div class="date">2026-08-26 · Localization fix + smart language</div>
+      <ul>
+        <li><span class="skin-tag t-terminal">Terminal</span>Fixed the visitor line (您是第 X 位访客) not being translated in English mode</li>
+        <li><span class="skin-tag t-all">All</span>First visit now picks the language automatically by IP (CN → Chinese, others → English); a manual choice always wins</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <div class="ver">v2.2.8.260826</div>
+      <div class="date">2026-08-26 · Bilingual update</div>
+      <ul>
+        <li><span class="skin-tag t-all">All</span>Added a global Chinese/English toggle (🌐 button) covering all 5 skins; the choice is remembered</li>
+        <li><span class="skin-tag t-all">All</span>Added this English changelog page (changelog-en.html)</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <div class="ver">v2.2.7.260825</div>
+      <div class="date">2026-08-25 · Log cleanup</div>
+      <ul>
+        <li><span class="skin-tag t-all">All</span>Removed the "planned" v2.3.0.xxxxxx entry from the changelog</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <div class="ver">v2.2.6.260825</div>
+      <div class="date">2026-08-25 · Classical loading + changelog loader</div>
+      <ul>
+        <li><span class="skin-tag t-classical">Classical</span>Fixed a white band flashing at the upper-middle of the page on load (the mist layer now fades in after the content)</li>
+        <li><span class="skin-tag t-all">All</span>The changelog now plays each skin's loading animation before entering</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <div class="ver">v2.2.5.260825</div>
+      <div class="date">2026-08-25 · Classical seal tweak</div>
+      <ul>
+        <li><span class="skin-tag t-classical">Classical</span>Fixed the "印" seal being off-center due to inherited letter-spacing from the h1</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <div class="ver">v2.2.4.260825</div>
+      <div class="date">2026-08-25 · Secret downloads + stats fix</div>
+      <ul>
+        <li><span class="skin-tag t-all">All</span>Added <b>Secret Downloads</b> to the end of the works list (all 5 skins)</li>
+        <li><span class="skin-tag t-all">All</span>The download page now shows original name (cipher name): F4.mp4 (F4.mp4) · lrj.zip (emo.lrj)</li>
+        <li><span class="skin-tag t-all">All</span>Visitor counter fix: the local fallback count is rolled back when the official service responds late</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <div class="ver">v2.2.3.260824</div>
+      <div class="date">2026-08-24 · Terminal readability fix</div>
+      <ul>
+        <li><span class="skin-tag t-terminal">Terminal</span>Fixed links in the cat links output being too dark to read — now bright amber with underlines and hover inversion</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <div class="ver">v2.2.2.260824</div>
+      <div class="date">2026-08-24 · New email</div>
+      <ul>
+        <li><span class="skin-tag t-all">All</span>Added contact email root@cralk.top alongside inkrox@outlook.com; clicking the card composes to both</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <div class="ver">v2.2.1.260824</div>
+      <div class="date">2026-08-24 · GitHub migration + footer polish</div>
+      <ul>
+        <li><span class="skin-tag t-all">All</span>Migrated the GitHub account/repo to <b>inkrox</b> / inkrox/my-website; email updated to inkrox@outlook.com; all links synced</li>
+        <li><span class="skin-tag t-all">All</span>Removed the GitHub star / last-update counter from the footer; the repo link is now clickable</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <div class="ver">v2.2.0.260823</div>
+      <div class="date">2026-08-23 · Secret downloads + UI upgrade</div>
+      <ul>
+        <li><span class="skin-tag t-all">All</span><b>Secret download system</b>: download.html decrypts files in the browser (AES-256-GCM + PBKDF2, 120k iterations), ciphertext in download/, source obfuscated</li>
+        <li><span class="skin-tag t-all">All</span>Scrollspy navigation highlight · top scroll progress bar · skin-switch toasts · first-visit shortcut hint</li>
+        <li><span class="skin-tag t-all">All</span>Hero CTA buttons per skin · tech tags on work cards · player prev/next</li>
+        <li><span class="skin-tag t-terminal">Terminal</span>Interactive shell: type help / ls / open / theme / about, arrow-key history</li>
+        <li><span class="skin-tag t-all">All</span>404 easter eggs: glitch, typewriter, lost seal, shooting stars</li>
+        <li><span class="skin-tag t-all">All</span>Mobile bottom action bar (≤640px) · themed dropdowns fixed on mobile</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <div class="ver">v2.1.0.260821</div>
+      <div class="date">2026-08-21 · Five-in-one integration</div>
+      <ul>
+        <li><span class="skin-tag t-all">All</span><b>All 5 skins merged into one page</b> with instant switching; CSS/JS split and lazy-loaded per skin (skins/)</li>
+        <li><span class="skin-tag t-all">All</span>BGM switches with skin · visitor city · ←/→ keyboard skin switch · double-click effects · ?style= memory · changelog page follows the skin</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <div class="ver">v2.0.0.260821</div>
+      <div class="date">2026-08-21 · Full redesign</div>
+      <ul>
+        <li>Brand-new <b>5-skin homepage</b>: Aurora / Cyberpunk / Terminal / Classical / Starry, with skin preference memory</li>
+        <li>5 loading animations before entering mini-games, click to skip</li>
+        <li>Music player upgrade: <b>seek bar, volume control</b>, per-skin tracks (Kevin MacLeod CC-BY)</li>
+        <li>Star cursor trails + click burst effects (skin-colored)</li>
+        <li>Real visitor stats via busuanzi (UV/PV)</li>
+        <li>Links section (GitHub / Zhihu / Luogu / obfuscated email)</li>
+        <li>🎯 Shooting game entry (shoot.cralk.top) on top with NEW badge</li>
+        <li>New <b>404 page</b>, <b>sitemap.xml</b>, <b>Open Graph share card</b>, search engines allowed</li>
+        <li>GitHub repo live data in the footer (stars / last update)</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <div class="ver">v1.16.4.250128</div>
+      <div class="date">2025-01-28 · Legacy era</div>
+      <ul>
+        <li>Old profile page: sakura petals, star trails, heart-click effects</li>
+        <li>Game collection: Code Rain / Fireworks / Meteor Shower / Clocks / Space Museum / QA Quiz</li>
+      </ul>
+    </div>
+  </div>
+</main>
+<footer>
+  <div>© <span id="year"></span> BXR · Version v2.2.16.260826</div>
+  <div><a href="https://icp.gov.moe/?keyword=20243331" target="_blank" rel="noopener">萌ICP备20243331号</a> · 🧑‍💻 Made by BXR &amp; <a href="https://www.deepseek.com" target="_blank" rel="noopener">Blue Fat Fish</a> 🐟</div>
+</footer>
+</div>
+<script>
+  (function () {
+    var SKIN_LIST = ['default', 'cyberpunk', 'terminal', 'classical', 'starry'];
+    var currentSkin = document.documentElement.className.replace('skin-', '');
+    var container = document.getElementById('chgView');
+    var loadedCss = { default: true, cyberpunk: true, terminal: true, classical: true, starry: true };
+
+    function ensureSkinAssets(skin) {
+      if (loadedCss[skin]) { return; }
+      var link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = 'skins/skin-' + skin + '.css';
+      link.onerror = function () {
+        var l2 = document.createElement('link');
+        l2.rel = 'stylesheet';
+        l2.href = 'skins/skin-' + skin + '.css?retry=1';
+        document.head.appendChild(l2);
+      };
+      document.head.appendChild(link);
+      loadedCss[skin] = true;
+    }
+
+    function applySkin(skin) {
+      if (SKIN_LIST.indexOf(skin) === -1) { return; }
+      currentSkin = skin;
+      document.documentElement.className = 'skin-' + skin;
+      if (container) { container.setAttribute('data-skin', skin); }
+      try { localStorage.setItem('bxr_style', skin); } catch (e) {}
+      ensureSkinAssets(skin);
+      var btns = document.querySelectorAll('.chg-nav button[data-skin]');
+      for (var i = 0; i < btns.length; i++) {
+        btns[i].classList.toggle('cur', btns[i].getAttribute('data-skin') === skin);
+      }
+    }
+
+    var btns = document.querySelectorAll('.chg-nav button[data-skin]');
+    for (var i = 0; i < btns.length; i++) {
+      btns[i].addEventListener('click', function () {
+        applySkin(this.getAttribute('data-skin'));
+      });
+    }
+    applySkin(currentSkin);
+
+    var y = document.getElementById('year');
+    if (y) { y.textContent = new Date().getFullYear(); }
+  })();
+</script>
+</body>
+</html>

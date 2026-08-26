@@ -9,7 +9,7 @@
 </head>
 
 <body>
-  <h1>实时答题——数学万岁</h1>
+  <h1 id="qaTitle">实时答题——数学万岁</h1>
   <div id="question-container">
     <p id="question-text"></p>
     <div id="options"></div>
@@ -17,7 +17,7 @@
     <p id="progress" style="margin-top:14px;color:#888;font-size:15px;"></p>
   </div>
   <div id="score-container">
-    <p>你的得分: <span id="score">0</span> / 10</p>
+    <p><span id="scoreLabel">你的得分:</span> <span id="score">0</span> / <span id="total">10</span></p>
     <button id="restart" style="display:none;">重新开始</button>
   </div>
   <script src="qa.js"></script>

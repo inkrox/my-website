@@ -105,6 +105,17 @@
 (function () {
   'use strict';
 
+  /* 跟随主页语言设置：英文模式显示英文（站名「星野」保留） */
+  var isEN = false;
+  try { isEN = localStorage.getItem('bxr_lang') === 'en'; } catch (e) {}
+  if (isEN) {
+    document.title = 'Loading · BXR';
+    var subEl = document.querySelector('.loader .sub');
+    if (subEl) { subEl.innerHTML = 'Crossing the star sea · <b>Loading</b>…'; }
+    var skipEl = document.getElementById('skip');
+    if (skipEl) { skipEl.textContent = 'Enter →'; }
+  }
+
   /* 星空背景 */
   var canvas = document.getElementById('sky');
   var ctx = canvas.getContext('2d');

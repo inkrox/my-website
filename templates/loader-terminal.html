@@ -119,18 +119,22 @@
   var output = document.getElementById('output');
   var done = false;
 
+  /* 跟随主页语言设置：英文模式显示英文 */
+  var isEN = false;
+  try { isEN = localStorage.getItem('bxr_lang') === 'en'; } catch (e) {}
+
   var bootLines = [
-    '> BXR-OS v2.2.7.260825 BOOTING ...',
+    '> BXR-OS v2.2.16.260826 BOOTING ...',
     '> CPU: BRAIN(14y) 4 CORES ... OK',
     '> MEM: DREAMS 100% ... OK',
     '> LOADING PROFILE: BXR ... DONE',
-    '> 正在进入命令行主页 ...'
+    isEN ? '> ENTERING TERMINAL HOMEPAGE ...' : '> 正在进入命令行主页 ...'
   ];
   var lineIndex = 0;
   var charIndex = 0;
   var typed = '';
   var barHtml = '<div class="progress"><div class="line">LOADING [<span class="box"><span class="bar" id="bar"></span></span>] <span class="percent" id="percent">0%</span></div>' +
-    '\n<div class="line dim">> 点击任意位置 · 立即进入</div></div>';
+    '\n<div class="line dim">> ' + (isEN ? 'click anywhere to enter' : '点击任意位置 · 立即进入') + '</div></div>';
 
   function typeLine() {
     if (lineIndex >= bootLines.length) {

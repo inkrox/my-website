@@ -2,6 +2,15 @@
 'use strict';
   /* 终端皮肤：分区加载 —— 每个块区“看到时”加载，滚过即收起 */
 
+  /* 中英切换：英文时用 window.BXR_JS_EN 里的文案 */
+  function T(k, zh, en) {
+    if (window.bxrLang === 'en') {
+      if (en !== undefined) { return en; }
+      if (window.BXR_JS_EN && window.BXR_JS_EN[k]) { return window.BXR_JS_EN[k]; }
+    }
+    return zh;
+  }
+
   /* ============ 敲字工具（命令敲完 → 输出浮现） ============ */
   function typeCmd(el, speed, onDone) {
     if (el.getAttribute('data-done') === '1' || el.__typing) { return; }
@@ -55,7 +64,7 @@
   var bootEl = document.getElementById('boot');
   var asciiEl = document.getElementById('asciiArt');
   var bootLines = [
-    '> BXR-OS v2.2.7 BOOTING ...',
+    '> BXR-OS v2.2.16 BOOTING ...',
     '> CPU: BRAIN(14y) 4 CORES ... OK',
     '> MEM: DREAMS 100% ... OK',
     '> LOADING PROFILE: BXR ... DONE',
@@ -174,7 +183,7 @@
     var cmd = parts[0].toLowerCase();
     var arg = parts.slice(1).join(' ');
     if (cmd === 'help') {
-      termOut('可用命令：<br>' +
+      termOut(T('help', '可用命令：<br>' +
         '&nbsp;&nbsp;help&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;显示本帮助<br>' +
         '&nbsp;&nbsp;ls&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;列出作品目录<br>' +
         '&nbsp;&nbsp;open &lt;名字&gt;&nbsp;&nbsp;&nbsp;&nbsp;打开作品（如 open firework）<br>' +
@@ -184,12 +193,13 @@
         '&nbsp;&nbsp;whoami&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;我是谁？<br>' +
         '&nbsp;&nbsp;date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;当前时间<br>' +
         '&nbsp;&nbsp;echo &lt;文字&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;回显文字<br>' +
-        '&nbsp;&nbsp;clear&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;清空输出');
+        '&nbsp;&nbsp;clear&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;清空输出'));
     } else if (cmd === 'ls') {
       var h = '<div class="works">';
+      var enDs = (window.bxrLang === 'en' && window.BXR_JS_EN && window.BXR_JS_EN.works) ? window.BXR_JS_EN.works : null;
       for (var i = 0; i < TERM_WORKS.length; i++) {
         var num = (i + 1 < 10 ? '0' : '') + (i + 1);
-        h += '<a class="wline" href="' + TERM_WORKS[i].h + '"><span class="idx">' + num + '</span><span class="nm">' + TERM_WORKS[i].n + '</span><span class="ds">' + TERM_WORKS[i].d + '</span></a>';
+        h += '<a class="wline" href="' + TERM_WORKS[i].h + '"><span class="idx">' + num + '</span><span class="nm">' + TERM_WORKS[i].n + '</span><span class="ds">' + (enDs ? enDs[i] : TERM_WORKS[i].d) + '</span></a>';
       }
       termOut(h + '</div>');
     } else if (cmd === 'open') {
@@ -213,15 +223,15 @@
         termOut('<span style="color:var(--red)">theme: unknown skin "' + escTxt(arg) + '"</span>');
       }
     } else if (cmd === 'about') {
-      termOut('大家好，我是 BXR，一个 14 岁的阳光少年，生活在美丽的冰城哈尔滨，<br>就读于哈尔滨市第四十九中学校九年级（初四），九班，学号 01。<br>擅长 Python、C++，OIer，小提琴十级选手 🎻');
+      termOut(T('about', '大家好，我是 BXR，一个 14 岁的阳光少年，生活在美丽的冰城哈尔滨，<br>就读于哈尔滨市第四十九中学校九年级（初四），九班，学号 01。<br>擅长 Python、C++，OIer，小提琴十级选手 🎻'));
     } else if (cmd === 'links') {
-      termOut('<div class="line">🐙 GitHub — <a href="https://github.com/inkrox" target="_blank" rel="noopener">https://github.com/inkrox</a></div>' +
+      termOut(T('links', '<div class="line">🐙 GitHub — <a href="https://github.com/inkrox" target="_blank" rel="noopener">https://github.com/inkrox</a></div>' +
         '<div class="line">📦 本站源码 — <a href="https://github.com/inkrox/my-website/" target="_blank" rel="noopener">https://github.com/inkrox/my-website/</a></div>' +
         '<div class="line">📮 邮箱 — <a href="mailto:inkrox@outlook.com">inkrox@outlook.com</a> · <a href="mailto:root@cralk.top">root@cralk.top</a></div>' +
         '<div class="line">💬 知乎 — <a href="https://www.zhihu.com/people/9wbhos" target="_blank" rel="noopener">https://www.zhihu.com/people/9wbhos</a></div>' +
-        '<div class="line">🚩 洛谷 — <a href="https://www.luogu.com.cn/user/1766805" target="_blank" rel="noopener">https://www.luogu.com.cn/user/1766805</a></div>');
+        '<div class="line">🚩 洛谷 — <a href="https://www.luogu.com.cn/user/1766805" target="_blank" rel="noopener">https://www.luogu.com.cn/user/1766805</a></div>'));
     } else if (cmd === 'whoami') {
-      termOut('bxr — 14 岁 · 哈尔滨 · 九年级（初四）· OIer · 代码改变世界 💪✨🌈');
+      termOut(T('whoami', 'bxr — 14 岁 · 哈尔滨 · 九年级（初四）· OIer · 代码改变世界 💪✨🌈'));
     } else if (cmd === 'date') {
       termOut(new Date().toLocaleString('zh-CN'));
     } else if (cmd === 'echo') {
@@ -230,7 +240,9 @@
       var outs = termBody.querySelectorAll('.term-out');
       for (var c = 0; c < outs.length; c++) { outs[c].remove(); }
     } else {
-      termOut('<span style="color:var(--red)">bash: ' + escTxt(cmd) + ': command not found</span>（输入 help 查看可用命令）');
+      termOut(T('err',
+        '<span style="color:var(--red)">bash: ' + escTxt(cmd) + ': command not found</span>（输入 help 查看可用命令）',
+        '<span style="color:var(--red)">bash: ' + escTxt(cmd) + ': command not found</span> (type help for commands)'));
     }
   }
   var cmdHist = [];

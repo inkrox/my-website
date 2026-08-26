@@ -124,6 +124,18 @@
 <script>
 (function () {
   'use strict';
+  /* 跟随主页语言设置：英文模式显示英文（站名「少年行」与印章保留） */
+  var isEN = false;
+  try { isEN = localStorage.getItem('bxr_lang') === 'en'; } catch (e) {}
+  if (isEN) {
+    document.title = 'Loading · BXR';
+    var poemEl = document.querySelector('.loader .poem');
+    if (poemEl) { poemEl.innerHTML = 'Preparing ink &amp; paper · <b>Loading</b>…'; }
+    var stEl = document.querySelector('.loader .status span:first-child');
+    if (stEl) { stEl.textContent = 'Please wait'; }
+    var skipEl = document.getElementById('skip');
+    if (skipEl) { skipEl.textContent = 'Enter →'; }
+  }
   var TARGET = '../index.html?style=classical';
   var DURATION = 1200;
   /* 支持 ?to= 参数：访问小游戏前播放加载动画后跳转 */

@@ -91,6 +91,16 @@
 <script>
 (function () {
   'use strict';
+  /* 跟随主页语言设置：英文模式显示英文 */
+  var isEN = false;
+  try { isEN = localStorage.getItem('bxr_lang') === 'en'; } catch (e) {}
+  if (isEN) {
+    document.title = 'Loading · BXR';
+    var subEl = document.querySelector('.loader .sub');
+    if (subEl) { subEl.textContent = 'Loading the homepage · Aurora'; }
+    var skipEl = document.getElementById('skip');
+    if (skipEl) { skipEl.textContent = 'Enter →'; }
+  }
   var TARGET = 'index.html';
   var DURATION = 1200; // 毫秒
   /* 支持 ?to= 参数：访问小游戏前播放加载动画后跳转 */

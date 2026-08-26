@@ -1,0 +1,12 @@
+# node_modules（_tools 本地装 jsdom 用，不提交）
+node_modules/
+
+# 系统与编辑器垃圾
+.DS_Store
+Thumbs.db
+*.swp
+*.tmp
+
+# 敏感文件（绝不提交）
+*.bak
+.git-credentials*

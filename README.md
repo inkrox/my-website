@@ -4,6 +4,8 @@
 
 主站地址：**https://cralk.top**（备用：https://inkrox.github.io/my-website）
 
+English version: [README.en.md](README.en.md)
+
 ## 站点内容
 
 主页提供五套皮肤，可在页面中直接切换：极光、赛博朋克、命令行、古风、星空。选择结果会被记住，下次访问时自动恢复，也可以通过 `?style=xxx` 参数直接指定。每套皮肤配有独立的背景音乐和加载动画。
@@ -35,20 +37,20 @@ python -m http.server 8080
 
 ## 版本
 
-当前版本 **v2.2.7.260825**，格式为 `v主.次.修订.日期`，每次改动递增。
+当前版本 **v2.2.16.260826**，格式为 `v主.次.修订.日期`，每次改动递增。
 
 发布时需保证 git tag、GitHub tag 与 Release 三者名称一致：
 
 ```bash
-git tag -a v2.2.7.260825 -m "v2.2.7.260825"
-git push origin v2.2.7.260825
+git tag -a v2.2.16.260826 -m "v2.2.16.260826"
+git push origin v2.2.16.260826
 ```
 
 也可以在 GitHub 网页端创建 Release 时直接填写同名 tag。
 
 ## 版权
 
-© BXR · v2.2.7.260825 · 更新记录见 [changelog.html](changelog.html)
+© BXR · v2.2.16.260826 · 更新记录见 [changelog.html](changelog.html)
 背景音乐：Kevin MacLeod（[incompetech.com](https://incompetech.com)）· CC-BY 4.0
 [萌ICP备20243331号](https://icp.gov.moe/?keyword=20243331)
 Made by BXR & 蓝色大肥鱼 🐟

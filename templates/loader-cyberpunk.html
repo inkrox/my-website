@@ -110,6 +110,15 @@
 <script>
 (function () {
   'use strict';
+  /* 跟随主页语言设置：英文模式显示英文 */
+  var isEN = false;
+  try { isEN = localStorage.getItem('bxr_lang') === 'en'; } catch (e) {}
+  if (isEN) {
+    var subEl = document.querySelector('.loader .sub');
+    if (subEl) { subEl.innerHTML = 'BXR_MAIN.EXE // BOOTING<span class="blink">_</span>'; }
+    var skipEl = document.getElementById('skip');
+    if (skipEl) { skipEl.textContent = '[ SKIP ] ENTER'; }
+  }
   var TARGET = '../index.html?style=cyberpunk';
   var DURATION = 1200;
   /* 支持 ?to= 参数：访问小游戏前播放加载动画后跳转 */
