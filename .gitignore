@@ -1,6 +1,9 @@
 # node_modules（_tools 本地装 jsdom 用，不提交）
 node_modules/
 
+# 维护文档只留本地，不上传
+MAINTENANCE.md
+
 # 系统与编辑器垃圾
 .DS_Store
 Thumbs.db

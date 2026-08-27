@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>贪吃蛇 · Snake</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        /* ============ 主题变量（默认极光） ============ */
+        body {
+            --bg1: #0f1023; --bg2: #1b1440; --bg3: #0b1e3f;
+            --glow1: rgba(124, 108, 255, .16); --glow2: rgba(34, 211, 238, .1); --glow3: rgba(244, 114, 182, .08);
+            --ink: #eef1ff; --dim: #aab3d6;
+            --panel: rgba(255, 255, 255, .06); --panel-border: rgba(255, 255, 255, .14);
+            --accent: #7c6cff; --gold: #ffd166;
+            --btn: rgba(124, 108, 255, .35); --btn-border: rgba(124, 108, 255, .7);
+            --gfont: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+        }
+        body[data-theme="cyberpunk"] {
+            --bg1: #04050f; --bg2: #0a0e22; --bg3: #05081a;
+            --glow1: rgba(0, 255, 247, .1); --glow2: rgba(255, 43, 214, .08); --glow3: rgba(255, 230, 0, .05);
+            --ink: #d8fbff; --dim: #79b8c2;
+            --panel: rgba(10, 14, 34, .72); --panel-border: rgba(0, 255, 247, .35);
+            --accent: #00fff7; --gold: #ffe600;
+            --btn: rgba(0, 255, 247, .15); --btn-border: rgba(0, 255, 247, .7);
+            --gfont: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+        }
+        body[data-theme="terminal"] {
+            --bg1: #050805; --bg2: #070d07; --bg3: #041005;
+            --glow1: rgba(51, 255, 102, .08); --glow2: rgba(255, 204, 51, .04); --glow3: rgba(51, 255, 102, .04);
+            --ink: #33ff66; --dim: #1f9e4a;
+            --panel: rgba(51, 255, 102, .05); --panel-border: rgba(51, 255, 102, .35);
+            --accent: #33ff66; --gold: #ffcc33;
+            --btn: rgba(51, 255, 102, .12); --btn-border: rgba(51, 255, 102, .7);
+            --gfont: "Cascadia Mono", Consolas, "Courier New", "Microsoft YaHei", monospace;
+        }
+        body[data-theme="classical"] {
+            --bg1: #f6f1e3; --bg2: #efe7d3; --bg3: #faf6ec;
+            --glow1: rgba(166, 58, 43, .06); --glow2: rgba(168, 134, 61, .08); --glow3: rgba(176, 58, 46, .04);
+            --ink: #33291f; --dim: #6d5f4c;
+            --panel: rgba(255, 252, 242, .8); --panel-border: rgba(51, 41, 31, .3);
+            --accent: #a63a2b; --gold: #a8863d;
+            --btn: rgba(166, 58, 43, .15); --btn-border: rgba(166, 58, 43, .7);
+            --gfont: "STKaiti", "KaiTi", "楷体", "SimSun", serif;
+        }
+        body[data-theme="starry"] {
+            --bg1: #060a1f; --bg2: #0b1233; --bg3: #0a0d24;
+            --glow1: rgba(90, 110, 255, .14); --glow2: rgba(150, 90, 255, .12); --glow3: rgba(255, 233, 168, .05);
+            --ink: #eef2ff; --dim: #a7b0d8;
+            --panel: rgba(255, 255, 255, .07); --panel-border: rgba(255, 255, 255, .18);
+            --accent: #7aa2ff; --gold: #ffe9a8;
+            --btn: rgba(122, 162, 255, .25); --btn-border: rgba(122, 162, 255, .7);
+            --gfont: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+        }
+
+        body {
+            min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            font-family: var(--gfont); color: var(--ink);
+            background: linear-gradient(135deg, var(--bg1), var(--bg2) 45%, var(--bg3));
+            overflow: hidden; user-select: none; transition: background .4s;
+        }
+        body::before {
+            content: ""; position: fixed; inset: 0; z-index: 0;
+            background:
+                radial-gradient(600px 400px at 20% 15%, var(--glow1), transparent 65%),
+                radial-gradient(700px 500px at 85% 20%, var(--glow2), transparent 65%);
+            transition: background .4s;
+        }
+        .back {
+            position: fixed; top: 16px; left: 16px; z-index: 50;
+            padding: 8px 16px; font-size: 13px; letter-spacing: 1px;
+            color: var(--ink); text-decoration: none; cursor: pointer;
+            background: var(--panel); border: 1px solid var(--panel-border);
+            border-radius: 999px; backdrop-filter: blur(8px);
+            transition: .25s;
+        }
+        .back:hover { border-color: var(--accent); box-shadow: 0 0 14px var(--accent); }
+        .wrap { position: relative; z-index: 1; width: min(430px, 94vw); }
+        .head { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 14px; }
+        h1 {
+            font-size: 26px; letter-spacing: 4px; color: var(--ink);
+            text-shadow: 0 0 14px var(--accent); transition: color .4s, text-shadow .4s;
+        }
+        .scores { display: flex; gap: 10px; }
+        .score-box {
+            min-width: 76px; padding: 6px 10px; text-align: center; border-radius: 8px;
+            background: var(--panel); border: 1px solid var(--panel-border);
+            transition: .4s;
+        }
+        .score-box .label { font-size: 11px; color: var(--dim); letter-spacing: 1px; }
+        .score-box .val { font-size: 19px; font-weight: 700; color: var(--ink); }
+        .score-box.best .val { color: var(--gold); }
+        .board {
+            position: relative; padding: 10px; border-radius: 10px;
+            background: var(--panel); border: 1px solid var(--panel-border);
+            box-shadow: 0 0 30px var(--glow1); transition: .4s;
+        }
+        canvas { display: block; width: 100%; aspect-ratio: 1; border-radius: 6px; }
+        .overlay {
+            position: absolute; inset: 10px; z-index: 5; border-radius: 6px;
+            display: none; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
+            background: rgba(5, 8, 15, .85);
+        }
+        .overlay.show { display: flex; }
+        .overlay .big {
+            font-size: 28px; font-weight: 700; letter-spacing: 3px;
+            color: var(--ink); text-shadow: 0 0 12px var(--accent);
+        }
+        .overlay .sub { font-size: 14px; color: var(--dim); }
+        .btn {
+            padding: 10px 28px; font-size: 15px; letter-spacing: 2px; cursor: pointer;
+            color: var(--bg1); background: var(--accent); border: none;
+            border-radius: 8px; font-weight: 700; transition: .25s;
+        }
+        .btn:hover { box-shadow: 0 0 20px var(--accent); }
+        .theme-bar {
+            margin-top: 14px; display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;
+        }
+        .theme-bar button {
+            padding: 5px 13px; font-size: 12.5px; letter-spacing: 1px; cursor: pointer;
+            color: var(--dim); background: var(--panel);
+            border: 1px solid var(--panel-border); border-radius: 999px;
+            transition: .25s; font-family: inherit;
+        }
+        .theme-bar button:hover { color: var(--ink); border-color: var(--accent); }
+        .theme-bar button.cur {
+            color: var(--ink); border-color: var(--accent);
+            background: var(--btn); box-shadow: 0 0 10px var(--accent);
+        }
+        .pad {
+            margin-top: 14px; display: none; grid-template-columns: repeat(3, 64px);
+            grid-template-rows: repeat(2, 48px); gap: 8px; justify-content: center;
+        }
+        .pad button {
+            font-size: 20px; color: var(--ink); cursor: pointer; border-radius: 8px;
+            background: var(--panel); border: 1px solid var(--panel-border);
+        }
+        .pad button:active { background: var(--btn); }
+        .pad .up { grid-column: 2; }
+        .pad .left { grid-column: 1; grid-row: 2; }
+        .pad .down { grid-column: 2; grid-row: 2; }
+        .pad .right { grid-column: 3; grid-row: 2; }
+        .hint { margin-top: 12px; font-size: 12px; color: var(--dim); letter-spacing: 1px; text-align: center; }
+        @media (pointer: coarse) { .pad { display: grid; } }
+    </style>
+</head>
+<body data-theme="aurora">
+<a class="back" id="backBtn">← 返回主页</a>
+<div class="wrap">
+    <div class="head">
+        <h1>SNAKE</h1>
+        <div class="scores">
+            <div class="score-box"><div class="label">分数 SCORE</div><div class="val" id="score">0</div></div>
+            <div class="score-box best"><div class="label">最高 BEST</div><div class="val" id="best">0</div></div>
+        </div>
+    </div>
+    <div class="board">
+        <canvas id="cv" width="400" height="400"></canvas>
+        <div class="overlay" id="overlay">
+            <div class="big" id="ovTitle"></div>
+            <div class="sub" id="ovSub"></div>
+            <button class="btn" id="restart">重新开始</button>
+        </div>
+    </div>
+    <div class="theme-bar" id="themeBar">
+        <button data-theme="aurora">极光</button>
+        <button data-theme="cyberpunk">赛博</button>
+        <button data-theme="terminal">终端</button>
+        <button data-theme="classical">古风</button>
+        <button data-theme="starry">星空</button>
+    </div>
+    <div class="pad" id="pad">
+        <button class="up" data-dir="up">↑</button>
+        <button class="left" data-dir="left">←</button>
+        <button class="down" data-dir="down">↓</button>
+        <button class="right" data-dir="right">→</button>
+    </div>
+    <div class="hint">方向键 / WASD / 滑动控制 · 空格暂停 · 吃到食物变长加速 · ESC 返回</div>
+</div>
+<script>
+(function () {
+    'use strict';
+
+    /* ============ 主题 ============ */
+    var THEME_NAMES = ['aurora', 'cyberpunk', 'terminal', 'classical', 'starry'];
+    var CANVAS_THEMES = {
+        aurora:    { bg: 'rgba(10, 12, 30, .6)',   grid: 'rgba(124, 108, 255, .08)', food: '#ffd166', foodGlow: '#ffd166', head: '#eaf0ff', body: '#7c6cff' },
+        cyberpunk: { bg: 'rgba(4, 5, 15, .72)',    grid: 'rgba(0, 255, 247, .08)',   food: '#ff2bd6', foodGlow: '#ff2bd6', head: '#d8fbff', body: '#00fff7' },
+        terminal:  { bg: 'rgba(0, 0, 0, .6)',      grid: 'rgba(51, 255, 102, .07)',  food: '#ffcc33', foodGlow: '#ffcc33', head: '#eafff0', body: '#33ff66' },
+        classical: { bg: 'rgba(246, 241, 227, .92)', grid: 'rgba(51, 41, 31, .08)',   food: '#a8863d', foodGlow: '#a8863d', head: '#fdf6e3', body: '#a63a2b' },
+        starry:    { bg: 'rgba(8, 11, 32, .65)',   grid: 'rgba(122, 162, 255, .08)', food: '#ffe9a8', foodGlow: '#ffe9a8', head: '#eef2ff', body: '#7aa2ff' }
+    };
+    var theme = 'aurora';
+    try {
+      var savedTheme = localStorage.getItem('bxr_snake_theme');
+      if (savedTheme && THEME_NAMES.indexOf(savedTheme) !== -1) {
+        theme = savedTheme;
+      } else {
+        var homeSkin = localStorage.getItem('bxr_style');   /* 跟随主页皮肤 */
+        if (homeSkin && THEME_NAMES.indexOf(homeSkin) !== -1) { theme = homeSkin; }
+      }
+    } catch (e) {}
+    if (THEME_NAMES.indexOf(theme) === -1) { theme = 'aurora'; }
+    document.body.dataset.theme = theme;
+    var themeBtns = document.querySelectorAll('#themeBar button');
+    for (var tb = 0; tb < themeBtns.length; tb++) {
+        if (themeBtns[tb].dataset.theme === theme) { themeBtns[tb].classList.add('cur'); }
+        themeBtns[tb].addEventListener('click', function () {
+            theme = this.dataset.theme;
+            document.body.dataset.theme = theme;
+            for (var t2 = 0; t2 < themeBtns.length; t2++) { themeBtns[t2].classList.toggle('cur', themeBtns[t2] === this); }
+            try { localStorage.setItem('bxr_snake_theme', theme); } catch (e) {}
+            draw();
+        });
+    }
+
+    /* ============ 返回主页（保留主页当前风格） ============ */
+    (function () {
+        var back = document.getElementById('backBtn');
+        var style = 'default';
+        try { style = localStorage.getItem('bxr_style') || 'default'; } catch (e) {}
+        back.href = '../index.html?style=' + style;
+    })();
+
+    /* ============ 游戏 ============ */
+    var cv = document.getElementById('cv');
+    var ctx = cv.getContext('2d');
+    var GRID = 20, CELL = cv.width / GRID;
+    var snake, dir, nextDir, food, score, best = 0, paused = false, over = false, timer = null;
+    try { best = parseInt(localStorage.getItem('bxr_snake_best') || '0', 10) || 0; } catch (e) {}
+    var scoreEl = document.getElementById('score');
+    var bestEl = document.getElementById('best');
+    bestEl.textContent = best;
+
+    function spawnFood() {
+        var free = [];
+        for (var i = 0; i < GRID * GRID; i++) {
+            var hit = false;
+            for (var j = 0; j < snake.length; j++) {
+                if (snake[j].x + snake[j].y * GRID === i) { hit = true; break; }
+            }
+            if (!hit) { free.push(i); }
+        }
+        if (!free.length) { return false; }
+        var idx = free[(Math.random() * free.length) | 0];
+        food = { x: idx % GRID, y: (idx / GRID) | 0 };
+        return true;
+    }
+
+    function draw() {
+        var th = CANVAS_THEMES[theme];
+        ctx.fillStyle = th.bg;
+        ctx.fillRect(0, 0, cv.width, cv.height);
+        ctx.strokeStyle = th.grid;
+        ctx.lineWidth = 1;
+        for (var i = 1; i < GRID; i++) {
+            ctx.beginPath(); ctx.moveTo(i * CELL, 0); ctx.lineTo(i * CELL, cv.height); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(0, i * CELL); ctx.lineTo(cv.width, i * CELL); ctx.stroke();
+        }
+        /* 食物 */
+        ctx.fillStyle = th.food;
+        ctx.shadowColor = th.foodGlow; ctx.shadowBlur = 12;
+        ctx.beginPath();
+        ctx.arc(food.x * CELL + CELL / 2, food.y * CELL + CELL / 2, CELL * 0.32, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+        /* 蛇 */
+        for (var j = snake.length - 1; j >= 0; j--) {
+            var s = snake[j];
+            var t = j / snake.length;
+            ctx.fillStyle = j === 0 ? th.head : hexToRgba(th.body, 1 - t * 0.55);
+            if (j === 0) { ctx.shadowColor = th.body; ctx.shadowBlur = 10; }
+            var pad = CELL * 0.08;
+            ctx.fillRect(s.x * CELL + pad, s.y * CELL + pad, CELL - pad * 2, CELL - pad * 2);
+            ctx.shadowBlur = 0;
+        }
+    }
+
+    function hexToRgba(hex, alpha) {
+        var h = hex.replace('#', '');
+        var r = parseInt(h.slice(0, 2), 16), g = parseInt(h.slice(2, 4), 16), b = parseInt(h.slice(4, 6), 16);
+        return 'rgba(' + r + ',' + g + ',' + b + ',' + alpha + ')';
+    }
+
+    function tick() {
+        if (over || paused) { return; }
+        dir = nextDir;
+        var head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };
+        if (head.x < 0 || head.x >= GRID || head.y < 0 || head.y >= GRID) { return gameOver(false); }
+        for (var i = 0; i < snake.length - 1; i++) {
+            if (snake[i].x === head.x && snake[i].y === head.y) { return gameOver(false); }
+        }
+        snake.unshift(head);
+        if (head.x === food.x && head.y === food.y) {
+            score++;
+            scoreEl.textContent = score;
+            if (score > best) { best = score; bestEl.textContent = best; try { localStorage.setItem('bxr_snake_best', String(best)); } catch (e) {} }
+            if (!spawnFood()) { return gameOver(true); }
+            clearInterval(timer);
+            timer = setInterval(tick, Math.max(60, 140 - score * 4));
+        } else {
+            snake.pop();
+        }
+        draw();
+    }
+
+    function gameOver(full) {
+        over = true;
+        clearInterval(timer);
+        document.getElementById('ovTitle').textContent = full ? '棋盘已满！' : '游戏结束';
+        document.getElementById('ovSub').textContent = '最终得分 ' + score + (best === score && score > 0 ? ' · 新纪录！' : '');
+        document.getElementById('overlay').classList.add('show');
+        draw();
+    }
+
+    function newGame() {
+        snake = [{ x: 9, y: 10 }, { x: 8, y: 10 }, { x: 7, y: 10 }];
+        dir = { x: 1, y: 0 }; nextDir = { x: 1, y: 0 };
+        score = 0; paused = false; over = false;
+        scoreEl.textContent = 0;
+        document.getElementById('overlay').classList.remove('show');
+        spawnFood();
+        clearInterval(timer);
+        timer = setInterval(tick, 140);
+        draw();
+    }
+
+    function turn(dx, dy) {
+        if (over) { return; }
+        if (dx === -dir.x && dy === -dir.y) { return; }
+        nextDir = { x: dx, y: dy };
+    }
+
+    document.getElementById('restart').addEventListener('click', newGame);
+    document.getElementById('pad').addEventListener('click', function (e) {
+        var b = e.target.closest('button[data-dir]');
+        if (!b) { return; }
+        var m = { up: [0, -1], down: [0, 1], left: [-1, 0], right: [1, 0] };
+        turn(m[b.dataset.dir][0], m[b.dataset.dir][1]);
+    });
+
+    var touchX = 0, touchY = 0;
+    document.addEventListener('touchstart', function (e) {
+        touchX = e.touches[0].clientX; touchY = e.touches[0].clientY;
+    }, { passive: true });
+    document.addEventListener('touchend', function (e) {
+        var dx = e.changedTouches[0].clientX - touchX;
+        var dy = e.changedTouches[0].clientY - touchY;
+        if (Math.abs(dx) < 24 && Math.abs(dy) < 24) { return; }
+        if (Math.abs(dx) > Math.abs(dy)) { turn(dx > 0 ? 1 : -1, 0); } else { turn(0, dy > 0 ? 1 : -1); }
+    }, { passive: true });
+
+    document.addEventListener('keydown', function (e) {
+        var map = { ArrowUp: [0, -1], ArrowRight: [1, 0], ArrowDown: [0, 1], ArrowLeft: [-1, 0], w: [0, -1], d: [1, 0], s: [0, 1], a: [-1, 0], W: [0, -1], D: [1, 0], S: [0, 1], A: [-1, 0] };
+        if (map[e.key]) { e.preventDefault(); turn(map[e.key][0], map[e.key][1]); }
+        if (e.key === ' ' || e.key === 'Spacebar') {
+            e.preventDefault();
+            if (over) { return; }
+            paused = !paused;
+            if (!paused) { clearInterval(timer); timer = setInterval(tick, Math.max(60, 140 - score * 4)); }
+        }
+        if (e.key === 'Escape') { window.location.href = document.getElementById('backBtn').href; }
+    });
+
+    newGame();
+})();
+</script>
+</body>
+</html>

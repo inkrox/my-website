@@ -19,7 +19,9 @@ while ((node = walker.nextNode())) {
   if (!t || !CJK.test(t)) { continue; }
   let el = node.parentElement;
   if (!el) { continue; }
-  // 跳过隐藏元素（display:none 的 busuanzi 占位等）
+  /* 白名单：脚本/样式内容、UPDATES 历史记录面板（刻意保留中文原文） */
+  if (el.tagName === 'SCRIPT' || el.tagName === 'STYLE') { continue; }
+  if (el.closest('#updatesPanel')) { continue; }
   const path = [];
   let cur = el;
   while (cur && cur !== doc.body) {

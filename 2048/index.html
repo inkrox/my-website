@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>2048 · 数字合成</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        /* ============ 主题变量（默认极光） ============ */
+        body {
+            --bg1: #0f1023; --bg2: #1b1440; --bg3: #0b1e3f;
+            --glow1: rgba(124, 108, 255, .3); --glow2: rgba(34, 211, 238, .22); --glow3: rgba(244, 114, 182, .18);
+            --ink: #eef1ff; --dim: #aab3d6;
+            --panel: rgba(255, 255, 255, .06); --panel-border: rgba(255, 255, 255, .14);
+            --accent: #7c6cff; --accent2: #22d3ee; --gold: #ffd166;
+            --gfont: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+            --cell: rgba(255, 255, 255, .05); --cell-border: rgba(255, 255, 255, .08);
+            --t2: rgba(124, 108, 255, .25); --t4: rgba(124, 108, 255, .42);
+            --t8: rgba(34, 211, 238, .35); --t16: rgba(34, 211, 238, .55);
+            --t32: rgba(244, 114, 182, .45); --t64: rgba(244, 114, 182, .65);
+            --t128: rgba(255, 209, 102, .5); --t256: rgba(255, 209, 102, .7);
+            --t512: rgba(255, 159, 67, .72); --t1024: rgba(255, 94, 58, .78);
+            --t2048: rgba(255, 255, 255, .94);
+            --tlt: #eef1ff; --tdk: #0b0e24; --t2048c: #7c6cff;
+            --btn: rgba(124, 108, 255, .35); --btn-border: rgba(124, 108, 255, .7);
+        }
+        body[data-theme="cyberpunk"] {
+            --bg1: #04050f; --bg2: #0a0e22; --bg3: #05081a;
+            --glow1: rgba(0, 255, 247, .16); --glow2: rgba(255, 43, 214, .12); --glow3: rgba(255, 230, 0, .08);
+            --ink: #d8fbff; --dim: #79b8c2;
+            --panel: rgba(10, 14, 34, .72); --panel-border: rgba(0, 255, 247, .35);
+            --accent: #00fff7; --accent2: #ff2bd6; --gold: #ffe600;
+            --gfont: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+            --cell: rgba(0, 255, 247, .06); --cell-border: rgba(0, 255, 247, .18);
+            --t2: rgba(0, 255, 247, .22); --t4: rgba(0, 255, 247, .38);
+            --t8: rgba(255, 43, 214, .3); --t16: rgba(255, 43, 214, .5);
+            --t32: rgba(255, 230, 0, .35); --t64: rgba(255, 230, 0, .55);
+            --t128: rgba(0, 255, 247, .6); --t256: rgba(255, 43, 214, .65);
+            --t512: rgba(255, 230, 0, .7); --t1024: rgba(0, 255, 247, .85);
+            --t2048: rgba(255, 255, 255, .95);
+            --tlt: #06202a; --tdk: #04121a; --t2048c: #00fff7;
+            --btn: rgba(0, 255, 247, .15); --btn-border: rgba(0, 255, 247, .7);
+        }
+        body[data-theme="terminal"] {
+            --bg1: #050805; --bg2: #070d07; --bg3: #041005;
+            --glow1: rgba(51, 255, 102, .1); --glow2: rgba(51, 255, 102, .06); --glow3: rgba(255, 204, 51, .05);
+            --ink: #33ff66; --dim: #1f9e4a;
+            --panel: rgba(51, 255, 102, .05); --panel-border: rgba(51, 255, 102, .35);
+            --accent: #33ff66; --accent2: #ffcc33; --gold: #ffcc33;
+            --gfont: "Cascadia Mono", Consolas, "Courier New", "Microsoft YaHei", monospace;
+            --cell: rgba(51, 255, 102, .05); --cell-border: rgba(51, 255, 102, .16);
+            --t2: rgba(51, 255, 102, .16); --t4: rgba(51, 255, 102, .3);
+            --t8: rgba(51, 255, 102, .42); --t16: rgba(51, 255, 102, .55);
+            --t32: rgba(255, 204, 51, .3); --t64: rgba(255, 204, 51, .45);
+            --t128: rgba(51, 255, 102, .65); --t256: rgba(51, 255, 102, .78);
+            --t512: rgba(255, 204, 51, .6); --t1024: rgba(255, 204, 51, .75);
+            --t2048: rgba(255, 255, 255, .95);
+            --tlt: #03240c; --tdk: #03180a; --t2048c: #33ff66;
+            --btn: rgba(51, 255, 102, .12); --btn-border: rgba(51, 255, 102, .7);
+        }
+        body[data-theme="classical"] {
+            --bg1: #f6f1e3; --bg2: #efe7d3; --bg3: #faf6ec;
+            --glow1: rgba(166, 58, 43, .08); --glow2: rgba(168, 134, 61, .1); --glow3: rgba(176, 58, 46, .06);
+            --ink: #33291f; --dim: #6d5f4c;
+            --panel: rgba(255, 252, 242, .8); --panel-border: rgba(51, 41, 31, .3);
+            --accent: #a63a2b; --accent2: #a8863d; --gold: #a8863d;
+            --gfont: "STKaiti", "KaiTi", "楷体", "SimSun", serif;
+            --cell: rgba(51, 41, 31, .05); --cell-border: rgba(51, 41, 31, .14);
+            --t2: rgba(166, 58, 43, .14); --t4: rgba(166, 58, 43, .26);
+            --t8: rgba(168, 134, 61, .3); --t16: rgba(168, 134, 61, .45);
+            --t32: rgba(176, 58, 46, .4); --t64: rgba(176, 58, 46, .58);
+            --t128: rgba(166, 58, 43, .6); --t256: rgba(168, 134, 61, .62);
+            --t512: rgba(140, 90, 40, .72); --t1024: rgba(120, 70, 35, .82);
+            --t2048: rgba(166, 58, 43, .95);
+            --tlt: #fff8ec; --tdk: #3a2c18; --t2048c: #fff8ec;
+            --btn: rgba(166, 58, 43, .15); --btn-border: rgba(166, 58, 43, .7);
+        }
+        body[data-theme="starry"] {
+            --bg1: #060a1f; --bg2: #0b1233; --bg3: #0a0d24;
+            --glow1: rgba(90, 110, 255, .22); --glow2: rgba(150, 90, 255, .18); --glow3: rgba(255, 233, 168, .08);
+            --ink: #eef2ff; --dim: #a7b0d8;
+            --panel: rgba(255, 255, 255, .07); --panel-border: rgba(255, 255, 255, .18);
+            --accent: #7aa2ff; --accent2: #b48cff; --gold: #ffe9a8;
+            --gfont: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+            --cell: rgba(255, 255, 255, .05); --cell-border: rgba(255, 255, 255, .12);
+            --t2: rgba(122, 162, 255, .3); --t4: rgba(122, 162, 255, .48);
+            --t8: rgba(180, 140, 255, .4); --t16: rgba(180, 140, 255, .6);
+            --t32: rgba(255, 233, 168, .35); --t64: rgba(255, 233, 168, .55);
+            --t128: rgba(122, 162, 255, .65); --t256: rgba(180, 140, 255, .7);
+            --t512: rgba(255, 233, 168, .65); --t1024: rgba(255, 190, 120, .75);
+            --t2048: rgba(255, 255, 255, .95);
+            --tlt: #eef2ff; --tdk: #101433; --t2048c: #7aa2ff;
+            --btn: rgba(122, 162, 255, .25); --btn-border: rgba(122, 162, 255, .7);
+        }
+
+        body {
+            min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            font-family: var(--gfont); color: var(--ink);
+            background: linear-gradient(135deg, var(--bg1), var(--bg2) 45%, var(--bg3));
+            overflow: hidden; user-select: none;
+            transition: background .4s;
+        }
+        body::before {
+            content: ""; position: fixed; inset: 0; z-index: 0;
+            background:
+                radial-gradient(600px 400px at 15% 20%, var(--glow1), transparent 65%),
+                radial-gradient(700px 500px at 85% 15%, var(--glow2), transparent 65%),
+                radial-gradient(800px 600px at 50% 110%, var(--glow3), transparent 65%);
+            animation: drift 14s ease-in-out infinite alternate;
+            transition: background .4s;
+        }
+        @keyframes drift {
+            0% { transform: translate3d(-2%, -1%, 0) scale(1); }
+            100% { transform: translate3d(2%, 2%, 0) scale(1.08); }
+        }
+        .back {
+            position: fixed; top: 16px; left: 16px; z-index: 50;
+            padding: 8px 16px; font-size: 13px; letter-spacing: 1px;
+            color: var(--ink); text-decoration: none; cursor: pointer;
+            background: var(--panel); border: 1px solid var(--panel-border);
+            border-radius: 999px; backdrop-filter: blur(8px);
+            transition: .25s;
+        }
+        .back:hover { border-color: var(--accent); box-shadow: 0 0 14px var(--accent); }
+        .wrap { position: relative; z-index: 1; width: min(430px, 94vw); }
+        .head { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 14px; }
+        h1 {
+            font-size: 26px; letter-spacing: 2px; transition: color .4s;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text; background-clip: text; color: transparent;
+        }
+        .scores { display: flex; gap: 10px; }
+        .score-box {
+            min-width: 76px; padding: 6px 10px; text-align: center; border-radius: 10px;
+            background: var(--panel); border: 1px solid var(--panel-border);
+            backdrop-filter: blur(8px); transition: .4s;
+        }
+        .score-box .label { font-size: 11px; color: var(--dim); letter-spacing: 1px; }
+        .score-box .val { font-size: 19px; font-weight: 700; color: var(--ink); }
+        .score-box.best .val { color: var(--gold); }
+        .board {
+            position: relative; padding: 10px; border-radius: 14px;
+            background: var(--panel); border: 1px solid var(--panel-border);
+            backdrop-filter: blur(10px); box-shadow: 0 18px 50px rgba(0, 0, 0, .45);
+            transition: .4s;
+        }
+        .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+        .cell {
+            aspect-ratio: 1; border-radius: 10px;
+            background: var(--cell); border: 1px solid var(--cell-border);
+            transition: .4s;
+        }
+        .tile-layer { position: absolute; inset: 10px; z-index: 2; pointer-events: none; }
+        .tile {
+            position: absolute; top: 0; left: 0;
+            width: calc((100% - 30px) / 4); height: calc((100% - 30px) / 4);
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 10px; font-size: 34px; font-weight: 800;
+            transition: transform .13s ease, background .3s, color .3s, opacity .13s ease;
+            will-change: transform;
+        }
+        .tile[data-v="2"] { background: var(--t2); color: var(--tlt); }
+        .tile[data-v="4"] { background: var(--t4); color: var(--tlt); }
+        .tile[data-v="8"] { background: var(--t8); color: var(--tdk); }
+        .tile[data-v="16"] { background: var(--t16); color: var(--tdk); }
+        .tile[data-v="32"] { background: var(--t32); color: var(--tlt); }
+        .tile[data-v="64"] { background: var(--t64); color: var(--tlt); }
+        .tile[data-v="128"] { background: var(--t128); color: var(--tdk); font-size: 28px; }
+        .tile[data-v="256"] { background: var(--t256); color: var(--tdk); font-size: 28px; }
+        .tile[data-v="512"] { background: var(--t512); color: var(--tlt); font-size: 28px; }
+        .tile[data-v="1024"] { background: var(--t1024); color: var(--tlt); font-size: 26px; }
+        .tile[data-v="2048"] {
+            background: var(--t2048); color: var(--t2048c); font-size: 26px;
+            box-shadow: 0 0 26px var(--accent); animation: glowPulse 1.6s ease-in-out infinite;
+        }
+        @keyframes glowPulse {
+            0%, 100% { box-shadow: 0 0 16px var(--accent); }
+            50% { box-shadow: 0 0 34px var(--accent); }
+        }
+        .tile.pop { animation: pop .18s ease; }
+        .tile.new { animation: popIn .16s ease; }
+        .tile.gone { opacity: 0; }
+        @keyframes pop {
+            0% { transform: scale(1.28); }
+            100% { transform: scale(1); }
+        }
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .overlay {
+            position: absolute; inset: 0; z-index: 5; border-radius: 14px;
+            display: none; flex-direction: column; align-items: center; justify-content: center; gap: 14px;
+            background: rgba(10, 12, 30, .82); backdrop-filter: blur(6px);
+        }
+        .overlay.show { display: flex; }
+        .overlay .big { font-size: 30px; font-weight: 800; letter-spacing: 2px; color: var(--ink); }
+        .overlay .sub { font-size: 14px; color: var(--dim); }
+        .btn {
+            padding: 10px 28px; font-size: 15px; letter-spacing: 2px; color: var(--ink); cursor: pointer;
+            background: var(--btn); border: 1px solid var(--btn-border);
+            border-radius: 999px; transition: .25s;
+        }
+        .btn:hover { box-shadow: 0 0 18px var(--accent); }
+        .theme-bar {
+            margin-top: 14px; display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;
+        }
+        .theme-bar button {
+            padding: 5px 13px; font-size: 12.5px; letter-spacing: 1px; cursor: pointer;
+            color: var(--dim); background: var(--panel);
+            border: 1px solid var(--panel-border); border-radius: 999px;
+            transition: .25s; font-family: inherit;
+        }
+        .theme-bar button:hover { color: var(--ink); border-color: var(--accent); }
+        .theme-bar button.cur {
+            color: var(--ink); border-color: var(--accent);
+            background: var(--btn); box-shadow: 0 0 10px var(--accent);
+        }
+        .pad {
+            margin-top: 14px; display: none; grid-template-columns: repeat(3, 64px);
+            grid-template-rows: repeat(2, 48px); gap: 8px; justify-content: center;
+        }
+        .pad button {
+            font-size: 20px; color: var(--ink); cursor: pointer; border-radius: 10px;
+            background: var(--panel); border: 1px solid var(--panel-border);
+        }
+        .pad button:active { background: var(--btn); }
+        .pad .up { grid-column: 2; }
+        .pad .left { grid-column: 1; grid-row: 2; }
+        .pad .down { grid-column: 2; grid-row: 2; }
+        .pad .right { grid-column: 3; grid-row: 2; }
+        .hint { margin-top: 12px; font-size: 12px; color: var(--dim); letter-spacing: 1px; text-align: center; }
+        @media (pointer: coarse) { .pad { display: grid; } }
+    </style>
+</head>
+<body data-theme="aurora">
+<a class="back" id="backBtn">← 返回主页</a>
+<div class="wrap">
+    <div class="head">
+        <h1>2048</h1>
+        <div class="scores">
+            <div class="score-box"><div class="label">分数 SCORE</div><div class="val" id="score">0</div></div>
+            <div class="score-box best"><div class="label">最高 BEST</div><div class="val" id="best">0</div></div>
+        </div>
+    </div>
+    <div class="board">
+        <div class="grid" id="grid"></div>
+        <div class="tile-layer" id="tileLayer"></div>
+        <div class="overlay" id="overlay">
+            <div class="big" id="ovTitle"></div>
+            <div class="sub" id="ovSub"></div>
+            <button class="btn" id="restart">再来一局</button>
+        </div>
+    </div>
+    <div class="theme-bar" id="themeBar">
+        <button data-theme="aurora">极光</button>
+        <button data-theme="cyberpunk">赛博</button>
+        <button data-theme="terminal">终端</button>
+        <button data-theme="classical">古风</button>
+        <button data-theme="starry">星空</button>
+    </div>
+    <div class="pad" id="pad">
+        <button class="up" data-dir="up">↑</button>
+        <button class="left" data-dir="left">←</button>
+        <button class="down" data-dir="down">↓</button>
+        <button class="right" data-dir="right">→</button>
+    </div>
+    <div class="hint">方向键 / WASD / 滑动屏幕移动 · 相同数字相撞合并 · 合成 2048 即胜利 · ESC 返回</div>
+</div>
+<script>
+(function () {
+    'use strict';
+    var SIZE = 4;
+
+    /* ============ 主题 ============ */
+    var THEMES = ['aurora', 'cyberpunk', 'terminal', 'classical', 'starry'];
+    var THEME_NAMES = { aurora: '极光', cyberpunk: '赛博', terminal: '终端', classical: '古风', starry: '星空' };
+    var theme = 'aurora';
+    try {
+      var savedTheme = localStorage.getItem('bxr_2048_theme');
+      if (savedTheme && THEMES.indexOf(savedTheme) !== -1) {
+        theme = savedTheme;
+      } else {
+        var homeSkin = localStorage.getItem('bxr_style');   /* 跟随主页皮肤 */
+        if (homeSkin && THEMES.indexOf(homeSkin) !== -1) { theme = homeSkin; }
+      }
+    } catch (e) {}
+    if (THEMES.indexOf(theme) === -1) { theme = 'aurora'; }
+    document.body.dataset.theme = theme;
+    var themeBtns = document.querySelectorAll('#themeBar button');
+    for (var tb = 0; tb < themeBtns.length; tb++) {
+        if (themeBtns[tb].dataset.theme === theme) { themeBtns[tb].classList.add('cur'); }
+        themeBtns[tb].addEventListener('click', function () {
+            theme = this.dataset.theme;
+            document.body.dataset.theme = theme;
+            for (var t2 = 0; t2 < themeBtns.length; t2++) { themeBtns[t2].classList.toggle('cur', themeBtns[t2] === this); }
+            try { localStorage.setItem('bxr_2048_theme', theme); } catch (e) {}
+        });
+    }
+
+    /* ============ 返回主页（保留主页当前风格） ============ */
+    (function () {
+        var back = document.getElementById('backBtn');
+        var style = 'default';
+        try { style = localStorage.getItem('bxr_style') || 'default'; } catch (e) {}
+        back.href = '../index.html?style=' + style;
+    })();
+
+    /* ============ 游戏 ============ */
+    var grid = [], score = 0, over = false, won = false, best = 0;
+    try { best = parseInt(localStorage.getItem('bxr_2048_best') || '0', 10) || 0; } catch (e) {}
+    var gridEl = document.getElementById('grid');
+    var layer = document.getElementById('tileLayer');
+    var scoreEl = document.getElementById('score');
+    var bestEl = document.getElementById('best');
+    var overlay = document.getElementById('overlay');
+    var ovTitle = document.getElementById('ovTitle');
+    var ovSub = document.getElementById('ovSub');
+    bestEl.textContent = best;
+
+    for (var i = 0; i < SIZE * SIZE; i++) {
+        var c = document.createElement('div');
+        c.className = 'cell';
+        gridEl.appendChild(c);
+    }
+
+    var tiles = {};   /* id → { id, val, row, col, el } */
+    var nextId = 1;
+
+    function tilePos(row, col) {
+        return 'translate(calc(' + col + ' * (100% + 10px)), calc(' + row + ' * (100% + 10px)))';
+    }
+
+    function makeTile(val, row, col, cls) {
+        var el = document.createElement('div');
+        el.className = 'tile' + (cls ? ' ' + cls : '');
+        el.dataset.v = val;
+        el.textContent = val;
+        el.style.transform = tilePos(row, col);
+        layer.appendChild(el);
+        return el;
+    }
+
+    function newTile() {
+        var empty = [];
+        for (var i = 0; i < SIZE * SIZE; i++) { if (!grid[i]) { empty.push(i); } }
+        if (!empty.length) { return false; }
+        var idx = empty[(Math.random() * empty.length) | 0];
+        var val = Math.random() < 0.9 ? 2 : 4;
+        grid[idx] = val;
+        tiles[nextId] = { id: nextId, val: val, row: (idx / SIZE) | 0, col: idx % SIZE, el: makeTile(val, (idx / SIZE) | 0, idx % SIZE, 'new') };
+        nextId++;
+        return true;
+    }
+
+    function move(dir) {
+        /* dir: 0 上 1 右 2 下 3 左 */
+        var moved = false, gained = 0;
+        /* 处理顺序：按移动方向逐行/列 */
+        for (var line = 0; line < SIZE; line++) {
+            /* 提取该线上的 tile 顺序（从移动起点方向） */
+            var order = [];
+            for (var step = 0; step < SIZE; step++) {
+                var r, c;
+                if (dir === 0) { r = step; c = line; }
+                else if (dir === 1) { r = line; c = SIZE - 1 - step; }
+                else if (dir === 2) { r = SIZE - 1 - step; c = line; }
+                else { r = line; c = step; }
+                if (grid[r * SIZE + c]) {
+                    for (var id in tiles) {
+                        if (tiles[id].row === r && tiles[id].col === c) { order.push(tiles[id]); break; }
+                    }
+                }
+            }
+            /* 压缩 + 合并 */
+            var pos = 0;
+            for (var oi = 0; oi < order.length; oi++) {
+                var t = order[oi];
+                if (oi + 1 < order.length && order[oi + 1].val === t.val) {
+                    /* 合并：保留当前 tile，吃掉下一个 */
+                    var victim = order[oi + 1];
+                    var targetR, targetC;
+                    if (dir === 0) { targetR = pos; targetC = line; }
+                    else if (dir === 1) { targetR = line; targetC = SIZE - 1 - pos; }
+                    else if (dir === 2) { targetR = SIZE - 1 - pos; targetC = line; }
+                    else { targetR = line; targetC = pos; }
+                    var oldR = t.row, oldC = t.col;
+                    if (oldR !== targetR || oldC !== targetC) {
+                        moved = true;
+                        grid[oldR * SIZE + oldC] = 0;
+                    }
+                    t.row = targetR; t.col = targetC;
+                    t.val *= 2;
+                    gained += t.val;
+                    t.el.style.transform = tilePos(targetR, targetC);
+                    t.el.dataset.v = t.val;
+                    t.el.textContent = t.val;
+                    t.el.classList.remove('pop');
+                    void t.el.offsetWidth;
+                    t.el.classList.add('pop');
+                    /* 被吃掉的 tile 淡出移除 */
+                    victim.el.style.transform = tilePos(targetR, targetC);
+                    victim.el.classList.add('gone');
+                    (function (v) {
+                        setTimeout(function () { if (v.el.parentNode) { v.el.remove(); } }, 150);
+                    })(victim);
+                    delete tiles[victim.id];
+                    grid[victim.row * SIZE + victim.col] = 0;
+                    grid[targetR * SIZE + targetC] = t.val;
+                    moved = true;
+                    oi++;
+                    pos++;
+                } else {
+                    var tr, tc;
+                    if (dir === 0) { tr = pos; tc = line; }
+                    else if (dir === 1) { tr = line; tc = SIZE - 1 - pos; }
+                    else if (dir === 2) { tr = SIZE - 1 - pos; tc = line; }
+                    else { tr = line; tc = pos; }
+                    if (t.row !== tr || t.col !== tc) { moved = true; }
+                    if (grid[t.row * SIZE + t.col] !== grid[tr * SIZE + tc]) {
+                        grid[tr * SIZE + tc] = grid[t.row * SIZE + t.col];
+                        grid[t.row * SIZE + t.col] = 0;
+                    }
+                    t.row = tr; t.col = tc;
+                    t.el.style.transform = tilePos(tr, tc);
+                    pos++;
+                }
+            }
+        }
+        if (moved) {
+            score += gained;
+            scoreEl.textContent = score;
+            if (score > best) {
+                best = score; bestEl.textContent = best;
+                try { localStorage.setItem('bxr_2048_best', String(best)); } catch (e) {}
+            }
+            setTimeout(function () { newTile(); }, 130);
+            if (!won && has2048()) {
+                won = true;
+                setTimeout(function () { showOverlay('你合成 2048 了！', '太强了，可以继续挑战更高分数', '继续挑战'); }, 200);
+            } else if (!canMove()) {
+                setTimeout(function () { showOverlay('游戏结束', '最终得分 ' + score + '，点击再来一局', '再来一局'); }, 200);
+            }
+        }
+    }
+
+    function has2048() {
+        for (var id in tiles) { if (tiles[id].val >= 2048) { return true; } }
+        return false;
+    }
+
+    function canMove() {
+        for (var i = 0; i < SIZE * SIZE; i++) {
+            if (!grid[i]) { return true; }
+            if (i % SIZE < SIZE - 1 && grid[i] === grid[i + 1]) { return true; }
+            if (i < SIZE * (SIZE - 1) && grid[i] === grid[i + SIZE]) { return true; }
+        }
+        return false;
+    }
+
+    function showOverlay(title, sub, btnText) {
+        ovTitle.textContent = title;
+        ovSub.textContent = sub;
+        document.getElementById('restart').textContent = btnText;
+        overlay.classList.add('show');
+    }
+
+    function clearTiles() {
+        for (var id in tiles) {
+            if (tiles[id].el.parentNode) { tiles[id].el.remove(); }
+            delete tiles[id];
+        }
+    }
+
+    function newGame() {
+        grid = []; score = 0; over = false; won = false;
+        scoreEl.textContent = 0;
+        overlay.classList.remove('show');
+        clearTiles();
+        nextId = 1;
+        newTile(); newTile();
+    }
+
+    document.getElementById('restart').addEventListener('click', newGame);
+    document.getElementById('pad').addEventListener('click', function (e) {
+        var btn = e.target.closest('button[data-dir]');
+        if (btn) { move({ up: 0, right: 1, down: 2, left: 3 }[btn.dataset.dir]); }
+    });
+
+    var touchX = 0, touchY = 0;
+    document.addEventListener('touchstart', function (e) {
+        touchX = e.touches[0].clientX; touchY = e.touches[0].clientY;
+    }, { passive: true });
+    document.addEventListener('touchend', function (e) {
+        var dx = e.changedTouches[0].clientX - touchX;
+        var dy = e.changedTouches[0].clientY - touchY;
+        if (Math.abs(dx) < 24 && Math.abs(dy) < 24) { return; }
+        if (Math.abs(dx) > Math.abs(dy)) { move(dx > 0 ? 1 : 3); } else { move(dy > 0 ? 2 : 0); }
+    }, { passive: true });
+
+    document.addEventListener('keydown', function (e) {
+        var map = { ArrowUp: 0, ArrowRight: 1, ArrowDown: 2, ArrowLeft: 3, w: 0, d: 1, s: 2, a: 3, W: 0, D: 1, S: 2, A: 3 };
+        if (map[e.key] !== undefined) { e.preventDefault(); move(map[e.key]); }
+        if (e.key === 'Escape') { window.location.href = document.getElementById('backBtn').href; }
+    });
+
+    newGame();
+})();
+</script>
+</body>
+</html>

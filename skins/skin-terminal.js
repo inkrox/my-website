@@ -64,7 +64,7 @@
   var bootEl = document.getElementById('boot');
   var asciiEl = document.getElementById('asciiArt');
   var bootLines = [
-    '> BXR-OS v2.2.19 BOOTING ...',
+    '> BXR-OS v2.2.23 BOOTING ...',
     '> CPU: BRAIN(14y) 4 CORES ... OK',
     '> MEM: DREAMS 100% ... OK',
     '> LOADING PROFILE: BXR ... DONE',
@@ -159,6 +159,8 @@
     { k: 'space-museum', n: 'space-museum/', h: 'templates/loader-terminal.html?to=../space-museum/index.html', d: '航天馆' },
     { k: 'father-day', n: 'father-day/', h: 'templates/loader-terminal.html?to=../father-day/index.html', d: '父亲节' },
     { k: 'qa', n: 'qa/', h: 'templates/loader-terminal.html?to=../qa/index.html', d: 'QA 问答' },
+    { k: '2048', n: '2048/', h: 'templates/loader-terminal.html?to=../2048/index.html', d: '2048 数字合成' },
+    { k: 'snake', n: 'snake/', h: 'templates/loader-terminal.html?to=../snake/index.html', d: '贪吃蛇' },
     { k: 'download', n: 'download.html', h: 'templates/loader-terminal.html?to=../download.html', d: '保密下载' }
   ];
   function escTxt(s) {

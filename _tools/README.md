@@ -10,9 +10,11 @@
 npm i jsdom
 
 # 运行
-node audit-cjk.js      # 主页英文模式扫描中文残留（剩 14 处均为刻意保留：ICP 备案号/诗意元素）
+node audit-cjk.js      # 主页英文模式扫描中文残留（剩 12 处均为刻意保留：ICP 备案号/诗意元素；UPDATES 历史记录白名单）
 node audit-loaders.js  # 5 套加载页英文模式扫描（剩古风「少年行」「印」、星空「星野」为刻意保留）
-node test-i18n.js      # 终端皮肤 i18n 选择器实测（about/作品/链接/访客行/页脚）
+node test-i18n.js      # 终端皮肤 i18n 选择器实测（about/作品/链接/访客行/页脚，17 个作品）
+node test-features.js  # 新功能回归：作品卡片 17 个/双语、语录、搜索框、最高分标签、bxrRefresh
+node test-2048.js      # 2048 冒烟：主题切换记忆、300 步移动后无重叠/越界/非法值
 node check-qa-en.js    # QA 问答英文模式实测（题目/界面/选项是否英文）
 ```
 

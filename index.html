@@ -232,6 +232,51 @@ html.skin-cyberpunk #topBtn { border-radius: 6px; border-color: var(--accent); b
 html.skin-terminal #topBtn { border-radius: 0; font-family: var(--mono); background: #000; border-color: var(--accent); color: var(--accent); }
 html.skin-classical #topBtn { border-radius: 10px; background: #fdfaf0; border: 1.5px solid var(--accent); color: var(--accent); font-family: var(--kai); }
 html.skin-starry #topBtn { border-radius: 18px; background: rgba(255, 255, 255, .08); }
+/* ============ 最高分标签 + 搜索框 + 彩蛋 ============ */
+.bestTag {
+  display: inline-block; margin-left: 6px; padding: 1px 6px;
+  font-size: 10px; letter-spacing: .5px; color: #ffd166;
+  border: 1px solid rgba(255, 209, 102, .5); border-radius: 4px; vertical-align: 1px;
+  font-weight: 600; white-space: nowrap;
+}
+#searchModal {
+  position: fixed; inset: 0; z-index: 10000; display: none;
+  align-items: flex-start; justify-content: center; padding-top: 12vh;
+  background: rgba(5, 8, 20, .55); backdrop-filter: blur(6px);
+}
+#searchModal.show { display: flex; }
+.searchBox {
+  width: min(560px, 90vw); background: rgba(15, 18, 40, .95);
+  border: 1px solid rgba(255, 255, 255, .18); border-radius: 14px;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, .6); overflow: hidden;
+}
+#searchInput {
+  width: 100%; padding: 16px 20px; font-size: 16px; color: #eef1ff;
+  background: transparent; border: none; outline: none;
+  border-bottom: 1px solid rgba(255, 255, 255, .12);
+  font-family: inherit;
+}
+#searchInput::placeholder { color: rgba(238, 241, 255, .4); }
+.searchResults { max-height: 46vh; overflow-y: auto; padding: 8px; }
+.searchResult {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 12px; border-radius: 8px; cursor: pointer; font-size: 14px; color: #cdd6f4;
+}
+.searchResult:hover, .searchResult.cur { background: rgba(124, 108, 255, .25); }
+.searchResult .tag {
+  flex-shrink: 0; font-size: 11px; padding: 2px 7px; border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, .2); color: #aab3d6; letter-spacing: 1px;
+}
+.searchResult .snippet { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.searchResult em { color: #ffd166; font-style: normal; }
+.searchEmpty { padding: 18px; text-align: center; color: #aab3d6; font-size: 14px; }
+.searchHint {
+  padding: 10px 16px; font-size: 12px; color: #aab3d6;
+  border-top: 1px solid rgba(255, 255, 255, .12); letter-spacing: 1px;
+}
+html.skin-terminal .searchBox { border-radius: 0; font-family: var(--mono); }
+html.skin-terminal .searchResult:hover, html.skin-terminal .searchResult.cur { background: rgba(51, 255, 102, .2); }
+html.skin-classical .searchBox { border-radius: 10px; font-family: var(--kai); }
 /* ============ 中英切换按钮 ============ */
 #langBtn {
   position: fixed; right: 22px; bottom: 88px; top: auto; z-index: 999;
@@ -337,6 +382,14 @@ html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张�
 @keyframes cardIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }</style>
 </head>
 <body>
+<!-- ============ 站内搜索模态框 ============ -->
+<div id="searchModal">
+  <div class="searchBox">
+    <input id="searchInput" placeholder="搜索作品 / 更新日志… (Ctrl+K)" autocomplete="off" spellcheck="false">
+    <div class="searchResults" id="searchResults"></div>
+    <div class="searchHint" id="searchHint">↑↓ 选择 · Enter 打开 · ESC 关闭</div>
+  </div>
+</div>
 <!-- ============ 皮肤容器 1/5 极光 ============ -->
 <div class="skin-view" data-skin="default">
 <canvas id="bgCanvas"></canvas>
@@ -402,6 +455,8 @@ html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张�
       <a class="card" href="loader.html?to=space-museum/index.html"><span class="go">↗</span><div class="emoji">🚀</div><div class="name">航天馆</div><div class="desc">中国航天科普展馆</div></a>
       <a class="card" href="loader.html?to=father-day/index.html"><span class="go">↗</span><div class="emoji">👨‍👧</div><div class="name">父亲节</div><div class="desc">送给爸爸的节日贺卡</div></a>
       <a class="card" href="loader.html?to=qa/index.html"><span class="go">↗</span><div class="emoji">❓</div><div class="name">QA 问答</div><div class="desc">趣味知识问答小游戏</div></a>
+      <a class="card" href="loader.html?to=2048/index.html" data-best="2048"><span class="go">↗</span><div class="emoji">🔢</div><div class="name">2048 数字合成<span class="badge-new">NEW</span></div><div class="desc">滑动合成数字，挑战 2048</div></a>
+      <a class="card" href="loader.html?to=snake/index.html" data-best="snake"><span class="go">↗</span><div class="emoji">🐍</div><div class="name">贪吃蛇<span class="badge-new">NEW</span></div><div class="desc">经典贪吃蛇，越吃越快</div></a>
       <a class="card" href="loader.html?to=download.html"><span class="go">↗</span><div class="emoji">🔐</div><div class="name">保密下载</div><div class="desc">密码解密下载文件</div></a>
     </div>
   </section>
@@ -428,7 +483,7 @@ html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张�
   </section>
 </main>
 <footer class="reveal">
-  <div>© <span class="year"></span> BXR · Version v2.2.19.260826</div>
+  <div>© <span class="year"></span> BXR · Version v2.2.23.260826</div>
   <div><a href="https://icp.gov.moe/?keyword=20243331" target="_blank" rel="noopener">萌ICP备20243331号</a> · 访客 <span class="bz-uv">…</span> 人 · 总访问 <span class="bz-pv">…</span> 次 · <span class="visitor-city"></span></div>
   <div><a href="loader.html?to=changelog.html">📜 更新日志</a> · <a href="https://github.com/inkrox/my-website" target="_blank" rel="noopener">🐙 GitHub 仓库</a></div>
   <div style="font-size:11px;opacity:.6;">BGM: Kevin MacLeod (incompetech.com) · CC-BY 4.0</div>
@@ -505,7 +560,9 @@ html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张�
       <a class="card" href="templates/loader-cyberpunk.html?to=../space-museum/index.html"><span class="id">[12]</span><div class="emoji">🚀</div><div class="name">航天馆</div><div class="desc">航天科普展</div></a>
       <a class="card" href="templates/loader-cyberpunk.html?to=../father-day/index.html"><span class="id">[13]</span><div class="emoji">👨‍👧</div><div class="name">父亲节</div><div class="desc">节日贺卡</div></a>
       <a class="card" href="templates/loader-cyberpunk.html?to=../qa/index.html"><span class="id">[14]</span><div class="emoji">❓</div><div class="name">QA 问答</div><div class="desc">趣味问答游戏</div></a>
-      <a class="card" href="templates/loader-cyberpunk.html?to=../download.html"><span class="id">[15]</span><div class="emoji">🔐</div><div class="name">保密下载</div><div class="desc">密码解密下载</div></a>
+      <a class="card" href="templates/loader-cyberpunk.html?to=../2048/index.html" data-best="2048"><span class="id">[15]</span><div class="emoji">🔢</div><div class="name">2048 数字合成<span class="badge-new">NEW</span></div><div class="desc">数字合成游戏</div></a>
+      <a class="card" href="templates/loader-cyberpunk.html?to=../snake/index.html" data-best="snake"><span class="id">[16]</span><div class="emoji">🐍</div><div class="name">贪吃蛇<span class="badge-new">NEW</span></div><div class="desc">经典贪吃蛇</div></a>
+      <a class="card" href="templates/loader-cyberpunk.html?to=../download.html"><span class="id">[17]</span><div class="emoji">🔐</div><div class="name">保密下载</div><div class="desc">密码解密下载</div></a>
     </div>
   </section>
 
@@ -534,7 +591,7 @@ html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张�
 </main>
 
 <footer class="reveal">
-  <div>© <span class="year"></span> BXR_MAIN.EXE · VERSION v2.2.19.260826</div>
+  <div>© <span class="year"></span> BXR_MAIN.EXE · VERSION v2.2.23.260826</div>
   <div><a href="https://icp.gov.moe/?keyword=20243331" target="_blank" rel="noopener">萌ICP备20243331号</a> · 访客 <span class="bz-uv">…</span> 人 · 总访问 <span class="bz-pv">…</span> 次 · <span class="visitor-city"></span></div>
   <div><a href="templates/loader-cyberpunk.html?to=../changelog.html">📜 更新日志</a> · <a href="https://github.com/inkrox/my-website" target="_blank" rel="noopener">🐙 GitHub 仓库</a></div>
   <div style="font-size:11px;opacity:.6;">BGM: Kevin MacLeod (incompetech.com) · CC-BY 4.0</div>
@@ -563,7 +620,7 @@ html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张�
  | __ )   \ \/ /  |  _ \
  |  _ \    \  /   | |_) |
  | |_) |   /  \   |  _ <
- |____/   /_/\_\  |_| \_\   v2.2.19</pre>
+ |____/   /_/\_\  |_| \_\   v2.2.23</pre>
 
     <div class="line cta-line"><span class="prompt"><span class="user">bxr</span>@<span class="user">home</span>:<span class="path">~</span>$</span> <a class="cta" href="templates/loader-terminal.html?to=https://shoot.cralk.top/">./shoot.sh</a> <a class="cta ghost" href="templates/loader-terminal.html?to=../changelog.html">cat changelog.md</a></div>
     </div>
@@ -607,7 +664,9 @@ html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张�
       <a class="wline" href="templates/loader-terminal.html?to=../space-museum/index.html"><span class="idx">12</span><span class="nm">space-museum/</span><span class="ds">航天馆</span></a>
       <a class="wline" href="templates/loader-terminal.html?to=../father-day/index.html"><span class="idx">13</span><span class="nm">father-day/</span><span class="ds">父亲节</span></a>
       <a class="wline" href="templates/loader-terminal.html?to=../qa/index.html"><span class="idx">14</span><span class="nm">qa/</span><span class="ds">QA 问答</span></a>
-      <a class="wline" href="templates/loader-terminal.html?to=../download.html"><span class="idx">15</span><span class="nm">download.html</span><span class="ds">保密下载</span></a>
+      <a class="wline" href="templates/loader-terminal.html?to=../2048/index.html" data-best="2048"><span class="idx">15</span><span class="nm">2048/</span><span class="ds">2048 数字合成</span></a>
+      <a class="wline" href="templates/loader-terminal.html?to=../snake/index.html" data-best="snake"><span class="idx">16</span><span class="nm">snake/</span><span class="ds">贪吃蛇</span></a>
+      <a class="wline" href="templates/loader-terminal.html?to=../download.html"><span class="idx">17</span><span class="nm">download.html</span><span class="ds">保密下载</span></a>
     </div></div></div>
 
         <div class="tblk reveal"><div class="divider" id="term-links">───── 友链 ─────</div>
@@ -635,7 +694,7 @@ html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张�
   </div>
 
   <footer class="reveal">
-    <div>© <span class="year"></span> BXR · VERSION v2.2.19.260826 · <a href="https://icp.gov.moe/?keyword=20243331" target="_blank" rel="noopener">萌ICP备20243331号</a> · <a href="templates/loader-terminal.html?to=../changelog.html">📜 更新日志</a> · <a href="https://github.com/inkrox/my-website" target="_blank" rel="noopener">🐙 GitHub 仓库</a></div>
+    <div>© <span class="year"></span> BXR · VERSION v2.2.23.260826 · <a href="https://icp.gov.moe/?keyword=20243331" target="_blank" rel="noopener">萌ICP备20243331号</a> · <a href="templates/loader-terminal.html?to=../changelog.html">📜 更新日志</a> · <a href="https://github.com/inkrox/my-website" target="_blank" rel="noopener">🐙 GitHub 仓库</a></div>
     <div style="font-size:11px;opacity:.6;">BGM: Kevin MacLeod (incompetech.com) · CC-BY 4.0</div>
     <div style="margin-top:4px;letter-spacing:1px;">🧑‍💻 Made by <b>BXR</b> &amp; <a href="https://www.deepseek.com" target="_blank" rel="noopener">蓝色大肥鱼</a> 🐟</div>
   </footer>
@@ -698,7 +757,7 @@ html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张�
   </section>
 
   <section id="works-classical" class="reveal">
-    <h2 class="sec-title">小作陈列<span class="orn">· 凡十五品</span></h2>
+    <h2 class="sec-title">小作陈列<span class="orn">· 凡十七品</span></h2>
     <div class="grid">
       <a class="card" href="templates/loader-classical.html?to=https://shoot.cralk.top/"><span class="seal-tag">新作</span><div class="emoji">🎯</div><div class="name">射击游戏<span class="badge-new">NEW</span></div><div class="desc">shoot.cralk.top · 百步穿杨</div></a>
       <a class="card" href="templates/loader-classical.html?to=../code-rain/index.html"><div class="emoji">🌧️</div><div class="name">代码雨</div><div class="desc">字符如雨，落满屏</div></a>
@@ -714,6 +773,8 @@ html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张�
       <a class="card" href="templates/loader-classical.html?to=../space-museum/index.html"><div class="emoji">🚀</div><div class="name">航天馆</div><div class="desc">神舟问天，航天科普</div></a>
       <a class="card" href="templates/loader-classical.html?to=../father-day/index.html"><div class="emoji">👨‍👧</div><div class="name">父亲节</div><div class="desc">敬献严亲，以表孝心</div></a>
       <a class="card" href="templates/loader-classical.html?to=../qa/index.html"><div class="emoji">❓</div><div class="name">QA 问答</div><div class="desc">问答相趣，寓教于乐</div></a>
+      <a class="card" href="templates/loader-classical.html?to=../2048/index.html" data-best="2048"><div class="emoji">🔢</div><div class="name">2048 数字合成<span class="badge-new">NEW</span></div><div class="desc">数字相合，妙趣横生</div></a>
+      <a class="card" href="templates/loader-classical.html?to=../snake/index.html" data-best="snake"><div class="emoji">🐍</div><div class="name">贪吃蛇<span class="badge-new">NEW</span></div><div class="desc">灵蛇吞珠，渐长渐疾</div></a>
       <a class="card" href="templates/loader-classical.html?to=../download.html"><div class="emoji">🔐</div><div class="name">保密下载</div><div class="desc">密码开锁，方可取之</div></a>
     </div>
   </section>
@@ -744,7 +805,7 @@ html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张�
 </main>
 
 <footer class="reveal">
-  <div>© <span class="year"></span> BXR · Version v2.2.19.260826 · 访客 <span class="bz-uv">…</span> 人 · 总访问 <span class="bz-pv">…</span> 次 · <span class="visitor-city"></span></div>
+  <div>© <span class="year"></span> BXR · Version v2.2.23.260826 · 访客 <span class="bz-uv">…</span> 人 · 总访问 <span class="bz-pv">…</span> 次 · <span class="visitor-city"></span></div>
   <div><a href="https://icp.gov.moe/?keyword=20243331" target="_blank" rel="noopener">萌ICP备20243331号</a> · <a href="templates/loader-classical.html?to=../changelog.html">📜 更新日志</a> · <a href="https://github.com/inkrox/my-website" target="_blank" rel="noopener">🐙 GitHub 仓库</a></div>
   <div style="font-size:11px;opacity:.7;">BGM: Kevin MacLeod (incompetech.com) · CC-BY 4.0</div>
   <div style="margin-top:4px;letter-spacing:2px;">🧑‍💻 Made by <b>BXR</b> &amp; <a href="https://www.deepseek.com" target="_blank" rel="noopener">蓝色大肥鱼</a> 🐟</div>
@@ -819,6 +880,8 @@ html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张�
       <a class="card glass" href="templates/loader-starry.html?to=../space-museum/index.html"><span class="go">↗</span><div class="emoji">🚀</div><div class="name">航天馆</div><div class="desc">航天科普展</div></a>
       <a class="card glass" href="templates/loader-starry.html?to=../father-day/index.html"><span class="go">↗</span><div class="emoji">👨‍👧</div><div class="name">父亲节</div><div class="desc">节日贺卡</div></a>
       <a class="card glass" href="templates/loader-starry.html?to=../qa/index.html"><span class="go">↗</span><div class="emoji">❓</div><div class="name">QA 问答</div><div class="desc">趣味问答游戏</div></a>
+      <a class="card glass" href="templates/loader-starry.html?to=../2048/index.html" data-best="2048"><span class="go">↗</span><div class="emoji">🔢</div><div class="name">2048 数字合成<span class="badge-new">NEW</span></div><div class="desc">滑动合成 2048</div></a>
+      <a class="card glass" href="templates/loader-starry.html?to=../snake/index.html" data-best="snake"><span class="go">↗</span><div class="emoji">🐍</div><div class="name">贪吃蛇<span class="badge-new">NEW</span></div><div class="desc">经典贪吃蛇</div></a>
       <a class="card glass" href="templates/loader-starry.html?to=../download.html"><span class="go">↗</span><div class="emoji">🔐</div><div class="name">保密下载</div><div class="desc">密码解密下载</div></a>
     </div>
   </section>
@@ -848,7 +911,7 @@ html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张�
 </main>
 
 <footer class="reveal">
-  <div>© <span class="year"></span> BXR · Version v2.2.19.260826</div>
+  <div>© <span class="year"></span> BXR · Version v2.2.23.260826</div>
   <div><a href="https://icp.gov.moe/?keyword=20243331" target="_blank" rel="noopener">萌ICP备20243331号</a> · 访客 <span class="bz-uv">…</span> 人 · 总访问 <span class="bz-pv">…</span> 次 · <span class="visitor-city"></span></div>
   <div><a href="templates/loader-starry.html?to=../changelog.html">📜 更新日志</a> · <a href="https://github.com/inkrox/my-website" target="_blank" rel="noopener">🐙 GitHub 仓库</a></div>
   <div style="font-size:11px;opacity:.6;">BGM: Kevin MacLeod (incompetech.com) · CC-BY 4.0</div>
@@ -1066,9 +1129,20 @@ html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张�
     } else if (e.key === 'Escape') {
       if (updatesPanel) { updatesPanel.classList.remove('show'); }
       if (player) { player.classList.remove('show'); }
+      closeSearch();
     } else if (e.key === ' ' || e.code === 'Space') {
       e.preventDefault();
       btn.click();
+    } else if (e.key >= '1' && e.key <= '5') {
+      applySkin(SKIN_LIST[+e.key - 1]);
+    } else if (e.key === 'm' || e.key === 'M') {
+      btn.click();
+    } else if (e.key === 'l' || e.key === 'L') {
+      var lb = document.getElementById('langBtn');
+      if (lb) { lb.click(); }
+    } else if ((e.ctrlKey || e.metaKey) && (e.key === 'k' || e.key === 'K')) {
+      e.preventDefault();
+      openSearch();
     }
   });
   applySkin(currentSkin);
@@ -1446,7 +1520,7 @@ html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张�
 
   /* ============ 访客城市（ipwho.is） ============ */
   var locEls = document.querySelectorAll('.visitor-city');
-  if (locEls.length) {
+  if (locEls.length && typeof fetch === 'function') {
     fetch('https://ipwho.is/')
       .then(function (r) { return r.json(); })
       .then(function (d) {
@@ -1466,6 +1540,10 @@ html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张�
 
   /* ============ 最近更新窗口 ============ */
   var UPDATES = [
+    { d: '08-26', t: '版本升级 v2.2.23.260826 · 游戏默认跟随主页皮肤 · 字体与主页/加载页一致', f: '2048/ · snake/ · changelog.html · changelog-en.html', s: 'all' },
+    { d: '08-26', t: '版本升级 v2.2.22.260826 · 移除随机语录与科乐美彩蛋', f: 'index.html · changelog.html · changelog-en.html', s: 'all' },
+    { d: '08-26', t: '版本升级 v2.2.21.260826 · 小游戏 5 套主题 · 返回按钮 · 2048 丝滑动画 · 流星雨点击许愿', f: '2048/ · snake/ · meteor-shower/ · .gitignore · changelog.html · changelog-en.html', s: 'all' },
+    { d: '08-26', t: '版本升级 v2.2.20.260826 · 新增 2048/贪吃蛇 · 随机语录 · 科乐美彩蛋 · Ctrl+K 搜索 · 快捷键', f: '2048/ · snake/ · index.html · changelog.html · changelog-en.html', s: 'all' },
     { d: '08-26', t: '版本升级 v2.2.19.260826 · 悬浮按钮字体颜色统一（浅底保留）', f: 'index.html · changelog.html · changelog-en.html', s: 'all' },
     { d: '08-26', t: '版本升级 v2.2.18.260826 · 回顶部与 EN 间距统一 14px', f: 'index.html · changelog.html · changelog-en.html', s: 'all' },
     { d: '08-26', t: '版本升级 v2.2.17.260826 · EN 与回顶部互换位置 · EN 改扁', f: 'index.html · changelog.html · changelog-en.html', s: 'all' },
@@ -1540,11 +1618,178 @@ html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张�
     }
   });
 
+  /* ============ 游戏最高分标签（2048 / 贪吃蛇） ============ */
+  function paintBests() {
+    var bests = {};
+    try {
+      bests['2048'] = parseInt(localStorage.getItem('bxr_2048_best') || '0', 10) || 0;
+      bests.snake = parseInt(localStorage.getItem('bxr_snake_best') || '0', 10) || 0;
+    } catch (e) {}
+    var cards = document.querySelectorAll('[data-best]');
+    for (var bi = 0; bi < cards.length; bi++) {
+      var key = cards[bi].getAttribute('data-best');
+      var v = bests[key] || 0;
+      var oldTag = cards[bi].querySelector('.bestTag');
+      if (oldTag) { oldTag.remove(); }
+      if (!v) { continue; }
+      var tag = document.createElement('span');
+      tag.className = 'bestTag';
+      tag.textContent = (window.bxrLang === 'en' ? 'Best ' : '最佳 ') + v;
+      cards[bi].appendChild(tag);
+    }
+  }
+
+  /* ============ 站内搜索（Ctrl+K） ============ */
+  var WORKS = [
+    { zh: '射击游戏', en: 'Shooting Game', url: 'https://shoot.cralk.top/' },
+    { zh: '代码雨', en: 'Code Rain', url: 'code-rain/index.html' },
+    { zh: '罗盘时钟', en: 'Compass Clock', url: 'compass-clock/index.html' },
+    { zh: '光圈', en: 'Aperture', url: 'aperture/index.html' },
+    { zh: '流星雨', en: 'Meteor Shower', url: 'meteor-shower/index.html' },
+    { zh: '烟花', en: 'Fireworks', url: 'firework/index.html' },
+    { zh: '3D 烟花', en: '3D Fireworks', url: '3d-firework/index.html' },
+    { zh: '可点击烟花', en: 'Click Fireworks', url: 'click-firework/index.html' },
+    { zh: '粒子时钟', en: 'Pixel Clock', url: 'canvas-pixel-clock/index.html' },
+    { zh: '科技圆表', en: 'Tech Watch', url: 'circle-clock/index.html' },
+    { zh: '计时器', en: 'Timer', url: 'timer/index.html' },
+    { zh: '航天馆', en: 'Space Museum', url: 'space-museum/index.html' },
+    { zh: '父亲节', en: "Father's Day", url: 'father-day/index.html' },
+    { zh: 'QA 问答', en: 'QA Quiz', url: 'qa/index.html' },
+    { zh: '2048 数字合成', en: '2048', url: '2048/index.html' },
+    { zh: '贪吃蛇', en: 'Snake', url: 'snake/index.html' },
+    { zh: '保密下载', en: 'Secret Downloads', url: 'download.html' }
+  ];
+  function searchUrl(path) {
+    if (/^https?:/.test(path)) { return path; }
+    if (path === 'download.html') { return path; }
+    if (currentSkin === 'default') { return 'loader.html?to=' + path; }
+    return 'templates/loader-' + currentSkin + '.html?to=../' + path;
+  }
+  var changelogText = null;
+  function getChangelogText(cb) {
+    if (changelogText !== null) { cb(changelogText); return; }
+    if (typeof fetch !== 'function') { cb(''); return; }
+    fetch('changelog.html')
+      .then(function (r) { return r.text(); })
+      .then(function (t) {
+        var div = document.createElement('div');
+        div.innerHTML = t;
+        changelogText = (div.textContent || '').replace(/\s+/g, ' ').trim();
+        cb(changelogText);
+      })
+      .catch(function () { cb(''); });
+  }
+  var searchModal = document.getElementById('searchModal');
+  var searchInput = document.getElementById('searchInput');
+  var searchResults = document.getElementById('searchResults');
+  var _searchItems = [];
+  var searchSel = -1;
+  function openSearch() {
+    if (!searchModal) { return; }
+    searchModal.classList.add('show');
+    searchInput.value = '';
+    searchResults.innerHTML = '';
+    _searchItems = [];
+    searchSel = -1;
+    setTimeout(function () { searchInput.focus(); }, 30);
+  }
+  function closeSearch() {
+    if (searchModal) { searchModal.classList.remove('show'); }
+  }
+  function escHTML(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+  function highlight(text, q) {
+    var idx = text.toLowerCase().indexOf(q.toLowerCase());
+    if (idx < 0) { return escHTML(text); }
+    return escHTML(text.slice(0, idx)) + '<em>' + escHTML(text.slice(idx, idx + q.length)) + '</em>' + escHTML(text.slice(idx + q.length));
+  }
+  function finishSearch(items) {
+    searchSel = -1;
+    var box = searchResults;
+    var isEN = window.bxrLang === 'en';
+    if (!items.length) {
+      box.innerHTML = '<div class="searchEmpty">' + (isEN ? 'No results found' : '没有找到相关内容') + '</div>';
+      return;
+    }
+    box.innerHTML = '';
+    _searchItems = items;
+    items.forEach(function (it, idx) {
+      var d = document.createElement('div');
+      d.className = 'searchResult';
+      d.innerHTML = it.html;
+      d.addEventListener('click', function () { window.location.href = it.url; });
+      d.addEventListener('mouseenter', function () { setSearchCur(idx); });
+      box.appendChild(d);
+    });
+  }
+  function setSearchCur(idx) {
+    searchSel = idx;
+    var rs = searchResults.querySelectorAll('.searchResult');
+    for (var si = 0; si < rs.length; si++) { rs[si].classList.toggle('cur', si === idx); }
+    if (rs[idx] && rs[idx].scrollIntoView) { rs[idx].scrollIntoView({ block: 'nearest' }); }
+  }
+  function renderSearch() {
+    var q = searchInput.value.trim();
+    var isEN = window.bxrLang === 'en';
+    if (!q) {
+      searchResults.innerHTML = '<div class="searchEmpty">' + (isEN ? 'Type to search…' : '输入关键词开始搜索…') + '</div>';
+      _searchItems = [];
+      searchSel = -1;
+      return;
+    }
+    var items = [];
+    WORKS.forEach(function (w) {
+      var name = isEN ? w.en : w.zh;
+      if (name.toLowerCase().indexOf(q.toLowerCase()) >= 0) {
+        items.push({ html: '<span class="tag">' + (isEN ? 'WORK' : '作品') + '</span><span class="snippet">' + highlight(name, q) + '</span>', url: searchUrl(w.url) });
+      }
+    });
+    getChangelogText(function (txt) {
+      if (txt) {
+        var ql = q.toLowerCase(), pos = 0, hits = 0;
+        while (hits < 5) {
+          pos = txt.toLowerCase().indexOf(ql, pos);
+          if (pos < 0) { break; }
+          var start = Math.max(0, pos - 28);
+          var snip = (start > 0 ? '…' : '') + txt.slice(start, pos + q.length + 28) + '…';
+          items.push({ html: '<span class="tag">' + (isEN ? 'LOG' : '日志') + '</span><span class="snippet">' + highlight(snip, q) + '</span>', url: searchUrl('changelog.html') });
+          pos += q.length;
+          hits++;
+        }
+      }
+      finishSearch(items);
+    });
+  }
+  if (searchInput) {
+    searchInput.addEventListener('input', renderSearch);
+    searchInput.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowDown') { e.preventDefault(); setSearchCur(Math.min(searchSel + 1, _searchItems.length - 1)); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); setSearchCur(Math.max(searchSel - 1, 0)); }
+      else if (e.key === 'Enter') {
+        e.preventDefault();
+        if (searchSel >= 0 && _searchItems[searchSel]) { window.location.href = _searchItems[searchSel].url; }
+        else if (_searchItems.length === 1) { window.location.href = _searchItems[0].url; }
+      }
+    });
+  }
+  if (searchModal) {
+    searchModal.addEventListener('click', function (e) {
+      if (e.target === searchModal) { closeSearch(); }
+    });
+  }
+
+  /* 语言切换后刷新动态内容（i18n applyLang 末尾调用） */
+  window.bxrRefresh = paintBests;
+
+  /* 初始渲染 */
+  paintBests();
+
   /* ============ 首次访问：快捷键提示 ============ */
   try {
     if (!localStorage.getItem('bxr_hint')) {
       localStorage.setItem('bxr_hint', '1');
-      setTimeout(function () { showToast(window.bxrLang === 'en' ? '🎹 ← → skins · Space music · ESC close' : '🎹 ← → 换皮肤 · Space 音乐 · ESC 关闭', 3800); }, 2200);
+      setTimeout(function () { showToast(window.bxrLang === 'en' ? '🎹 1-5 / ←→ skins · M music · L language · Ctrl+K search' : '🎹 1-5 / ←→ 换皮肤 · M 音乐 · L 语言 · Ctrl+K 搜索', 4200); }, 2200);
     }
   } catch (e) {}
 
@@ -1564,6 +1809,8 @@ html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张�
     ['#updAllLink', 'All →'],
     ['.updates-filter button[data-f="all"]', 'All'],
     ['#musicTip', 'Background Music'],
+    ['#searchInput', 'placeholder', 'Search works & changelog… (Ctrl+K)'],
+    ['#searchHint', '↑↓ select · Enter open · ESC close'],
     ['#playerSong', '♪ Not playing'],
     /* ---- 导航 ---- */
     ['.skin-view[data-skin="default"] header nav a[href="#about-default"]', 'About'],
@@ -1621,7 +1868,9 @@ html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张�
     ['.skin-view[data-skin="default"] #works-default .grid .card:nth-of-type(12)', '<span class="go">↗</span><div class="emoji">🚀</div><div class="name">Space Museum</div><div class="desc">China space program gallery</div>'],
     ['.skin-view[data-skin="default"] #works-default .grid .card:nth-of-type(13)', '<span class="go">↗</span><div class="emoji">👨‍👧</div><div class="name">Father\'s Day</div><div class="desc">A greeting card for Dad</div>'],
     ['.skin-view[data-skin="default"] #works-default .grid .card:nth-of-type(14)', '<span class="go">↗</span><div class="emoji">❓</div><div class="name">QA Quiz</div><div class="desc">Fun trivia quiz game</div>'],
-    ['.skin-view[data-skin="default"] #works-default .grid .card:nth-of-type(15)', '<span class="go">↗</span><div class="emoji">🔐</div><div class="name">Secret Downloads</div><div class="desc">Password-protected files</div>'],
+    ['.skin-view[data-skin="default"] #works-default .grid .card:nth-of-type(15)', '<span class="go">↗</span><div class="emoji">🔢</div><div class="name">2048</div><div class="desc">Merge tiles to reach 2048</div>'],
+    ['.skin-view[data-skin="default"] #works-default .grid .card:nth-of-type(16)', '<span class="go">↗</span><div class="emoji">🐍</div><div class="name">Snake</div><div class="desc">Classic snake game</div>'],
+    ['.skin-view[data-skin="default"] #works-default .grid .card:nth-of-type(17)', '<span class="go">↗</span><div class="emoji">🔐</div><div class="name">Secret Downloads</div><div class="desc">Password-protected files</div>'],
     /* ---- 极光友链 ---- */
     ['.skin-view[data-skin="default"] #links-default .sec-title', '🔗 Links'],
     ['.skin-view[data-skin="default"] #links-default .card:nth-of-type(1) .desc', 'My GitHub profile'],
@@ -1660,7 +1909,9 @@ html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张�
     ['.skin-view[data-skin="cyberpunk"] #works-cyberpunk .grid .card:nth-of-type(12)', '<span class="id">[12]</span><div class="emoji">🚀</div><div class="name">Space Museum</div><div class="desc">Space gallery</div>'],
     ['.skin-view[data-skin="cyberpunk"] #works-cyberpunk .grid .card:nth-of-type(13)', '<span class="id">[13]</span><div class="emoji">👨‍👧</div><div class="name">Father\'s Day</div><div class="desc">Card for Dad</div>'],
     ['.skin-view[data-skin="cyberpunk"] #works-cyberpunk .grid .card:nth-of-type(14)', '<span class="id">[14]</span><div class="emoji">❓</div><div class="name">QA Quiz</div><div class="desc">Trivia game</div>'],
-    ['.skin-view[data-skin="cyberpunk"] #works-cyberpunk .grid .card:nth-of-type(15)', '<span class="id">[15]</span><div class="emoji">🔐</div><div class="name">Secret Downloads</div><div class="desc">Password required</div>'],
+    ['.skin-view[data-skin="cyberpunk"] #works-cyberpunk .grid .card:nth-of-type(15)', '<span class="id">[15]</span><div class="emoji">🔢</div><div class="name">2048</div><div class="desc">Number merging game</div>'],
+    ['.skin-view[data-skin="cyberpunk"] #works-cyberpunk .grid .card:nth-of-type(16)', '<span class="id">[16]</span><div class="emoji">🐍</div><div class="name">Snake</div><div class="desc">Classic snake</div>'],
+    ['.skin-view[data-skin="cyberpunk"] #works-cyberpunk .grid .card:nth-of-type(17)', '<span class="id">[17]</span><div class="emoji">🔐</div><div class="name">Secret Downloads</div><div class="desc">Password required</div>'],
     ['.skin-view[data-skin="cyberpunk"] #links-cyberpunk .sec-title', 'Links'],
     ['.skin-view[data-skin="cyberpunk"] #links-cyberpunk .card:nth-of-type(1) .desc', 'My GitHub profile'],
     ['.skin-view[data-skin="cyberpunk"] #links-cyberpunk .card:nth-of-type(2) .desc', 'Source code of this site'],
@@ -1697,7 +1948,9 @@ html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张�
     ['.skin-view[data-skin="terminal"] #term-works ~ .cmd-out .wline:nth-of-type(12) .ds', 'Space Museum'],
     ['.skin-view[data-skin="terminal"] #term-works ~ .cmd-out .wline:nth-of-type(13) .ds', 'Father\'s Day'],
     ['.skin-view[data-skin="terminal"] #term-works ~ .cmd-out .wline:nth-of-type(14) .ds', 'QA Quiz'],
-    ['.skin-view[data-skin="terminal"] #term-works ~ .cmd-out .wline:nth-of-type(15) .ds', 'Secret Downloads'],
+    ['.skin-view[data-skin="terminal"] #term-works ~ .cmd-out .wline:nth-of-type(15) .ds', '2048'],
+    ['.skin-view[data-skin="terminal"] #term-works ~ .cmd-out .wline:nth-of-type(16) .ds', 'Snake'],
+    ['.skin-view[data-skin="terminal"] #term-works ~ .cmd-out .wline:nth-of-type(17) .ds', 'Secret Downloads'],
     ['#term-links ~ .cmd-out .line:nth-of-type(2)', '📦 Source Code — <a href="https://github.com/inkrox/my-website/" target="_blank" rel="noopener">https://github.com/inkrox/my-website/</a>'],
     ['#term-links ~ .cmd-out .line:nth-of-type(3)', '📧 Email — <a href="mailto:inkrox@outlook.com">inkrox@outlook.com</a> · <a href="mailto:root@cralk.top">root@cralk.top</a>'],
     ['#term-links ~ .cmd-out .line:nth-of-type(4)', '💬 Zhihu — <a href="https://www.zhihu.com/people/9wbhos" target="_blank" rel="noopener">https://www.zhihu.com/people/9wbhos</a>'],
@@ -1723,7 +1976,7 @@ html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张�
     ['.skin-view[data-skin="classical"] #about-classical .info-item:nth-of-type(5) .k', 'ID'],
     ['.skin-view[data-skin="classical"] #about-classical .info-item:nth-of-type(6) .k', 'Age'],
     ['.skin-view[data-skin="classical"] #about-classical .info-item:nth-of-type(6) .v', '14'],
-    ['.skin-view[data-skin="classical"] #works-classical .sec-title', 'My Works<span class="orn"> · 15 Works</span>'],
+    ['.skin-view[data-skin="classical"] #works-classical .sec-title', 'My Works<span class="orn"> · 17 Works</span>'],
     ['.skin-view[data-skin="classical"] #works-classical .grid .card:nth-of-type(1)', '<span class="seal-tag">New</span><div class="emoji">🎯</div><div class="name">Shooting Game<span class="badge-new">NEW</span></div><div class="desc">shoot.cralk.top</div>'],
     ['.skin-view[data-skin="classical"] #works-classical .grid .card:nth-of-type(2)', '<div class="emoji">🌧️</div><div class="name">Code Rain</div><div class="desc">Rain of characters</div>'],
     ['.skin-view[data-skin="classical"] #works-classical .grid .card:nth-of-type(3)', '<div class="emoji">🧭</div><div class="name">Compass Clock</div><div class="desc">Ancient compass, telling time</div>'],
@@ -1738,7 +1991,9 @@ html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张�
     ['.skin-view[data-skin="classical"] #works-classical .grid .card:nth-of-type(12)', '<div class="emoji">🚀</div><div class="name">Space Museum</div><div class="desc">China\'s journey to space</div>'],
     ['.skin-view[data-skin="classical"] #works-classical .grid .card:nth-of-type(13)', '<div class="emoji">👨‍👧</div><div class="name">Father\'s Day</div><div class="desc">For Dad, with love</div>'],
     ['.skin-view[data-skin="classical"] #works-classical .grid .card:nth-of-type(14)', '<div class="emoji">❓</div><div class="name">QA Quiz</div><div class="desc">Questions and laughter</div>'],
-    ['.skin-view[data-skin="classical"] #works-classical .grid .card:nth-of-type(15)', '<div class="emoji">🔐</div><div class="name">Secret Downloads</div><div class="desc">Open with a password</div>'],
+    ['.skin-view[data-skin="classical"] #works-classical .grid .card:nth-of-type(15)', '<div class="emoji">🔢</div><div class="name">2048</div><div class="desc">Merge and multiply</div>'],
+    ['.skin-view[data-skin="classical"] #works-classical .grid .card:nth-of-type(16)', '<div class="emoji">🐍</div><div class="name">Snake</div><div class="desc">A growing serpent</div>'],
+    ['.skin-view[data-skin="classical"] #works-classical .grid .card:nth-of-type(17)', '<div class="emoji">🔐</div><div class="name">Secret Downloads</div><div class="desc">Open with a password</div>'],
     ['.skin-view[data-skin="classical"] #links-classical .sec-title', 'Links'],
     ['.skin-view[data-skin="classical"] #links-classical .card:nth-of-type(1) .desc', 'GitHub profile'],
     ['.skin-view[data-skin="classical"] #links-classical .card:nth-of-type(2) .desc', 'Site source code'],
@@ -1788,7 +2043,9 @@ html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张�
     ['.skin-view[data-skin="starry"] #works-starry .grid .card:nth-of-type(12)', '<span class="go">↗</span><div class="emoji">🚀</div><div class="name">Space Museum</div><div class="desc">Space gallery</div>'],
     ['.skin-view[data-skin="starry"] #works-starry .grid .card:nth-of-type(13)', '<span class="go">↗</span><div class="emoji">👨‍👧</div><div class="name">Father\'s Day</div><div class="desc">Card for Dad</div>'],
     ['.skin-view[data-skin="starry"] #works-starry .grid .card:nth-of-type(14)', '<span class="go">↗</span><div class="emoji">❓</div><div class="name">QA Quiz</div><div class="desc">Trivia game</div>'],
-    ['.skin-view[data-skin="starry"] #works-starry .grid .card:nth-of-type(15)', '<span class="go">↗</span><div class="emoji">🔐</div><div class="name">Secret Downloads</div><div class="desc">Password protected</div>'],
+    ['.skin-view[data-skin="starry"] #works-starry .grid .card:nth-of-type(15)', '<span class="go">↗</span><div class="emoji">🔢</div><div class="name">2048</div><div class="desc">Merge tiles to 2048</div>'],
+    ['.skin-view[data-skin="starry"] #works-starry .grid .card:nth-of-type(16)', '<span class="go">↗</span><div class="emoji">🐍</div><div class="name">Snake</div><div class="desc">Classic snake</div>'],
+    ['.skin-view[data-skin="starry"] #works-starry .grid .card:nth-of-type(17)', '<span class="go">↗</span><div class="emoji">🔐</div><div class="name">Secret Downloads</div><div class="desc">Password protected</div>'],
     ['.skin-view[data-skin="starry"] #links-starry .sec-title', '🔗 Links'],
     ['.skin-view[data-skin="starry"] #links-starry .card:nth-of-type(1) .desc', 'My GitHub profile'],
     ['.skin-view[data-skin="starry"] #links-starry .card:nth-of-type(2) .desc', 'Source code of this site'],
@@ -1803,11 +2060,11 @@ html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张�
     /* ---- 皮肤切换按钮（5 套容器 × 5 个按钮） ---- */
     ['#langBtn', 'EN'],
     /* ---- 页脚（5 套） ---- */
-    ['.skin-view[data-skin="default"] footer', '<div>© <span class="year"></span> BXR · Version v2.2.19.260826</div><div><a href="https://icp.gov.moe/?keyword=20243331" target="_blank" rel="noopener">萌ICP备20243331号</a> · Visitors <span class="bz-uv">…</span> · Total views <span class="bz-pv">…</span> · <span class="visitor-city"></span></div><div><a href="loader.html?to=changelog.html">📜 Changelog</a> · <a href="https://github.com/inkrox/my-website" target="_blank" rel="noopener">🐙 GitHub Repo</a></div><div style="font-size:11px;opacity:.6;">BGM: Kevin MacLeod (incompetech.com) · CC-BY 4.0</div><div style="margin-top:4px;letter-spacing:1px;">🧑‍💻 Made by <b>BXR</b> &amp; <a href="https://www.deepseek.com" target="_blank" rel="noopener">Blue Fat Fish</a> 🐟</div>'],
-    ['.skin-view[data-skin="cyberpunk"] footer', '<div>© <span class="year"></span> BXR_MAIN.EXE · VERSION v2.2.19.260826</div><div><a href="https://icp.gov.moe/?keyword=20243331" target="_blank" rel="noopener">萌ICP备20243331号</a> · Visitors <span class="bz-uv">…</span> · Total views <span class="bz-pv">…</span> · <span class="visitor-city"></span></div><div><a href="templates/loader-cyberpunk.html?to=../changelog.html">📜 Changelog</a> · <a href="https://github.com/inkrox/my-website" target="_blank" rel="noopener">🐙 GitHub Repo</a></div><div style="font-size:11px;opacity:.6;">BGM: Kevin MacLeod (incompetech.com) · CC-BY 4.0</div><div style="margin-top:4px;letter-spacing:1px;">🧑‍💻 Made by <b>BXR</b> &amp; <a href="https://www.deepseek.com" target="_blank" rel="noopener">Blue Fat Fish</a> 🐟</div>'],
-    ['.skin-view[data-skin="terminal"] footer', '<div>© <span class="year"></span> BXR · VERSION v2.2.19.260826 · <a href="https://icp.gov.moe/?keyword=20243331" target="_blank" rel="noopener">萌ICP备20243331号</a> · <a href="templates/loader-terminal.html?to=../changelog.html">📜 Changelog</a> · <a href="https://github.com/inkrox/my-website" target="_blank" rel="noopener">🐙 GitHub Repo</a></div><div style="font-size:11px;opacity:.6;">BGM: Kevin MacLeod (incompetech.com) · CC-BY 4.0</div><div style="margin-top:4px;letter-spacing:1px;">🧑‍💻 Made by <b>BXR</b> &amp; <a href="https://www.deepseek.com" target="_blank" rel="noopener">Blue Fat Fish</a> 🐟</div>'],
-    ['.skin-view[data-skin="classical"] footer', '<div>© <span class="year"></span> BXR · Version v2.2.19.260826 · Visitors <span class="bz-uv">…</span> · Total views <span class="bz-pv">…</span> · <span class="visitor-city"></span></div><div><a href="https://icp.gov.moe/?keyword=20243331" target="_blank" rel="noopener">萌ICP备20243331号</a> · <a href="templates/loader-classical.html?to=../changelog.html">📜 Changelog</a> · <a href="https://github.com/inkrox/my-website" target="_blank" rel="noopener">🐙 GitHub Repo</a></div><div style="font-size:11px;opacity:.7;">BGM: Kevin MacLeod (incompetech.com) · CC-BY 4.0</div><div style="margin-top:4px;letter-spacing:2px;">🧑‍💻 Made by <b>BXR</b> &amp; <a href="https://www.deepseek.com" target="_blank" rel="noopener">Blue Fat Fish</a> 🐟</div>'],
-    ['.skin-view[data-skin="starry"] footer', '<div>© <span class="year"></span> BXR · Version v2.2.19.260826</div><div><a href="https://icp.gov.moe/?keyword=20243331" target="_blank" rel="noopener">萌ICP备20243331号</a> · Visitors <span class="bz-uv">…</span> · Total views <span class="bz-pv">…</span> · <span class="visitor-city"></span></div><div><a href="templates/loader-starry.html?to=../changelog.html">📜 Changelog</a> · <a href="https://github.com/inkrox/my-website" target="_blank" rel="noopener">🐙 GitHub Repo</a></div><div style="font-size:11px;opacity:.6;">BGM: Kevin MacLeod (incompetech.com) · CC-BY 4.0</div><div style="margin-top:4px;letter-spacing:1px;">🧑‍💻 Made by <b>BXR</b> &amp; <a href="https://www.deepseek.com" target="_blank" rel="noopener">Blue Fat Fish</a> 🐟</div>']
+    ['.skin-view[data-skin="default"] footer', '<div>© <span class="year"></span> BXR · Version v2.2.23.260826</div><div><a href="https://icp.gov.moe/?keyword=20243331" target="_blank" rel="noopener">萌ICP备20243331号</a> · Visitors <span class="bz-uv">…</span> · Total views <span class="bz-pv">…</span> · <span class="visitor-city"></span></div><div><a href="loader.html?to=changelog.html">📜 Changelog</a> · <a href="https://github.com/inkrox/my-website" target="_blank" rel="noopener">🐙 GitHub Repo</a></div><div style="font-size:11px;opacity:.6;">BGM: Kevin MacLeod (incompetech.com) · CC-BY 4.0</div><div style="margin-top:4px;letter-spacing:1px;">🧑‍💻 Made by <b>BXR</b> &amp; <a href="https://www.deepseek.com" target="_blank" rel="noopener">Blue Fat Fish</a> 🐟</div>'],
+    ['.skin-view[data-skin="cyberpunk"] footer', '<div>© <span class="year"></span> BXR_MAIN.EXE · VERSION v2.2.23.260826</div><div><a href="https://icp.gov.moe/?keyword=20243331" target="_blank" rel="noopener">萌ICP备20243331号</a> · Visitors <span class="bz-uv">…</span> · Total views <span class="bz-pv">…</span> · <span class="visitor-city"></span></div><div><a href="templates/loader-cyberpunk.html?to=../changelog.html">📜 Changelog</a> · <a href="https://github.com/inkrox/my-website" target="_blank" rel="noopener">🐙 GitHub Repo</a></div><div style="font-size:11px;opacity:.6;">BGM: Kevin MacLeod (incompetech.com) · CC-BY 4.0</div><div style="margin-top:4px;letter-spacing:1px;">🧑‍💻 Made by <b>BXR</b> &amp; <a href="https://www.deepseek.com" target="_blank" rel="noopener">Blue Fat Fish</a> 🐟</div>'],
+    ['.skin-view[data-skin="terminal"] footer', '<div>© <span class="year"></span> BXR · VERSION v2.2.23.260826 · <a href="https://icp.gov.moe/?keyword=20243331" target="_blank" rel="noopener">萌ICP备20243331号</a> · <a href="templates/loader-terminal.html?to=../changelog.html">📜 Changelog</a> · <a href="https://github.com/inkrox/my-website" target="_blank" rel="noopener">🐙 GitHub Repo</a></div><div style="font-size:11px;opacity:.6;">BGM: Kevin MacLeod (incompetech.com) · CC-BY 4.0</div><div style="margin-top:4px;letter-spacing:1px;">🧑‍💻 Made by <b>BXR</b> &amp; <a href="https://www.deepseek.com" target="_blank" rel="noopener">Blue Fat Fish</a> 🐟</div>'],
+    ['.skin-view[data-skin="classical"] footer', '<div>© <span class="year"></span> BXR · Version v2.2.23.260826 · Visitors <span class="bz-uv">…</span> · Total views <span class="bz-pv">…</span> · <span class="visitor-city"></span></div><div><a href="https://icp.gov.moe/?keyword=20243331" target="_blank" rel="noopener">萌ICP备20243331号</a> · <a href="templates/loader-classical.html?to=../changelog.html">📜 Changelog</a> · <a href="https://github.com/inkrox/my-website" target="_blank" rel="noopener">🐙 GitHub Repo</a></div><div style="font-size:11px;opacity:.7;">BGM: Kevin MacLeod (incompetech.com) · CC-BY 4.0</div><div style="margin-top:4px;letter-spacing:2px;">🧑‍💻 Made by <b>BXR</b> &amp; <a href="https://www.deepseek.com" target="_blank" rel="noopener">Blue Fat Fish</a> 🐟</div>'],
+    ['.skin-view[data-skin="starry"] footer', '<div>© <span class="year"></span> BXR · Version v2.2.23.260826</div><div><a href="https://icp.gov.moe/?keyword=20243331" target="_blank" rel="noopener">萌ICP备20243331号</a> · Visitors <span class="bz-uv">…</span> · Total views <span class="bz-pv">…</span> · <span class="visitor-city"></span></div><div><a href="templates/loader-starry.html?to=../changelog.html">📜 Changelog</a> · <a href="https://github.com/inkrox/my-website" target="_blank" rel="noopener">🐙 GitHub Repo</a></div><div style="font-size:11px;opacity:.6;">BGM: Kevin MacLeod (incompetech.com) · CC-BY 4.0</div><div style="margin-top:4px;letter-spacing:1px;">🧑‍💻 Made by <b>BXR</b> &amp; <a href="https://www.deepseek.com" target="_blank" rel="noopener">Blue Fat Fish</a> 🐟</div>']
   ];
 
   /* 主题栏按钮文案统一生成 */
@@ -1847,7 +2104,7 @@ html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张�
       '&nbsp;&nbsp;date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;current time<br>' +
       '&nbsp;&nbsp;echo &lt;text&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo text<br>' +
       '&nbsp;&nbsp;clear&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;clear output',
-    works: ['Shooting Game', 'Code Rain', 'Compass Clock', 'Aperture', 'Meteor Shower', 'Fireworks', '3D Fireworks', 'Click Fireworks', 'Pixel Clock', 'Tech Watch', 'Timer', 'Space Museum', 'Father\'s Day', 'QA Quiz', 'Secret Downloads'],
+    works: ['Shooting Game', 'Code Rain', 'Compass Clock', 'Aperture', 'Meteor Shower', 'Fireworks', '3D Fireworks', 'Click Fireworks', 'Pixel Clock', 'Tech Watch', 'Timer', 'Space Museum', 'Father\'s Day', 'QA Quiz', '2048', 'Snake', 'Secret Downloads'],
     about: 'Hi! I\'m BXR, a 14-year-old from Harbin, Grade 9 at Harbin No.49 Middle School, Class 9, No. 01.<br>Good at Python and C++ — OIer, violin.',
     links: '<div class="line">🐙 GitHub — <a href="https://github.com/inkrox" target="_blank" rel="noopener">https://github.com/inkrox</a></div>' +
       '<div class="line">📦 Source Code — <a href="https://github.com/inkrox/my-website/" target="_blank" rel="noopener">https://github.com/inkrox/my-website/</a></div>' +
@@ -1895,6 +2152,7 @@ html.skin-starry #updatesPanel { border-radius: 18px; }/* 卡片随滚动逐张�
         el[j].setAttribute(EN_ATTR[i][1], lang === 'en' ? EN_ATTR[i][2] : (ZH_ATTR[k] !== undefined ? ZH_ATTR[k] : ''));
       }
     }
+    if (typeof window.bxrRefresh === 'function') { window.bxrRefresh(); }
   }
 
   var langBtn = document.getElementById('langBtn');
